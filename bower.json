@@ -1,0 +1,35 @@
+{
+  "name": "simpla-img",
+  "description": "",
+  "authors": [
+    "Simpla &lt;admin@simpla.io&gt;"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "simpla",
+    "web component",
+    "polymer",
+    "img"
+  ],
+  "ignore": [
+    "*",
+    "!src",
+    "!boilerplate-component.html",
+    "!LICENSE"
+  ],
+  "dependencies": {
+    "webcomponentsjs": "^0.7.14",
+    "polymer": "^1.1.4",
+    "simpla": "git@github.com:simplaio/simpla.git",
+    "sm-helper-img": "git@github.com:simplaio/sm-helper-img.git"
+  },
+  "devDependencies": {
+    "web-component-tester": "^3.3.22",
+    "test-fixture": "PolymerElements/test-fixture#~1.0.0"
+  },
+  "simplaImports": [
+    "polymer/polymer.html",
+    "simpla/simpla.html",
+    "sm-helper-img/sm-helper-img.html"
+  ]
+}
