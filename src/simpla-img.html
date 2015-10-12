@@ -9,8 +9,35 @@
       height="[[height]]"
       scale="[[scale]]"
       translateX="[[position.x]]"
-      translateY="[[position.y]]">
+      translateY="[[position.y]]"
+      on-pan-finished="updatePosition">
     </sm-helper-img>
+
+      <!-- Edit controls -->
+    <div class="controls">
+
+      <!-- Main toolbox -->
+      <div class="controls__toolbox">
+
+        <!-- Image title -->
+        <!-- <input type="text" class="controls__toolbox__title" placeholder="Enter image title" value="{{title::input}}"> -->
+        <!-- <simpla-button class="controls__toolbox__tool" on-click="toggleTitle" icon="&#x54;"></simpla-button> -->
+
+        <!-- Image upload (actual file input hidden, since it can't be styled) -->
+        <!-- <simpla-button class="controls__toolbox__tool" on-click="openFilePicker" icon="&#xe619;"> -->
+          <!-- <input id="file" class="controls__toolbox__file" type="file" /> -->
+        <!-- </simpla-button> -->
+
+      </div>
+
+      <!-- Zoom level slider -->
+      <div class="controls__zoom">
+        <div class="controls__zoom__slider">
+          <input id="zoom" type="range" class="controls__zoom__slider__input" on-mousedown="resetBounds" min="1" value="{{scale::input}}" max="2" step="0.01" />
+        </div>
+      </div>
+
+    </div>
 
   </template>
   <script src="./simpla-img.js"></script>

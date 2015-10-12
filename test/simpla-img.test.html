@@ -15,23 +15,44 @@
   <body>
     <test-fixture id="default">
       <template>
-        <boilerplate-component></boilerplate-component>
+        <simpla-img></simpla-img>
       </template>
     </test-fixture>
     <script>
       describe('<simpla-img>', function() {
 
         var component,
-            componentFixtures;
+            componentFixtures,
+            helper;
 
         componentFixtures = window.fixtures;
 
         beforeEach(function() {
           component = fixture('default');
+          helper = component.$.image;
         });
 
         it('is okay', function() {
           expect(component).to.be.ok;
+        });
+
+        it('updatePosition changes its position based on helper', function() {
+          helper.translateX = 45;
+          helper.translateY = 50;
+
+          component.updatePosition();
+
+          expect(component.position.x).to.equal(45);
+          expect(component.position.y).to.equal(50);
+        });
+
+        it('calls updatePosition on image pan-finished', function() {
+          sinon.spy(component, 'updatePosition');
+
+          helper.fire('pan-finished');
+          expect(component.updatePosition.called).to.be.true;
+
+          component.updatePosition.restore();
         });
       });
     </script>
