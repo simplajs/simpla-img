@@ -36,6 +36,17 @@ const options = {
           inlineCss: true,
           inlineScripts: true,
           addedImports: imports
+        },
+        browserSync: {
+          server: {
+            baseDir: './',
+            index: 'demo/index.html',
+            routes: {
+              '/': './bower_components',
+              [`/${ELEMENT_NAME}.html`]: `./${ELEMENT_NAME}.html`
+            }
+          },
+          open: false
         }
       },
       errorNotifier = () => plumber({ errorHandler: notify.onError('Error: <%= error.message %>') });
@@ -69,16 +80,7 @@ gulp.task('clean', () => {
 gulp.task('demo', (callback) => {
   gulp.watch('./*.{html,js}').on('change', bs.reload);
 
-  return bs.init({
-    server: {
-      baseDir: './',
-      index: 'demo/index.html',
-      routes: {
-        '/': './bower_components',
-        [`/${ELEMENT_NAME}.html`]: `./${ELEMENT_NAME}.html`
-      }
-    }
-  });
+  return bs.init(options.browserSync);
 });
 
 gulp.task('test', ['build', 'test:local']);
