@@ -65,22 +65,24 @@
           component.updatePosition.restore();
         });
 
-        it('should be able to trigger loadFile from fileChosen', function() {
-          var event = componentFixtures.fileEvent;
-          sinon.spy(component, '_loadFile');
+        describe('file loading', function() {
+          it('should be able to trigger loadFile from fileChosen', function() {
+            var event = componentFixtures.fileEvent;
+            sinon.spy(component, '_loadFile');
 
-          component._fileChosen(event);
-          expect(component._loadFile.calledWith(event.target.files[0])).to.be.true;
+            component._fileChosen(event);
+            expect(component._loadFile.calledWith(event.target.files[0])).to.be.true;
 
-          component._loadFile.restore();
-        });
+            component._loadFile.restore();
+          });
 
-        it('should set the src once read in', function() {
-          var event = componentFixtures.fileEvent,
-              file = event.target.files[0];
-          component._loadFile(file);
+          it('should set the src once read in', function() {
+            var event = componentFixtures.fileEvent,
+                file = event.target.files[0];
+            component._loadFile(file);
 
-          expect(component.src).to.equal(file.src);
+            expect(component.src).to.equal(file.src);
+          });
         });
       });
     </script>
