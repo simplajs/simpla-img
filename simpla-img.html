@@ -118,6 +118,12 @@
 	      };
 	    }
 	  }, {
+	    key: 'ready',
+	    value: function ready() {
+	      // Setup the minimum on the zoom
+	      this.$.zoom.min = this._helper.minScale;
+	    }
+	  }, {
 	    key: 'updatePosition',
 	    value: function updatePosition() {
 	      var image = this._helper;

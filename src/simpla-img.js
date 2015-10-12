@@ -17,6 +17,11 @@ class SimplaImg {
     }
   }
 
+  ready() {
+    // Setup the minimum on the zoom
+    this.$.zoom.min = this._helper.minScale;
+  }
+
   updatePosition() {
     const image = this._helper;
 
