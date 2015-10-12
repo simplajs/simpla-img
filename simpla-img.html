@@ -19,15 +19,16 @@
 
         <!-- Image upload (actual file input hidden, since it can't be styled) -->
         <!-- <simpla-button class="controls__toolbox__tool" on-click="openFilePicker" icon="&#xe619;"> -->
-          <!-- <input id="file" class="controls__toolbox__file" type="file" /> -->
-        <!-- </simpla-button> -->
+        <simpla-button class="controls__toolbox__tool" icon="">
+          <input id="file" class="controls__toolbox__file" type="file" on-change="_fileChosen">
+        </simpla-button>
 
       </div>
 
       <!-- Zoom level slider -->
       <div class="controls__zoom">
         <div class="controls__zoom__slider">
-          <input id="zoom" type="range" class="controls__zoom__slider__input" on-mousedown="resetBounds" min="1" value="{{scale::input}}" max="2" step="0.01">
+          <input id="zoom" type="range" class="controls__zoom__slider__input" min="1" value="{{scale::input}}" max="2" step="0.01">
         </div>
       </div>
 
@@ -129,6 +130,31 @@
 	      var image = this._helper;
 
 	      this.position = { x: image.translateX, y: image.translateY };
+	    }
+	  }, {
+	    key: '_fileChosen',
+	    value: function _fileChosen(event) {
+	      var filePicker = event.target,
+	          files = filePicker.files;
+
+	      if (files) {
+	        this._loadFile(files[0]);
+	      } else {
+	        throw new Error('Could not load file');
+	      }
+	    }
+	  }, {
+	    key: '_loadFile',
+	    value: function _loadFile(file) {
+	      var _this = this;
+
+	      var reader = new FileReader();
+
+	      reader.onloadend = function () {
+	        return _this.src = reader.result;
+	      };
+
+	      reader.readAsDataURL(file);
 	    }
 	  }, {
 	    key: '_helper',

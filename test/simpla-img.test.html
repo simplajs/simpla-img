@@ -25,11 +25,21 @@
             componentFixtures,
             helper;
 
-        componentFixtures = window.fixtures;
+        componentFixtures = window.fixtures['simpla-img'];
 
         beforeEach(function() {
           component = fixture('default');
           helper = component.$.image;
+
+          window.FileReader = function() {};
+          window.FileReader.prototype = {
+            readAsDataURL(mockFile) {
+              this.result = mockFile.src;
+              if (typeof this.onloadend === 'function') {
+                this.onloadend();
+              }
+            }
+          };
         });
 
         it('is okay', function() {
@@ -53,6 +63,24 @@
           expect(component.updatePosition.called).to.be.true;
 
           component.updatePosition.restore();
+        });
+
+        it('should be able to trigger loadFile from fileChosen', function() {
+          var event = componentFixtures.fileEvent;
+          sinon.spy(component, '_loadFile');
+
+          component._fileChosen(event);
+          expect(component._loadFile.calledWith(event.target.files[0])).to.be.true;
+
+          component._loadFile.restore();
+        });
+
+        it('should set the src once read in', function() {
+          var event = componentFixtures.fileEvent,
+              file = event.target.files[0];
+          component._loadFile(file);
+
+          expect(component.src).to.equal(file.src);
         });
       });
     </script>
