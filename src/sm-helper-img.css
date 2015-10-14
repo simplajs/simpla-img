@@ -1,0 +1,9 @@
+:host {
+  overflow: hidden;
+  display: inline-block;
+}
+
+img {
+  vertical-align: bottom;
+  transform-origin: 0 0;
+}

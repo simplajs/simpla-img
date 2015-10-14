@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Utility Image</title>
+    <script src="../../webcomponentsjs/webcomponents.min.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+    <script src="../../test-fixture/test-fixture-mocha.js"></script>
+    <link rel="import" href="../../test-fixture/test-fixture.html">
+
+    <!-- Import the element to test -->
+    <link rel="import" href="../sm-helper-img.html">
+    <script src="./sm-helper-img.fixtures.js"></script>
+  </head>
+  <body>
+    <test-fixture id="trivialElement">
+      <template>
+        <sm-helper-img></sm-helper-img>
+      </template>
+    </test-fixture>
+    <script>
+      describe('<sm-helper-img>', function() {
+        var component,
+            source,
+            fixtures = componentFixtures['sm-helper-img'],
+            resetTransforms = function() {
+              component.translateX = fixtures.defaultTransforms.translateX;
+              component.translateY = fixtures.defaultTransforms.translateY;
+              component.scale = fixtures.defaultTransforms.scale;
+            },
+            stubAndRetain = function(obj, prop) {
+              return sinon.stub(obj, prop, obj[prop]);
+            };
+
+        before(function() {
+          sinon.stub(window, 'requestAnimationFrame', function(callback) {
+            callback();
+            return fixtures.fakeTick;
+          });
+
+          sinon.stub(window, 'cancelAnimationFrame');
+        });
+
+        beforeEach(function() {
+          component = fixture('trivialElement');
+          source = component.$.source;
+
+          sinon.stub(component, 'getBoundingClientRect').returns(fixtures.componentBounds);
+          sinon.stub(source, 'getBoundingClientRect').returns(fixtures.sourceBounds);
+
+          window.requestAnimationFrame.reset();
+          window.cancelAnimationFrame.reset();
+
+          sinon.spy(component, 'fire');
+
+          resetTransforms();
+        });
+
+        it('Is OK', function() {
+          expect(component).to.be.ok;
+        });
+
+        describe('paint', function() {
+          it('should set correct transform', function() {
+            component._paint();
+
+            // Assert
+            expect(source.style.transform).to.equal(fixtures.defaultTransforms.asString);
+          });
+
+          it('should be calling requestAnimationFrame', function() {
+            component._paint();
+            expect(window.requestAnimationFrame.called).to.be.true;
+          });
+
+          it('should set _tick to animation frames response', function() {
+            component._paint();
+            expect(component._tick).to.equal(fixtures.fakeTick);
+          });
+
+          it('should call cancelAnimationFrame if tick exists', function() {
+            // This shouldn't be needed, but is...??
+            window.cancelAnimationFrame.reset();
+
+            component._tick = null;
+            component._paint();
+            expect(window.cancelAnimationFrame.called).to.be.false;
+
+            component._tick = fixtures.fakeTick;
+            component._paint();
+            expect(window.cancelAnimationFrame.calledWith(fixtures.fakeTick)).to.be.true;
+          });
+        });
+
+        describe('setting values should be restricted', function() {
+          it('has a minimum scale based on width of incoming image', function() {
+
+            component.width = fixtures.componentBounds.width;
+            component.height = fixtures.componentBounds.height;
+
+            // 4 times component, therefore scale min = 0.25
+            source.width = component.width * 4;
+            source.height = component.height * 4;
+
+            // Try set above the minimum, should be fine
+            component.scale = 0.5;
+            expect(component.scale).to.equal(0.5);
+
+            // Try set below the minimum
+            component.scale = 0.1;
+            expect(component.scale).to.equal(0.25);
+          });
+
+          it('sets translateX within min and max', function() {
+            var frameBounds,
+                imgBounds;
+
+            // Throw it a curveball
+            component.scale = 1.5;
+
+            // Setup bounds
+            component._width = fixtures.componentBounds.width;
+            component._height = fixtures.componentBounds.height;
+            component._imgWidth = fixtures.sourceBounds.width;
+            component._imgHeight = fixtures.sourceBounds.height;
+
+            // Try set below min
+            component.translateX = component._bounds.x.min - 10;
+            expect(component.translateX).to.equal(component._bounds.x.min);
+
+            component.translateX = component._bounds.x.max + 10;
+            expect(component.translateX).to.equal(component._bounds.x.max);
+          });
+
+          it('sets translateY within min and max', function() {
+            var frameBounds,
+                imgBounds;
+
+            // Throw it a curveball
+            component.scale = 1.5;
+
+            // Setup bounds
+            component._width = fixtures.componentBounds.width;
+            component._height = fixtures.componentBounds.height;
+            component._imgWidth = fixtures.sourceBounds.width;
+            component._imgHeight = fixtures.sourceBounds.height;
+
+            component.scale = 1;
+
+            // Try set below min
+            component.translateY = component._bounds.y.min - 10;
+            expect(component.translateY).to.equal(component._bounds.y.min);
+
+            component.translateY = component._bounds.y.max + 10;
+            expect(component.translateY).to.equal(component._bounds.y.max);
+          });
+        });
+
+        describe('_drawImage', function() {
+          var resetDimensions;
+
+          beforeEach(function() {
+            resetDimensions = sinon.stub(component, '_resetDimensions');
+          });
+
+          afterEach(function() {
+            resetDimensions.restore();
+          })
+
+          it('should call resetDimensions if event is start', function() {
+            component._dragImage(fixtures.startEvent);
+            expect(resetDimensions.called).to.be.true;
+          });
+
+          it('should increment translateX and translateY (dx / dy for start), with scale', function() {
+            // Set it to a slightly odd scale
+            component.scale = fixtures.alternateTransforms.scale;
+
+            var event = fixtures.startEvent,
+                translateX = component.translateX,
+                translateY = component.translateY,
+                expectedX = translateX + event.detail.dx / component.scale,
+                expectedY = translateY + event.detail.dy / component.scale;
+
+            component._dragImage(event);
+
+            expect(component.translateX).to.equal(expectedX);
+            expect(component.translateY).to.equal(expectedY);
+          });
+
+          it('should increment translateX and translateY (ddx / ddy for track), with scale', function() {
+            // Set it to a slightly odd scale
+            component.scale = fixtures.alternateTransforms.scale;
+
+            var event = fixtures.trackEvent,
+                translateX = component.translateX,
+                translateY = component.translateY,
+                expectedX = translateX + event.detail.ddx / component.scale,
+                expectedY = translateY + event.detail.ddy / component.scale;
+
+            component._dragImage(event);
+
+            expect(component.translateX).to.equal(expectedX);
+            expect(component.translateY).to.equal(expectedY);
+          });
+
+          it('should fire "pan-finished" on end event', function() {
+            var event = fixtures.endEvent,
+                name = 'pan-finished';
+
+            component._dragImage(event);
+
+            expect(component.fire.called).to.be.true;
+          });
+        });
+
+        describe('minScale', function() {
+          it('should result in 1, if height / width are not known', function() {
+            component.width = null;
+
+            expect(component.minScale).to.equal(1);
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

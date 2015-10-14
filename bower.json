@@ -29,7 +29,6 @@
   },
   "simplaImports": [
     "polymer/polymer.html",
-    "simpla/simpla.html",
-    "sm-helper-img/sm-helper-img.html"
+    "simpla/simpla.html"
   ]
 }
