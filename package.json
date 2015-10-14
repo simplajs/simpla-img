@@ -15,11 +15,11 @@
     "img"
   ],
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/simplaio/simpla-img.git"
+    "type": "git",
+    "url": "https://github.com/simplaio/simpla-img.git"
   },
   "bugs": {
-    "url" : "https://github.com/simplaio/simpla-img/issues"
+    "url": "https://github.com/simplaio/simpla-img/issues"
   },
   "devDependencies": {
     "autoprefixer": "^6.0.3",

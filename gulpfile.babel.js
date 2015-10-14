@@ -13,8 +13,11 @@ import postcss from 'gulp-postcss';
 import plumber from 'gulp-plumber';
 import browserSync from 'browser-sync';
 import { simplaImports, name as ELEMENT_NAME } from './bower.json';
+import path from 'path';
 
-const imports = simplaImports.map(dep => `../${dep}`),
+
+const name = 'simpla-img',
+      imports = simplaImports.map(dep => `../${dep}`),
       bs = browserSync.create();
 
 // Get WCT going
@@ -22,9 +25,6 @@ wct.gulp.init(gulp);
 
 const options = {
         webpack: {
-          output: {
-            filename: '[name].js'
-          },
           module: {
             loaders: [
               { test: /\.js$/, loader: 'babel-loader' }
@@ -52,9 +52,14 @@ const options = {
       errorNotifier = () => plumber({ errorHandler: notify.onError('Error: <%= error.message %>') });
 
 gulp.task('process', () => {
-  return gulp.src('src/*.{html,js,css}')
+  return gulp.src(['src/*/*.{html,js,css}', 'src/*.{html,js,css}'])
           .pipe(errorNotifier())
-          .pipe(named())
+            .pipe(gulpif('*.js', named(file => {
+              let name = path.basename(file.path, path.extname(file.path)),
+                  parent = path.basename(path.dirname(file.path));
+
+              return parent === 'src' ? name : path.join(parent, name);
+            })))
 
             .pipe(gulpif('*.css', postcss(options.postcss)))
 
@@ -67,7 +72,7 @@ gulp.task('process', () => {
 });
 
 gulp.task('build', ['process'], () => {
-  return gulp.src(`.tmp/*.html`)
+  return gulp.src([`.tmp/${name}/${name}.html`,`.tmp/${name}.html`])
           .pipe(errorNotifier())
           .pipe(vulcanize(options.vulcanize))
           .pipe(gulp.dest('.'));
