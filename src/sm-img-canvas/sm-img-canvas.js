@@ -11,7 +11,7 @@ const DEFAULT_SCALE = 1,
  */
 class HelperImage {
   beforeRegister() {
-    this.is = 'sm-helper-img';
+    this.is = 'sm-img-canvas';
 
     this.properties = {
       width: Number,

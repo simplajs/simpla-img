@@ -1,10 +1,10 @@
-<link rel="import" href="../sm-helper-img/sm-helper-img.html" />
+<link rel="import" href="../sm-img-canvas/sm-img-canvas.html" />
 
 <dom-module id="simpla-img">
   <template>
     <link rel="stylesheet" href="./simpla-img.css" />
 
-    <sm-helper-img
+    <sm-img-canvas
       id="image"
       src="[[src]]"
       width="[[width]]"
@@ -13,7 +13,7 @@
       translateX="[[position.x]]"
       translateY="[[position.y]]"
       on-pan-finished="updatePosition">
-    </sm-helper-img>
+    </sm-img-canvas>
 
       <!-- Edit controls -->
     <div class="controls">

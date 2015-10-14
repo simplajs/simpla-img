@@ -1,5 +1,5 @@
 (function() {
-  var NAME = 'sm-helper-img';
+  var NAME = 'sm-img-canvas';
 
   window.componentFixtures = window.componentFixtures || {};
   window.componentFixtures[NAME] = {

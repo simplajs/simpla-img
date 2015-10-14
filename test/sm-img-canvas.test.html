@@ -9,20 +9,20 @@
     <link rel="import" href="../../test-fixture/test-fixture.html">
 
     <!-- Import the element to test -->
-    <link rel="import" href="../sm-helper-img.html">
-    <script src="./sm-helper-img.fixtures.js"></script>
+    <link rel="import" href="../simpla-img.html">
+    <script src="./sm-img-canvas.fixtures.js"></script>
   </head>
   <body>
     <test-fixture id="trivialElement">
       <template>
-        <sm-helper-img></sm-helper-img>
+        <sm-img-canvas></sm-img-canvas>
       </template>
     </test-fixture>
     <script>
-      describe('<sm-helper-img>', function() {
+      describe('<sm-img-canvas>', function() {
         var component,
             source,
-            fixtures = componentFixtures['sm-helper-img'],
+            fixtures = componentFixtures['sm-img-canvas'],
             resetTransforms = function() {
               component.translateX = fixtures.defaultTransforms.translateX;
               component.translateY = fixtures.defaultTransforms.translateY;

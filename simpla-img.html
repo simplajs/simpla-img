@@ -1,4 +1,4 @@
-<html><head><meta charset="UTF-8"><link rel="import" href="../simpla/simpla.html"><link rel="import" href="../polymer/polymer.html"></head><body><div hidden="" by-vulcanize=""><dom-module id="sm-helper-img" assetpath="../sm-helper-img/">
+<html><head><meta charset="UTF-8"><link rel="import" href="../simpla/simpla.html"><link rel="import" href="../polymer/polymer.html"></head><body><div hidden="" by-vulcanize=""><dom-module id="sm-img-canvas" assetpath="../sm-img-canvas/">
   <template>
     <style>
 :host{overflow:hidden;display:inline-block}img{vertical-align:bottom;-webkit-transform-origin:0 0;-ms-transform-origin:0 0;transform-origin:0 0}
@@ -85,7 +85,7 @@
 	  _createClass(HelperImage, [{
 	    key: 'beforeRegister',
 	    value: function beforeRegister() {
-	      this.is = 'sm-helper-img';
+	      this.is = 'sm-img-canvas';
 
 	      this.properties = {
 	        width: Number,
@@ -304,8 +304,8 @@
 ::host{color:blue}
 </style>
 
-    <sm-helper-img id="image" src="[[src]]" width="[[width]]" height="[[height]]" scale="[[scale]]" translatex="[[position.x]]" translatey="[[position.y]]" on-pan-finished="updatePosition">
-    </sm-helper-img>
+    <sm-img-canvas id="image" src="[[src]]" width="[[width]]" height="[[height]]" scale="[[scale]]" translatex="[[position.x]]" translatey="[[position.y]]" on-pan-finished="updatePosition">
+    </sm-img-canvas>
 
       <!-- Edit controls -->
     <div class="controls">
