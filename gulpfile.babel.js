@@ -16,8 +16,7 @@ import { simplaImports, name as ELEMENT_NAME } from './bower.json';
 import path from 'path';
 
 
-const name = 'simpla-img',
-      imports = simplaImports.map(dep => `../${dep}`),
+const imports = simplaImports.map(dep => `../${dep}`),
       bs = browserSync.create();
 
 // Get WCT going
@@ -72,7 +71,7 @@ gulp.task('process', () => {
 });
 
 gulp.task('build', ['process'], () => {
-  return gulp.src([`.tmp/${name}/${name}.html`,`.tmp/${name}.html`])
+  return gulp.src([`.tmp/${ELEMENT_NAME}/${ELEMENT_NAME}.html`,`.tmp/${ELEMENT_NAME}.html`])
           .pipe(errorNotifier())
           .pipe(vulcanize(options.vulcanize))
           .pipe(gulp.dest('.'));
