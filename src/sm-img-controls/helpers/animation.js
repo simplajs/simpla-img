@@ -1,62 +1,58 @@
-/**
- * Return controls
- * @param  {SmImgControls} host HTML elements to look for controls on
- * @return {Object}             Control elements
- */
-function getControls(host) {
-  return {
-    top: host.$['controls-top'],
-    bottom: host.$['controls-bottom']
-  };
-};
-
-/**
- * Return options for given host
- * @param  {SmImgControls} host HTML elements to setup opts for
- * @return {Object}             Options object
- */
-function getOptions(host) {
-  return {
-    'in': {
-      easing: host.customStyle['--ease-out-back'],
-      fillMode: 'forward',
-      duration: 250
-    },
-    'out': {
-      easing: host.customStyle['--ease-in-cubic'],
-      fillMode: 'forward',
-      duration: 250
-    }
-  };
-};
-
 export default {
-  ready() {
-    let { top, bottom } = getControls(this),
-        opts = getOptions(this);
+  listeners: {
+    'activated': '_animateIn',
+    'deactivated': '_animateOut'
+  },
 
-    this.addEventListener('activated', () => {
-      top.animate([
-        { transform: 'translateY(-100%)' },
-        { transform: 'translateY(0)' }
-      ], opts.in);
+  get _animateControls() {
+    return {
+      top: this.$['controls-top'],
+      bottom: this.$['controls-bottom']
+    };
+  },
 
-      bottom.animate([
-        { transform: 'translateY(100%)' },
-        { transform: 'translateY(0)' }
-      ], opts.in);
-    });
+  get _animateOptions() {
+    return {
+      'in': {
+        easing: this.customStyle['--ease-out-back'],
+        fillMode: 'forward',
+        duration: 250
+      },
+      'out': {
+        easing: this.customStyle['--ease-in-cubic'],
+        fillMode: 'forward',
+        duration: 250
+      }
+    };
+  },
 
-    this.addEventListener('deactivated', () => {
-      top.animate([
-        { transform: 'translateY(0)' },
-        { transform: 'translateY(-100%)' }
-      ], opts.out);
+  _animateIn() {
+    let { top, bottom } = this._animateControls,
+        opts = this._animateOptions;
 
-      bottom.animate([
-        { transform: 'translateY(0)' },
-        { transform: 'translateY(100%)' }
-      ], opts.out);
-    });
+    top.animate([
+      { transform: 'translateY(-100%)' },
+      { transform: 'translateY(0)' }
+    ], opts.in);
+
+    bottom.animate([
+      { transform: 'translateY(100%)' },
+      { transform: 'translateY(0)' }
+    ], opts.in);
+  },
+
+  _animateOut() {
+    let { top, bottom } = this._animateControls,
+        opts = this._animateOptions;
+
+    top.animate([
+      { transform: 'translateY(0)' },
+      { transform: 'translateY(-100%)' }
+    ], opts.out);
+
+    bottom.animate([
+      { transform: 'translateY(0)' },
+      { transform: 'translateY(100%)' }
+    ], opts.out);
   }
-}
+};

@@ -18,8 +18,10 @@ class SmImgControls {
       files: Object,
       zoom: Number
     };
+  }
 
-    this.behaviors = [
+  get behaviors() {
+    return [
       animation
     ];
   }
