@@ -471,59 +471,63 @@
 /* 5 */
 /***/ function(module, exports) {
 
+	/**
+	 * Return controls
+	 * @param  {SmImgControls} host HTML elements to look for controls on
+	 * @return {Object}             Control elements
+	 */
 	'use strict';
 
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
-	var opts = undefined,
-	    controls = undefined;
-
-	opts = {
-	  'in': {
-	    easing: undefined.customStyle['--ease-out-back'],
-	    fillMode: 'forward',
-	    duration: 250
-	  },
-	  'out': {
-	    easing: undefined.customStyle['--ease-in-cubic'],
-	    fillMode: 'forward',
-	    duration: 250
-	  }
+	function getControls(host) {
+	  return {
+	    top: host.$['controls-top'],
+	    bottom: host.$['controls-bottom']
+	  };
 	};
 
-	controls = {
-	  'top': undefined.$['controls-top'],
-	  'bottom': undefined.$['controls-bottom']
+	/**
+	 * Return options for given host
+	 * @param  {SmImgControls} host HTML elements to setup opts for
+	 * @return {Object}             Options object
+	 */
+	function getOptions(host) {
+	  return {
+	    'in': {
+	      easing: host.customStyle['--ease-out-back'],
+	      fillMode: 'forward',
+	      duration: 250
+	    },
+	    'out': {
+	      easing: host.customStyle['--ease-in-cubic'],
+	      fillMode: 'forward',
+	      duration: 250
+	    }
+	  };
 	};
 
 	exports['default'] = {
+	  ready: function ready() {
+	    var _getControls = getControls(this);
 
-	  listeners: {
-	    'activated': '_animateIn',
-	    'deactivated': '_animateOut'
-	  },
+	    var top = _getControls.top;
+	    var bottom = _getControls.bottom;
+	    var opts = getOptions(this);
 
-	  _animateIn: function _animateIn() {
+	    this.addEventListener('activated', function () {
+	      top.animate([{ transform: 'translateY(-100%)' }, { transform: 'translateY(0)' }], opts['in']);
 
-	    controls['top'].animate([{ transform: 'translateY(-100%)' }, { transform: 'translateY(0)' }], opts['in']);
+	      bottom.animate([{ transform: 'translateY(100%)' }, { transform: 'translateY(0)' }], opts['in']);
+	    });
 
-	    controls['bottom'].animate([{ transform: 'translateY(100%)' }, { transform: 'translateY(0)' }], opts['in']);
-	  },
+	    this.addEventListener('deactivated', function () {
+	      top.animate([{ transform: 'translateY(0)' }, { transform: 'translateY(-100%)' }], opts.out);
 
-	  _animateOut: function _animateOut() {
-
-	    var opts = {
-	      easing: this.customStyle['--ease-in-cubic'],
-	      fillMode: 'forward',
-	      duration: 250
-	    };
-
-	    controls['top'].animate([{ transform: 'translateY(0)' }, { transform: 'translateY(-100%)' }], opts.out);
-
-	    controls['bottom'].animate([{ transform: 'translateY(0)' }, { transform: 'translateY(100%)' }], opts.out);
+	      bottom.animate([{ transform: 'translateY(0)' }, { transform: 'translateY(100%)' }], opts.out);
+	    });
 	  }
-
 	};
 	module.exports = exports['default'];
 
