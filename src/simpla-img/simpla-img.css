@@ -1,1 +1,8 @@
-
+:host {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  height: auto;
+  width: auto;
+  position: relative;
+}

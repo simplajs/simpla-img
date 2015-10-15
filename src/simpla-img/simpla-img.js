@@ -19,37 +19,23 @@ class SimplaImg {
 
   ready() {
     // Setup the minimum on the zoom
-    this.$.zoom.min = this._helper.minScale;
+    this.$.zoom.min = this._canvas.minScale;
   }
 
   updatePosition() {
-    const image = this._helper;
+    const image = this._canvas;
 
     this.position = { x: image.translateX, y: image.translateY };
   }
 
-  get _helper() {
+  get _canvas() {
     return this.$.image;
   }
 
-  _fileChosen(event) {
-    let filePicker = event.target,
-        files = filePicker.files;
-
-    if (files) {
-      this._loadFile(files[0]);
-    } else {
-      throw new Error('Could not load file');
-    }
+  get _controls() {
+    return this.$.controls;
   }
 
-  _loadFile(file) {
-    let reader = new FileReader();
-
-    reader.onloadend = () => this.src = reader.result;
-
-    reader.readAsDataURL(file);
-  }
 }
 
 Polymer(SimplaImg);
