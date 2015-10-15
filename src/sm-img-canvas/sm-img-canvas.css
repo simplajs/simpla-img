@@ -15,8 +15,4 @@
   transform-origin: 0 0;
   width: inherit;
   height: inherit;
-  min-width: 100%;
-  min-height: 100%;
-  max-width: inherit;
-  max-height: inherit;
 }
