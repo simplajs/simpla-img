@@ -31,11 +31,12 @@
   background: var(--med-white);
   top: -15px;
   padding-top: 15px;
-  /*transform: translateY(-100%);*/
+  transform: translateY(-100%);
 }
 
 .toolbox__tool {
   color: var(--med-black);
+  width: var(--tool-size);
   flex-shrink: 0;
 }
 
@@ -69,7 +70,7 @@
   cursor: default;
   bottom: -15px;
   padding-bottom: 15px;
-  /*transform: translateY(100%);*/
+  transform: translateY(100%);
 }
 
 .zoom__slider {

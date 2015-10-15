@@ -1,32 +1,62 @@
+import animation from './helpers/animation';
+
 class SmImgControls {
   beforeRegister() {
     this.is = 'sm-img-controls';
 
     this.properties = {
+      position: {
+        type: String,
+        reflectToAttribute: true,
+        value: 'right'
+      },
+      active: {
+        type: Boolean,
+        observer: '_activeObserver'
+      },
       title: String,
-      file: String,
+      files: Object,
       zoom: Number
-    }
+    };
+
+    this.behaviors = [
+      animation
+    ];
   }
 
-  _fileChosen(event) {
-    let filePicker = event.target,
-        files = filePicker.files;
-
-    if (files) {
-      this._loadFile(files[0]);
+  _activeObserver(active) {
+    if (active){
+      this._setPosition();
+      this.fire('activated');
     } else {
-      throw new Error('Could not load file');
+      this.fire('deactivated');
     }
   }
 
-  _loadFile(file) {
-    let reader = new FileReader();
+  /**
+   * Sets position (left/right) of main control toolbox
+   * based on position in viewport
+   */
+  _setPosition() {
+    let windowCenter,
+        bounds,
+        center;
 
-    reader.onloadend = () => this.src = reader.result;
+    windowCenter = {
+      x: window.outerWidth / 2,
+      y: window.outerHeight / 2
+    };
 
-    reader.readAsDataURL(file);
+    bounds = this.getBoundingClientRect();
+
+    center = {
+      x: bounds.left + bounds.width / 2,
+      y: bounds.top + bounds.height / 2
+    };
+
+    this.position = center.x < windowCenter.x ? 'left' : 'right';
   }
+
 }
 
 Polymer(SmImgControls);
