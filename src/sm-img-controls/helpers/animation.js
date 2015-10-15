@@ -14,31 +14,34 @@ export default {
   get _animateOptions() {
     return {
       'in': {
-        easing: this.customStyle['--ease-out-back'],
-        fillMode: 'forward',
-        duration: 250
+        easing: 'ease-out',
+        fill: 'both',
+        duration: 150
       },
       'out': {
-        easing: this.customStyle['--ease-in-cubic'],
-        fillMode: 'forward',
-        duration: 250
+        easing: 'ease-in',
+        fill: 'both',
+        duration: 150
       }
     };
   },
 
   _animateIn() {
     let { top, bottom } = this._animateControls,
-        opts = this._animateOptions;
+        opts = this._animateOptions,
+        topAnimate,
+        bottomAnimate;
 
-    top.animate([
+    topAnimate = top.animate([
       { transform: 'translateY(-100%)' },
       { transform: 'translateY(0)' }
     ], opts.in);
 
-    bottom.animate([
+    bottomAnimate = bottom.animate([
       { transform: 'translateY(100%)' },
       { transform: 'translateY(0)' }
     ], opts.in);
+
   },
 
   _animateOut() {
