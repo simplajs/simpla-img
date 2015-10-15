@@ -3,7 +3,7 @@
   display: inline-block;
 }
 
-img {
+.img {
   vertical-align: bottom;
   transform-origin: 0 0;
 }

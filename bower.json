@@ -1,8 +1,10 @@
 {
   "name": "simpla-img",
-  "description": "",
+  "version": "0.0.0",
+  "description": "Simpla component that provides an editable image",
+  "main": "simpla-img.html",
   "authors": [
-    "Simpla &lt;admin@simpla.io&gt;"
+    "Simpla <admin@simpla.io>"
   ],
   "license": "MIT",
   "keywords": [
@@ -14,21 +16,23 @@
   "ignore": [
     "*",
     "!src",
-    "!boilerplate-component.html",
+    "!simpla-img.html",
     "!LICENSE"
   ],
   "dependencies": {
     "webcomponentsjs": "^0.7.14",
     "polymer": "^1.1.4",
     "simpla": "git@github.com:simplaio/simpla.git",
-    "sm-helper-img": "git@github.com:simplaio/sm-helper-img.git"
+    "sm-css": "git@github.com:simplaio/sm-css.git",
+    "sm-helper-button": "git@github.com:simplaio/sm-helper-button.git"
   },
   "devDependencies": {
     "web-component-tester": "^3.3.22",
     "test-fixture": "PolymerElements/test-fixture#~1.0.0"
   },
-  "simplaImports": [
+  "componentImports": [
     "polymer/polymer.html",
-    "simpla/simpla.html"
+    "sm-css/sm-css.html",
+    "sm-helper-button/sm-helper-button.html"
   ]
 }

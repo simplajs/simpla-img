@@ -6,17 +6,17 @@ import csswring from 'csswring';
 import autoprefixer from 'autoprefixer';
 import wct from 'web-component-tester';
 import notify from 'gulp-notify';
+import gulprun from 'run-sequence';
 import vulcanize from 'gulp-vulcanize';
 import gulpif from 'gulp-if';
 import eslint from 'gulp-eslint';
 import postcss from 'gulp-postcss';
 import plumber from 'gulp-plumber';
 import browserSync from 'browser-sync';
-import { simplaImports, name as ELEMENT_NAME } from './bower.json';
+import { componentImports, name as ELEMENT_NAME } from './bower.json';
 import path from 'path';
 
-
-const imports = simplaImports.map(dep => `../${dep}`),
+const imports = componentImports.map(dep => `../${dep}`),
       bs = browserSync.create();
 
 // Get WCT going
@@ -24,13 +24,19 @@ wct.gulp.init(gulp);
 
 const options = {
         webpack: {
+          output: {
+            filename: '[name].js'
+          },
           module: {
             loaders: [
               { test: /\.js$/, loader: 'babel-loader' }
             ]
           }
         },
-        postcss: [ csswring(), autoprefixer() ],
+        postcss: [
+          autoprefixer(),
+          csswring()
+        ],
         vulcanize: {
           inlineCss: true,
           inlineScripts: true,
@@ -73,8 +79,12 @@ gulp.task('process', () => {
 gulp.task('build', ['process'], () => {
   return gulp.src([`.tmp/${ELEMENT_NAME}/${ELEMENT_NAME}.html`,`.tmp/${ELEMENT_NAME}.html`])
           .pipe(errorNotifier())
-          .pipe(vulcanize(options.vulcanize))
+          .pipe(gulpif('*.html', vulcanize(options.vulcanize)))
           .pipe(gulp.dest('.'));
+});
+
+gulp.task('run', callback => {
+  gulprun('build', 'clean', callback);
 });
 
 gulp.task('clean', () => {
@@ -89,5 +99,5 @@ gulp.task('demo', (callback) => {
 
 gulp.task('test', ['build', 'test:local']);
 
-gulp.task('watch', () => gulp.watch(['src/**/*'], ['build']));
-gulp.task('default', ['build', 'demo', 'watch']);
+gulp.task('watch', () => gulp.watch(['src/**/*'], ['run']));
+gulp.task('default', ['run', 'demo', 'watch']);

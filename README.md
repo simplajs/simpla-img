@@ -1,12 +1,12 @@
 # simpla img
 
-Simpla component that provides an editable img
+Simpla component that provides an editable image
 
 --
 
 ### License
 
-MIT © Simpla &lt;admin@simpla.io&gt;
+MIT © [Simpla](http://simpla.io)
 
 [bower-badge]: https://img.shields.io/bower/v/simpla-img.svg
 [bowerlicense-badge]: https://img.shields.io/bower/l/simpla-img.svg

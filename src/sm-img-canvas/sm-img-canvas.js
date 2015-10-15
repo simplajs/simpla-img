@@ -6,10 +6,10 @@ const DEFAULT_SCALE = 1,
       PAN_FINISHED = 'pan-finished';
 
 /**
- * Helper Image used within simpla-image
+ * 	Manipulable img canvas
  * 	emits 'pan-finished'
  */
-class HelperImage {
+class smImgCanvas {
   beforeRegister() {
     this.is = 'sm-img-canvas';
 
@@ -25,7 +25,7 @@ class HelperImage {
 
   /**
    * Updates UI with current scale / translateX / translateY
-   * 	will not happen instantly, happens on next animationFrame
+   * will not happen instantly, happens on next animationFrame
    * @return {Integer} result of requestAnimationFrame
    */
   _paint() {
@@ -41,14 +41,14 @@ class HelperImage {
   }
 
   /**
-   * @type {number}
+   * @type {Number}
    */
   get scale() {
     return this._scale || DEFAULT_SCALE;
   }
 
   /**
-   * @type {number}
+   * @type {Number}
    */
   set scale(value) {
     let min = this.minScale;
@@ -66,14 +66,14 @@ class HelperImage {
   }
 
   /**
-   * @type {number}
+   * @type {Number}
    */
   get translateX() {
     return this._translateX || DEFAULT_TRANSLATE_X;
   }
 
   /**
-   * @type {number}
+   * @type {Number}
    */
   set translateX(value) {
     this._translateX = fitInside(value, this._bounds.x);
@@ -81,14 +81,14 @@ class HelperImage {
   }
 
   /**
-   * @type {number}
+   * @type {Number}
    */
   get translateY() {
     return this._translateY || DEFAULT_TRANSLATE_Y;
   }
 
   /**
-   * @type {number}
+   * @type {Number}
    */
   set translateY(value) {
     this._translateY = fitInside(value, this._bounds.y);
@@ -96,7 +96,7 @@ class HelperImage {
   }
 
   /**
-   * @type {number}
+   * @type {Number}
    */
   get minScale() {
     let scaleHeight = this.height / this.$.source.height,
@@ -133,7 +133,7 @@ class HelperImage {
 
   /**
    * Takes tracking event and updates coordinates.
-   * @param  {CustomEvent} event Tracking event as specified by polymer
+   * @param {CustomEvent} event Tracking event as specified by polymer
    */
   _dragImage(event) {
     let { dx, dy, ddx, ddy, state } = event.detail;
@@ -154,7 +154,7 @@ class HelperImage {
 
   /**
    * Stops any event given to it by calling event.preventDefault()
-   * @param  {Event} event Event to stop
+   * @param {Event} event Event to stop
    */
   _stopEvent(event) {
     event.preventDefault();
@@ -165,4 +165,4 @@ class HelperImage {
   }
 }
 
-Polymer(HelperImage);
+Polymer(smImgCanvas);

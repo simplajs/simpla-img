@@ -1,12 +1,12 @@
 {
   "name": "simpla-img",
-  "version": "0.1.0",
-  "description": "provides an editable img",
+  "version": "0.0.0",
+  "description": "Simpla component that provides an editable image",
   "main": "simpla-img.html",
   "scripts": {
     "test": "gulp test:local"
   },
-  "author": "Simpla &lt;admin@simpla.io&gt;",
+  "author": "Simpla <admin@simpla.io>",
   "license": "MIT",
   "keywords": [
     "simpla",
@@ -42,6 +42,7 @@
     "gulp-vulcanize": "^6.0.1",
     "polyclean": "^1.2.0",
     "polylint": "^2.3.1",
+    "run-sequence": "^1.1.4",
     "vinyl-named": "^1.1.0",
     "web-component-tester": "^3.3.22",
     "webpack": "^1.12.2",

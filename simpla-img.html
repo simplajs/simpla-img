@@ -1,9 +1,13 @@
-<html><head><meta charset="UTF-8"><link rel="import" href="../simpla/simpla.html"><link rel="import" href="../polymer/polymer.html"></head><body><div hidden="" by-vulcanize=""><dom-module id="sm-img-canvas" assetpath="../sm-img-canvas/">
+<html><head><meta charset="UTF-8"><link rel="import" href="../sm-helper-button/sm-helper-button.html"><link rel="import" href="../sm-css/sm-css.html"><link rel="import" href="../polymer/polymer.html"></head><body><div hidden="" by-vulcanize=""><dom-module id="sm-img-canvas" assetpath="../sm-img-canvas/">
   <template>
+
+    <style include="sm-css"></style>
     <style>
-:host{overflow:hidden;display:inline-block}img{vertical-align:bottom;-webkit-transform-origin:0 0;-ms-transform-origin:0 0;transform-origin:0 0}
+:host{overflow:hidden;display:inline-block}.img{vertical-align:bottom;-webkit-transform-origin:0 0;-ms-transform-origin:0 0;transform-origin:0 0}
 </style>
-    <img id="source" src$="[[src]]" width$="[[width]]" height$="[[height]]" on-track="_dragImage" on-down="_stopEvent" on-load="_imageLoaded">
+
+    <img id="source" class="img" src$="[[src]]" width$="[[width]]" height$="[[height]]" on-track="_dragImage" on-down="_stopEvent" on-load="_imageLoaded">
+
   </template>
   <script>/******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -73,16 +77,16 @@
 	    PAN_FINISHED = 'pan-finished';
 
 	/**
-	 * Helper Image used within simpla-image
+	 * 	Manipulable img canvas
 	 * 	emits 'pan-finished'
 	 */
 
-	var HelperImage = (function () {
-	  function HelperImage() {
-	    _classCallCheck(this, HelperImage);
+	var smImgCanvas = (function () {
+	  function smImgCanvas() {
+	    _classCallCheck(this, smImgCanvas);
 	  }
 
-	  _createClass(HelperImage, [{
+	  _createClass(smImgCanvas, [{
 	    key: 'beforeRegister',
 	    value: function beforeRegister() {
 	      this.is = 'sm-img-canvas';
@@ -99,7 +103,7 @@
 
 	    /**
 	     * Updates UI with current scale / translateX / translateY
-	     * 	will not happen instantly, happens on next animationFrame
+	     * will not happen instantly, happens on next animationFrame
 	     * @return {Integer} result of requestAnimationFrame
 	     */
 	  }, {
@@ -122,7 +126,7 @@
 	    }
 
 	    /**
-	     * @type {number}
+	     * @type {Number}
 	     */
 	  }, {
 	    key: '_resetDimensions',
@@ -136,7 +140,7 @@
 
 	    /**
 	     * Takes tracking event and updates coordinates.
-	     * @param  {CustomEvent} event Tracking event as specified by polymer
+	     * @param {CustomEvent} event Tracking event as specified by polymer
 	     */
 	  }, {
 	    key: '_dragImage',
@@ -164,7 +168,7 @@
 
 	    /**
 	     * Stops any event given to it by calling event.preventDefault()
-	     * @param  {Event} event Event to stop
+	     * @param {Event} event Event to stop
 	     */
 	  }, {
 	    key: '_stopEvent',
@@ -183,7 +187,7 @@
 	    },
 
 	    /**
-	     * @type {number}
+	     * @type {Number}
 	     */
 	    set: function set(value) {
 	      var min = this.minScale;
@@ -201,7 +205,7 @@
 	    }
 
 	    /**
-	     * @type {number}
+	     * @type {Number}
 	     */
 	  }, {
 	    key: 'translateX',
@@ -210,7 +214,7 @@
 	    },
 
 	    /**
-	     * @type {number}
+	     * @type {Number}
 	     */
 	    set: function set(value) {
 	      this._translateX = (0, _helpersUtilsJs.fitInside)(value, this._bounds.x);
@@ -218,7 +222,7 @@
 	    }
 
 	    /**
-	     * @type {number}
+	     * @type {Number}
 	     */
 	  }, {
 	    key: 'translateY',
@@ -227,7 +231,7 @@
 	    },
 
 	    /**
-	     * @type {number}
+	     * @type {Number}
 	     */
 	    set: function set(value) {
 	      this._translateY = (0, _helpersUtilsJs.fitInside)(value, this._bounds.y);
@@ -235,7 +239,7 @@
 	    }
 
 	    /**
-	     * @type {number}
+	     * @type {Number}
 	     */
 	  }, {
 	    key: 'minScale',
@@ -266,10 +270,10 @@
 	    }
 	  }]);
 
-	  return HelperImage;
+	  return smImgCanvas;
 	})();
 
-	Polymer(HelperImage);
+	Polymer(smImgCanvas);
 
 /***/ },
 /* 3 */
@@ -296,13 +300,11 @@
 
 /***/ }
 /******/ ]);</script>
-
 </dom-module>
 </div><dom-module id="simpla-img">
   <template>
-    <style>
-::host{color:blue}
-</style>
+    <style include="sm-css"></style>
+    <link rel="stylesheet" href="./simpla-img.css">
 
     <sm-img-canvas id="image" src="[[src]]" width="[[width]]" height="[[height]]" scale="[[scale]]" translatex="[[position.x]]" translatey="[[position.y]]" on-pan-finished="updatePosition">
     </sm-img-canvas>
