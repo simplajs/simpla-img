@@ -2,7 +2,6 @@ import gulp from 'gulp';
 import del from 'del';
 import webpack from 'webpack-stream';
 import named from 'vinyl-named';
-import csswring from 'csswring';
 import autoprefixer from 'autoprefixer';
 import inputStyle from 'postcss-input-style';
 import wct from 'web-component-tester';
@@ -12,13 +11,16 @@ import vulcanize from 'gulp-vulcanize';
 import gulpif from 'gulp-if';
 import eslint from 'gulp-eslint';
 import postcss from 'gulp-postcss';
+import minify from 'gulp-minify-inline';
 import plumber from 'gulp-plumber';
+import yargs from 'yargs';
 import browserSync from 'browser-sync';
 import { componentImports, name as ELEMENT_NAME } from './bower.json';
 import path from 'path';
 
 const imports = componentImports.map(dep => `../${dep}`),
-      bs = browserSync.create();
+      bs = browserSync.create(),
+      argv = yargs.alias('d', 'debug').boolean(['debug']).argv;
 
 // Get WCT going
 wct.gulp.init(gulp);
@@ -36,8 +38,7 @@ const options = {
         },
         postcss: [
           inputStyle(),
-          autoprefixer(),
-          csswring()
+          autoprefixer()
         ],
         vulcanize: {
           inlineCss: true,
@@ -81,12 +82,17 @@ gulp.task('process', () => {
 gulp.task('build', ['process'], () => {
   return gulp.src([`.tmp/${ELEMENT_NAME}/${ELEMENT_NAME}.html`,`.tmp/${ELEMENT_NAME}.html`])
           .pipe(errorNotifier())
-          .pipe(gulpif('*.html', vulcanize(options.vulcanize)))
-          .pipe(gulp.dest('.'));
+          .pipe(vulcanize(options.vulcanize))
+          .pipe(gulpif(!argv.debug, minify()))
+        .pipe(gulp.dest('.'));
 });
 
 gulp.task('run', callback => {
-  gulprun('build', 'clean', callback);
+  if (argv.debug) {
+    gulprun('build', callback)
+  } else {
+    gulprun('build', 'clean', callback)
+  }
 });
 
 gulp.task('clean', () => {
@@ -99,7 +105,7 @@ gulp.task('demo', (callback) => {
   return bs.init(options.browserSync);
 });
 
-gulp.task('test', ['build', 'test:local']);
+gulp.task('test', ['run', 'test:local']);
 
 gulp.task('watch', () => gulp.watch(['src/**/*'], ['run']));
 gulp.task('default', ['run', 'demo', 'watch']);
