@@ -21,6 +21,17 @@
   left: 0;
 }
 
+:host(:hover)::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: var(--light-white);
+  cursor: pointer;
+}
+
 /**
  * Main toolbox
  */
@@ -134,15 +145,7 @@
 /**
  * States
  */
-:host([state="inactive"]) .editor {
-  display: none;
-}
-
-:host([state="active"]) .editor {
-  display: block;
-}
-
-:host([state="active"]) .img {
+:host([active])::before {
   display: none;
 }
 
