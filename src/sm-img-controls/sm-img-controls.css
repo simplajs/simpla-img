@@ -1,0 +1,208 @@
+/**
+ * Config
+ */
+:root {
+
+  --range-height: 4px;
+
+  --thumb-color: var(--blue);
+
+  --thumb-size: 18px;
+
+  --thumb-border: 3px solid white;
+
+}
+
+:host {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+/**
+ * Main toolbox
+ */
+.toolbox {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  background: var(--med-white);
+  top: -15px;
+  padding-top: 15px;
+  /*transform: translateY(-100%);*/
+}
+
+.toolbox__tool {
+  color: var(--med-black);
+  flex-shrink: 0;
+}
+
+.toolbox__tool:hover {
+  color: var(--blue);
+}
+
+.toolbox__file {
+  display: none;
+}
+
+.toolbox__title{
+  width: 0;
+  color: var(--text-color);
+  transition: width 140ms var(--ease-out-cubic);
+}
+
+.toolbox__title--expanded {
+  width: 220px;
+}
+
+/**
+ * Zoom slider
+ */
+.zoom {
+  position: absolute;
+  left: 5%;
+  right: 5%;
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+  background: var(--med-white);
+  cursor: default;
+  bottom: -15px;
+  padding-bottom: 15px;
+  /*transform: translateY(100%);*/
+}
+
+.zoom__slider {
+  display: flex;
+  align-items: center;
+  height: var(--tool-size);
+  width: 90%;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+/* Range input */
+.zoom__slider__input {
+  width: 100%;
+}
+
+.zoom__slider__input::track {
+  display: flex;
+  align-items: center;
+  background: var(--med-black);
+  border-radius: 999px;
+  width: 100%;
+  height: var(--range-height);
+  box-shadow: none;
+  cursor: pointer;
+  border: 0;
+  z-index: 1;
+}
+
+.zoom__slider__input::track:focus {
+  outline: none;
+}
+
+.zoom__slider__input::thumb {
+  border-radius: 999px;
+  background: var(--thumb-color);
+  box-shadow: none;
+  border: var(--thumb-border);
+  width: var(--thumb-size);
+  height: var(--thumb-size);
+  position: relative;
+  z-index: 1;
+}
+
+/* Connector */
+.zoom__slider__input::thumb::before{
+  content: '';
+  display: block;
+  height: var(--range-height);
+  width: 10000px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 15px;
+  background: var(--thumb-color);
+  pointer-events: none;
+  z-index: -1;
+}
+
+
+/**
+ * States
+ */
+:host([state="inactive"]) .editor {
+  display: none;
+}
+
+:host([state="active"]) .editor {
+  display: block;
+}
+
+:host([state="active"]) .img {
+  display: none;
+}
+
+/**
+ * Editing enabled
+ */
+ :host([editable]) {
+   cursor: pointer;
+ }
+
+ :host([editable]:hover)::before {
+   content: '';
+   position: absolute 0;
+   background: var(--light-white);
+ }
+
+ /**
+  * Placeholder enabled
+  */
+ :host([placehold]) .img {
+   display: none;
+ }
+
+/**
+ * Positioning
+ */
+:host([position="left"]) .toolbox {
+  right: 0;
+  flex-direction: row;
+  border-radius: 0 0 0 var(--border-radius);
+}
+
+:host([position="right"]) .toolbox {
+  left: 0;
+  flex-direction: row-reverse;
+  border-radius: 0 0 var(--border-radius) 0;
+}
+
+:host([position="left"]) .toolbox__title--expanded {
+  padding-left: 14px;
+}
+
+:host([position="right"]) .toolbox__title--expanded {
+  padding-right: 14px;
+}
+
+/**
+ * UI mode
+ * Default to light mode (above)
+ */
+:host(.img--dark) .toolbox,
+:host(.img--dark) .zoom {
+  background: var(--med-black);
+  color: var(--bright-white);
+}
+
+:host(.img--dark) .toolbox__tool:hover,
+:host(.img--dark) .toolbax__title {
+  color: white;
+}
+
+:host(.img--dark) .zoom__slider__input::track {
+  background: var(--med-black);
+}
