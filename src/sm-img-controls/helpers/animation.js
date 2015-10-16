@@ -1,3 +1,5 @@
+const easings = simpla.constants.easings;
+
 export default {
   listeners: {
     'activated': '_animateIn',
@@ -14,30 +16,31 @@ export default {
   get _animateOptions() {
     return {
       'in': {
-        easing: 'ease-out',
+        easing: easings.easeOutBack,
         fill: 'both',
         duration: 150
       },
       'out': {
-        easing: 'ease-in',
+        easing: easings.easeInCubic,
         fill: 'both',
-        duration: 150
+        duration: 120
       }
     };
   },
 
   _animateIn() {
     let { top, bottom } = this._animateControls,
-        opts = this._animateOptions,
-        topAnimate,
-        bottomAnimate;
+        opts = this._animateOptions;
 
-    topAnimate = top.animate([
+    top.style.display = '';
+    bottom.style.display = '';
+
+    top.animate([
       { transform: 'translateY(-100%)' },
       { transform: 'translateY(0)' }
     ], opts.in);
 
-    bottomAnimate = bottom.animate([
+    bottom.animate([
       { transform: 'translateY(100%)' },
       { transform: 'translateY(0)' }
     ], opts.in);
@@ -46,16 +49,25 @@ export default {
 
   _animateOut() {
     let { top, bottom } = this._animateControls,
-        opts = this._animateOptions;
+        opts = this._animateOptions,
+        topAnimate,
+        bottomAnimate;
 
-    top.animate([
+    topAnimate = top.animate([
       { transform: 'translateY(0)' },
       { transform: 'translateY(-100%)' }
     ], opts.out);
 
-    bottom.animate([
+    bottomAnimate = bottom.animate([
       { transform: 'translateY(0)' },
       { transform: 'translateY(100%)' }
     ], opts.out);
+
+    topAnimate.onfinish = () => {
+      top.style.display = 'none';
+    }
+    bottomAnimate.onfinish = () => {
+      bottom.style.display = 'none';
+    }
   }
 };
