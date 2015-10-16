@@ -1,5 +1,7 @@
 import animation from './helpers/animation';
 
+const TITLE_OPEN_CLASS = 'toolbox__title--expanded';
+
 class SmImgControls {
   beforeRegister() {
     this.is = 'sm-img-controls';
@@ -28,6 +30,13 @@ class SmImgControls {
         notify: false
       })
     ];
+  }
+
+  toggleTitle() {
+    let title = this.$.title,
+        has = !!title.className.match(`\\b${TITLE_OPEN_CLASS}\\b`);
+
+    this.toggleClass(TITLE_OPEN_CLASS, !has, title);
   }
 
   _activeObserver(active) {
