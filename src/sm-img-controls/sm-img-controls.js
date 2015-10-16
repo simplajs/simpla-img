@@ -10,11 +10,6 @@ class SmImgControls {
         reflectToAttribute: true,
         value: 'right'
       },
-      active: {
-        type: Boolean,
-        observer: '_activeObserver',
-        value: false
-      },
       title: String,
       file: {
         type: Object,
@@ -27,7 +22,11 @@ class SmImgControls {
 
   get behaviors() {
     return [
-      animation
+      animation,
+      simpla.behaviors.active({
+        observer: '_activeObserver',
+        notify: false
+      })
     ];
   }
 
