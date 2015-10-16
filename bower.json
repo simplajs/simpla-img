@@ -33,7 +33,6 @@
   "componentImports": [
     "polymer/polymer.html",
     "simpla/simpla.html",
-    "sm-css/sm-css.html",
     "sm-helper-button/sm-helper-button.html"
   ]
 }
