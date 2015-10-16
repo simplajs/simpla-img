@@ -23,7 +23,6 @@
     "webcomponentsjs": "^0.7.14",
     "polymer": "^1.1.4",
     "simpla": "git@github.com:simplaio/simpla.git",
-    "sm-css": "git@github.com:simplaio/sm-css.git",
     "sm-helper-button": "git@github.com:simplaio/sm-helper-button.git"
   },
   "devDependencies": {
