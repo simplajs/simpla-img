@@ -17,6 +17,12 @@ class SimplaImg {
     }
   }
 
+  get behaviors() {
+    return [
+      simpla.behaviors.active()
+    ];
+  }
+
   ready() {
     // TODO: Move this to controls
     // Setup the minimum on the zoom

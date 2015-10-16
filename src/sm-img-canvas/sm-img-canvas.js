@@ -23,6 +23,15 @@ class smImgCanvas {
     }
   }
 
+  get behaviors() {
+    return [
+      simpla.behaviors.active({
+        reflectToAttribute: true,
+        notify: false
+      })
+    ];
+  }
+
   /**
    * Updates UI with current scale / translateX / translateY
    * will not happen instantly, happens on next animationFrame

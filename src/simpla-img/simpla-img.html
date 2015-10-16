@@ -14,6 +14,7 @@
       scale="[[scale]]"
       translateX="[[position.x]]"
       translateY="[[position.y]]"
+      active="[[active]]"
       on-pan-finished="updatePosition">
     </sm-img-canvas>
 
@@ -21,6 +22,7 @@
       id="controls"
       zoom="{{scale}}"
       title="{{title}}"
+      active="[[active]]"
       on-file-changed="_fileChanged">
     </sm-img-controls>
 
