@@ -14,13 +14,21 @@ class SimplaImg {
         type: Object,
         value: { x: 0, y: 0}
       }
-    }
+    };
   }
 
   get behaviors() {
     return [
-      simpla.behaviors.active()
+      simpla.behaviors.active({
+        observer: '_activeChanged'
+      })
     ];
+  }
+
+  get listeners() {
+    return {
+      'tap': '_handleTap'
+    };
   }
 
   ready() {
@@ -51,6 +59,26 @@ class SimplaImg {
     reader.onloadend = () => this.src = reader.result;
 
     reader.readAsDataURL(file);
+  }
+
+  _activeChanged(value) {
+    const makeInactive = (event) => {
+      if (!event.__polymerGesturesHandled) {
+        this.active = false;
+      }
+    };
+
+    if (!this.active) {
+      window.addEventListener('click', makeInactive, false);
+    } else {
+      window.removeEventListener('click', makeInactive, false);
+    }
+  }
+
+  _handleTap(event) {
+    if (!this.active) {
+      this.active = true;
+    }
   }
 }
 

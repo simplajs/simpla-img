@@ -87,6 +87,27 @@
           controls.title = 'foo bar';
           expect(component.title).to.equal(title);
         });
+
+        it('should activate on click', function() {
+          component.active = false;
+          component.click();
+
+          expect(component.active).to.be.true;
+        });
+
+        it('should deactivate on click outside', function() {
+          component.active = true;
+          window.dispatchEvent(new Event('click'));
+
+          expect(component.active).to.be.false;
+        });
+
+        it('should not deactivate on click inside', function() {
+          component.active = true;
+          component.click();
+
+          expect(component.active).to.be.true;
+        });
       });
     </script>
   </body>
