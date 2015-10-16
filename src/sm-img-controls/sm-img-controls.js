@@ -18,7 +18,10 @@ class SmImgControls {
         readonly: true,
         notify: true
       },
-      zoom: Number
+      zoom: {
+        type: Number,
+        notify: true
+      }
     };
   }
 

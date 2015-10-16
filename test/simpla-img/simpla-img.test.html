@@ -74,6 +74,12 @@
 
           expect(component.src).to.equal(file.src);
         });
+
+        it('should set scale when controls zoom changes', function() {
+          var zoomTo = 0.75;
+          controls.zoom = zoomTo;
+          expect(component.scale).to.equal(zoomTo);
+        });
       });
     </script>
   </body>
