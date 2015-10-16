@@ -844,7 +844,7 @@ input[type="range"]::-moz-focus-outer {
 
       <!-- Image upload (file input hidden, since it can't be styled) -->
       <sm-helper-button class="toolbox__tool" icon="">
-        <input id="file" class="toolbox__file" type="file" value="{{files::change}}">
+        <input id="file" class="toolbox__file" type="file" on-change="_filesChanged">
       </sm-helper-button>
 
     </div>
@@ -947,7 +947,11 @@ input[type="range"]::-moz-focus-outer {
 	          value: false
 	        },
 	        title: String,
-	        files: Object,
+	        file: {
+	          type: Object,
+	          readonly: true,
+	          notify: true
+	        },
 	        zoom: Number
 	      };
 	    }
@@ -986,6 +990,15 @@ input[type="range"]::-moz-focus-outer {
 	      };
 
 	      this.position = center.x < windowCenter.x ? 'left' : 'right';
+	    }
+	  }, {
+	    key: '_filesChanged',
+	    value: function _filesChanged(event) {
+	      var files = event.target.files;
+
+	      if (files && files[0]) {
+	        this.file = files[0];
+	      }
 	    }
 	  }, {
 	    key: 'behaviors',
@@ -1090,7 +1103,8 @@ input[type="range"]::-moz-focus-outer {
     <sm-img-canvas id="image" src="[[src]]" width="[[width]]" height="[[height]]" scale="[[scale]]" translatex="[[position.x]]" translatey="[[position.y]]" on-pan-finished="updatePosition">
     </sm-img-canvas>
 
-    <sm-img-controls id="controls"></sm-img-controls>
+    <sm-img-controls id="controls" on-file-changed="_fileChanged">
+    </sm-img-controls>
 
   </template>
   <script>/******/ (function(modules) { // webpackBootstrap
@@ -1179,8 +1193,9 @@ input[type="range"]::-moz-focus-outer {
 	  }, {
 	    key: 'ready',
 	    value: function ready() {
+	      // TODO: Move this to controls
 	      // Setup the minimum on the zoom
-	      this.$.zoom.min = this._canvas.minScale;
+	      // this.$.zoom.min = this._canvas.minScale;
 	    }
 	  }, {
 	    key: 'updatePosition',
@@ -1188,6 +1203,21 @@ input[type="range"]::-moz-focus-outer {
 	      var image = this._canvas;
 
 	      this.position = { x: image.translateX, y: image.translateY };
+	    }
+	  }, {
+	    key: '_fileChanged',
+	    value: function _fileChanged(event) {
+	      var _this = this;
+
+	      var reader = new FileReader(),
+	          file = event.detail.value,
+	          src = undefined;
+
+	      reader.onloadend = function () {
+	        return _this.src = reader.result;
+	      };
+
+	      reader.readAsDataURL(file);
 	    }
 	  }, {
 	    key: '_canvas',

@@ -90,6 +90,20 @@
             expect(component.position).to.equal('right');
           });
         });
+
+        describe('file loading', function() {
+          it('should be able to get file from files-changed', function() {
+            var event = {
+              target: {
+                files: componentFixtures.files
+              }
+            };
+
+            component._filesChanged(event);
+
+            expect(component.file).to.deep.equal(componentFixtures.files[0]);
+          });
+        });
       });
     </script>
   </body>

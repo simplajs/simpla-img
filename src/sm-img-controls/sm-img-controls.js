@@ -16,7 +16,11 @@ class SmImgControls {
         value: false
       },
       title: String,
-      files: Object,
+      file: {
+        type: Object,
+        readonly: true,
+        notify: true
+      },
       zoom: Number
     };
   }
@@ -58,6 +62,14 @@ class SmImgControls {
     };
 
     this.position = center.x < windowCenter.x ? 'left' : 'right';
+  }
+
+  _filesChanged(event) {
+    let files = event.target.files;
+
+    if (files && files[0]) {
+      this.file = files[0];
+    }
   }
 
 }

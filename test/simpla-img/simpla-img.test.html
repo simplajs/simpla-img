@@ -23,13 +23,15 @@
 
         var component,
             componentFixtures,
-            helper;
+            canvas,
+            controls;
 
         componentFixtures = window.fixtures['simpla-img'];
 
         beforeEach(function() {
           component = fixture('default');
-          helper = component.$.image;
+          canvas = component.$.image;
+          controls = component.$.controls;
 
           window.FileReader = function() {};
           window.FileReader.prototype = {
@@ -46,9 +48,9 @@
           expect(component).to.be.ok;
         });
 
-        it('updatePosition changes its position based on helper', function() {
-          helper.translateX = 45;
-          helper.translateY = 50;
+        it('updatePosition changes its position based on canvas', function() {
+          canvas.translateX = 45;
+          canvas.translateY = 50;
 
           component.updatePosition();
 
@@ -59,30 +61,18 @@
         it('calls updatePosition on image pan-finished', function() {
           sinon.spy(component, 'updatePosition');
 
-          helper.fire('pan-finished');
+          canvas.fire('pan-finished');
           expect(component.updatePosition.called).to.be.true;
 
           component.updatePosition.restore();
         });
 
-        describe('file loading', function() {
-          it('should be able to trigger loadFile from fileChosen', function() {
-            var event = componentFixtures.fileEvent;
-            sinon.spy(component, '_loadFile');
+        it('should set the src when file changes', function() {
+          var file = componentFixtures.file;
 
-            component._fileChosen(event);
-            expect(component._loadFile.calledWith(event.target.files[0])).to.be.true;
+          controls.file = file;
 
-            component._loadFile.restore();
-          });
-
-          it('should set the src once read in', function() {
-            var event = componentFixtures.fileEvent,
-                file = event.target.files[0];
-            component._loadFile(file);
-
-            expect(component.src).to.equal(file.src);
-          });
+          expect(component.src).to.equal(file.src);
         });
       });
     </script>

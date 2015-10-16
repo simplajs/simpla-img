@@ -18,8 +18,9 @@ class SimplaImg {
   }
 
   ready() {
+    // TODO: Move this to controls
     // Setup the minimum on the zoom
-    this.$.zoom.min = this._canvas.minScale;
+    // this.$.zoom.min = this._canvas.minScale;
   }
 
   updatePosition() {
@@ -36,6 +37,15 @@ class SimplaImg {
     return this.$.controls;
   }
 
+  _fileChanged(event) {
+    let reader = new FileReader(),
+        file = event.detail.value,
+        src;
+
+    reader.onloadend = () => this.src = reader.result;
+
+    reader.readAsDataURL(file);
+  }
 }
 
 Polymer(SimplaImg);
