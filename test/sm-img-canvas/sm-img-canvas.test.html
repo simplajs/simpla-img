@@ -15,7 +15,7 @@
   <body>
     <test-fixture id="trivialElement">
       <template>
-        <sm-img-canvas></sm-img-canvas>
+        <sm-img-canvas active></sm-img-canvas>
       </template>
     </test-fixture>
     <script>
@@ -219,6 +219,23 @@
             component.width = null;
 
             expect(component.minScale).to.equal(1);
+          });
+        });
+
+        describe('active', function() {
+          it('is readonly properties, when not active', function() {
+            var firstAttempt = 1.5,
+                secondAttempt = 2;
+
+            component.active = true;
+
+            component.scale = firstAttempt;
+            expect(component.scale).to.equal(firstAttempt);
+
+            component.active = false;
+
+            component.scale = secondAttempt;
+            expect(component.scale).to.equal(firstAttempt);
           });
         });
       });
