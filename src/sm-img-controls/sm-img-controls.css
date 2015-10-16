@@ -11,26 +11,10 @@
 
   --thumb-border: 3px solid white;
 
-  --ease-out-back: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)';
 }
 
 :host {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-}
-
-:host(:hover)::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: var(--light-white);
-  cursor: pointer;
+  overflow: visible;
 }
 
 /**
@@ -41,14 +25,27 @@
   display: none;
   align-items: center;
   background: var(--med-white);
-  top: -15px;
-  padding-top: 15px;
+  top: -10px;
+  padding-top: 10px;
   transform: translateY(-100%);
 }
 
 .toolbox[visible] {
   display: flex;
 }
+
+:host([position="right"]) .toolbox {
+  right: 0;
+  flex-direction: row;
+  border-radius: 0 0 0 var(--border-radius);
+}
+
+:host([position="left"]) .toolbox {
+  left: 0;
+  flex-direction: row-reverse;
+  border-radius: 0 0 var(--border-radius) 0;
+}
+
 
 .toolbox__tool {
   color: var(--med-black);
@@ -67,11 +64,32 @@
 .toolbox__title{
   width: 0;
   color: var(--text-color);
-  transition: width 140ms var(--ease-out-cubic);
+  transition: width 140ms ease-out-cubic;
+}
+
+.toolbox__title::placeholder {
+  opacity: 0;
+  color: var(--med-black);
+  transition: opacity 10ms;
+}
+
+.toolbox__title--expanded::placeholder {
+  opacity: 1;
+  color: var(--med-black);
+  transition: opacity 80ms;
 }
 
 .toolbox__title--expanded {
   width: 220px;
+  transition: width 140ms ease-out-cubic;
+}
+
+:host([position="right"]) .toolbox__title--expanded {
+  padding-left: 14px;
+}
+
+:host([position="left"]) .toolbox__title--expanded {
+  padding-right: 14px;
 }
 
 /**
@@ -82,11 +100,12 @@
   display: none;
   left: 5%;
   right: 5%;
-  border-radius: var(--border-radius) var(--border-radius) 0 0;
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
   background: var(--med-white);
   cursor: default;
-  bottom: -15px;
-  padding-bottom: 15px;
+  bottom: -10px;
+  padding-bottom: 10px;
   transform: translateY(100%);
 }
 
@@ -151,60 +170,8 @@
   z-index: -1;
 }
 
-
 /**
- * States
- */
-:host([active])::before {
-  display: none;
-}
-
-/**
- * Editing enabled
- */
- :host([editable]) {
-   cursor: pointer;
- }
-
- :host([editable]:hover)::before {
-   content: '';
-   position: absolute 0;
-   background: var(--light-white);
- }
-
- /**
-  * Placeholder enabled
-  */
- :host([placehold]) .img {
-   display: none;
- }
-
-/**
- * Positioning
- */
-:host([position="left"]) .toolbox {
-  right: 0;
-  flex-direction: row;
-  border-radius: 0 0 0 var(--border-radius);
-}
-
-:host([position="right"]) .toolbox {
-  left: 0;
-  flex-direction: row-reverse;
-  border-radius: 0 0 var(--border-radius) 0;
-}
-
-:host([position="left"]) .toolbox__title--expanded {
-  padding-left: 14px;
-}
-
-:host([position="right"]) .toolbox__title--expanded {
-  padding-right: 14px;
-}
-
-/**
- * UI mode
- * Default to light mode (above)
+ * Dark mode
  */
 :host(.img--dark) .toolbox,
 :host(.img--dark) .zoom {

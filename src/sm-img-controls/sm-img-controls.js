@@ -80,7 +80,7 @@ class SmImgControls {
       y: bounds.top + bounds.height / 2
     };
 
-    this.position = center.x < windowCenter.x ? 'left' : 'right';
+    this.position = center.x < windowCenter.x ? 'right' : 'left';
   }
 
   _filesChanged(event) {

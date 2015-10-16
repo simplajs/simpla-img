@@ -4,6 +4,7 @@ import webpack from 'webpack-stream';
 import named from 'vinyl-named';
 import autoprefixer from 'autoprefixer';
 import inputStyle from 'postcss-input-style';
+import easings from 'postcss-easings';
 import wct from 'web-component-tester';
 import notify from 'gulp-notify';
 import gulprun from 'run-sequence';
@@ -37,6 +38,7 @@ const options = {
           }
         },
         postcss: [
+          easings(),
           inputStyle(),
           autoprefixer()
         ],
