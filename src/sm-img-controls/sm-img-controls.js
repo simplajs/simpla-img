@@ -12,7 +12,10 @@ class SmImgControls {
         reflectToAttribute: true,
         value: 'right'
       },
-      title: String,
+      title: {
+        type: String,
+        notify: true
+      },
       file: {
         type: Object,
         readonly: true,

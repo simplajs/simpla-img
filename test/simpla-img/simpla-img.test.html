@@ -80,6 +80,12 @@
           controls.zoom = zoomTo;
           expect(component.scale).to.equal(zoomTo);
         });
+
+        it('should match the title to controls title', function() {
+          var title = 'foo bar';
+          controls.title = 'foo bar';
+          expect(component.title).to.equal(title);
+        });
       });
     </script>
   </body>
