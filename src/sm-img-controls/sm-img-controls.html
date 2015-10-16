@@ -10,7 +10,7 @@
       <sm-helper-button class="toolbox__tool" on-click="toggleTitle" icon="&#x54;"></sm-helper-button>
 
       <!-- Image upload (file input hidden, since it can't be styled) -->
-      <sm-helper-button class="toolbox__tool" icon="&#xe619;">
+      <sm-helper-button class="toolbox__tool" icon="&#xe619;" on-tap="openFilePicker">
         <input id="file" class="toolbox__file" type="file" on-change="_filesChanged" />
       </sm-helper-button>
 

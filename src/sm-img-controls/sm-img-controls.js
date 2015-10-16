@@ -43,6 +43,10 @@ class SmImgControls {
     this.toggleClass(TITLE_OPEN_CLASS, !has, title);
   }
 
+  openFilePicker() {
+    this.$.file.click();
+  }
+
   _activeObserver(active) {
     if (active){
       this._setPosition();

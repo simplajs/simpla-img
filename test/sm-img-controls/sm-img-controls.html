@@ -91,7 +91,7 @@
           });
         });
 
-        describe('file loading', function() {
+        describe('files', function() {
           it('should be able to get file from files-changed', function() {
             var event = {
               target: {
@@ -102,6 +102,16 @@
             component._filesChanged(event);
 
             expect(component.file).to.deep.equal(componentFixtures.files[0]);
+          });
+
+          it('should open when calling openFilePicker', function() {
+            var filePicker = component.$.file;
+
+            sinon.stub(filePicker, 'click');
+            component.openFilePicker();
+
+            expect(filePicker.click.called).to.be.true;
+            filePicker.click.restore();
           });
         });
       });
