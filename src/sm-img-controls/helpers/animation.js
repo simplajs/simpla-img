@@ -32,8 +32,8 @@ export default {
     let { top, bottom } = this._animateControls,
         opts = this._animateOptions;
 
-    top.style.display = '';
-    bottom.style.display = '';
+    this.toggleAttribute('visible', true, top);
+    this.toggleAttribute('visible', true, bottom);
 
     top.animate([
       { transform: 'translateY(-100%)' },
@@ -64,10 +64,10 @@ export default {
     ], opts.out);
 
     topAnimate.onfinish = () => {
-      top.style.display = 'none';
+      this.toggleAttribute('visible', false, top);
     }
     bottomAnimate.onfinish = () => {
-      bottom.style.display = 'none';
+      this.toggleAttribute('visible', false, bottom);
     }
   }
 };

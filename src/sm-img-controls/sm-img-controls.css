@@ -38,12 +38,16 @@
  */
 .toolbox {
   position: absolute;
-  display: flex;
+  display: none;
   align-items: center;
   background: var(--med-white);
   top: -15px;
   padding-top: 15px;
   transform: translateY(-100%);
+}
+
+.toolbox[visible] {
+  display: flex;
 }
 
 .toolbox__tool {
@@ -75,6 +79,7 @@
  */
 .zoom {
   position: absolute;
+  display: none;
   left: 5%;
   right: 5%;
   border-radius: var(--border-radius) var(--border-radius) 0 0;
@@ -83,6 +88,10 @@
   bottom: -15px;
   padding-bottom: 15px;
   transform: translateY(100%);
+}
+
+.zoom[visible] {
+  display: block;
 }
 
 .zoom__slider {
