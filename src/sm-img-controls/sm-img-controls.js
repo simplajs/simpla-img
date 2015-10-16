@@ -30,7 +30,8 @@ class SmImgControls {
       animation,
       simpla.behaviors.active({
         observer: '_activeObserver',
-        notify: false
+        notify: false,
+        reflectToAttribute: true
       })
     ];
   }
