@@ -70,24 +70,24 @@
             component.getBoundingClientRect.restore();
           });
 
-          it('should be on the left, when on the left', function() {
+          it('should be on the right, when on the left', function() {
             var centre = componentFixtures.centreLeft;
 
             bounds.width = centre.width;
             bounds.left = centre.left;
 
             component._setPosition();
-            expect(component.position).to.equal('left');
+            expect(component.position).to.equal('right');
           });
 
-          it('should be on the right, when on the right', function() {
+          it('should be on the left, when on the right', function() {
             var centre = componentFixtures.centreRight;
 
             bounds.width = centre.width;
             bounds.left = centre.left;
 
             component._setPosition();
-            expect(component.position).to.equal('right');
+            expect(component.position).to.equal('left');
           });
         });
 
