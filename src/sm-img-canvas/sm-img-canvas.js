@@ -111,7 +111,7 @@ class smImgCanvas {
     if (!this.active) {
       return;
     }
-    
+
     this._translateY = fitInside(value, this._bounds.y);
     this._paint();
   }

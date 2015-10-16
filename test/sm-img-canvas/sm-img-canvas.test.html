@@ -95,12 +95,9 @@
         describe('setting values should be restricted', function() {
           it('has a minimum scale based on width of incoming image', function() {
 
-            component.width = fixtures.componentBounds.width;
-            component.height = fixtures.componentBounds.height;
-
-            // 4 times component, therefore scale min = 0.25
-            source.width = component.width * 4;
-            source.height = component.height * 4;
+            var minScale = Object.defineProperty(component, 'minScale', {
+                  get: () => 0.25
+                });
 
             // Try set above the minimum, should be fine
             component.scale = 0.5;
