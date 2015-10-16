@@ -12,7 +12,8 @@ class SmImgControls {
       },
       active: {
         type: Boolean,
-        observer: '_activeObserver'
+        observer: '_activeObserver',
+        value: false
       },
       title: String,
       files: Object,
