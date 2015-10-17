@@ -53,6 +53,10 @@
   flex-shrink: 0;
 }
 
+.toolbox__tool[active] {
+  color: var(--blue);
+}
+
 .toolbox__tool:hover {
   color: var(--blue);
 }

@@ -41,9 +41,11 @@ class SmImgControls {
 
   toggleTitle() {
     let title = this.$.title,
+        titleButton = this.$.titleButton,
         has = !!title.className.match(`\\b${TITLE_OPEN_CLASS}\\b`);
 
     this.toggleClass(TITLE_OPEN_CLASS, !has, title);
+    this.toggleAttribute('active', !has, titleButton);
   }
 
   openFilePicker() {
