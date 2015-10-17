@@ -23,6 +23,15 @@ class smImgCanvas {
     }
   }
 
+  get behaviors() {
+    return [
+      simpla.behaviors.active({
+        reflectToAttribute: true,
+        notify: false
+      })
+    ];
+  }
+
   /**
    * Updates UI with current scale / translateX / translateY
    * will not happen instantly, happens on next animationFrame
@@ -51,6 +60,10 @@ class smImgCanvas {
    * @type {Number}
    */
   set scale(value) {
+    if (!this.active) {
+      return;
+    }
+
     let min = this.minScale;
 
     if (value < min) {
@@ -76,6 +89,10 @@ class smImgCanvas {
    * @type {Number}
    */
   set translateX(value) {
+    if (!this.active) {
+      return;
+    }
+
     this._translateX = fitInside(value, this._bounds.x);
     this._paint();
   }
@@ -91,6 +108,10 @@ class smImgCanvas {
    * @type {Number}
    */
   set translateY(value) {
+    if (!this.active) {
+      return;
+    }
+
     this._translateY = fitInside(value, this._bounds.y);
     this._paint();
   }

@@ -1,0 +1,28 @@
+<dom-module id="sm-img-controls">
+  <template>
+    <style include="sm-css"></style>
+    <link rel="stylesheet" href="./sm-img-controls.css" />
+
+    <div class="toolbox" id="controls-top">
+
+      <!-- Image title -->
+      <input type="text" id="title" class="toolbox__title" placeholder="Enter image title" value="{{title::input}}">
+      <sm-helper-button id="titleButton" class="toolbox__tool" on-click="toggleTitle" icon="&#x54;"></sm-helper-button>
+
+      <!-- Image upload (file input hidden, since it can't be styled) -->
+      <sm-helper-button class="toolbox__tool" icon="&#xe619;" on-tap="openFilePicker">
+        <input id="file" class="toolbox__file" type="file" on-change="_filesChanged" />
+      </sm-helper-button>
+
+    </div>
+
+    <!-- Zoom level slider -->
+    <div class="zoom" id="controls-bottom">
+      <div class="zoom__slider">
+        <input type="range" class="zoom__slider__input" min="1" value="{{zoom::input}}" max="2" step="0.01" />
+      </div>
+    </div>
+
+  </template>
+  <script src="./sm-img-controls.js"></script>
+</dom-module>

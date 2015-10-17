@@ -3,19 +3,19 @@
   <head>
     <meta charset="utf-8">
     <title>Utility Image</title>
-    <script src="../../webcomponentsjs/webcomponents.min.js"></script>
-    <script src="../../web-component-tester/browser.js"></script>
-    <script src="../../test-fixture/test-fixture-mocha.js"></script>
-    <link rel="import" href="../../test-fixture/test-fixture.html">
+    <script src="../../../webcomponentsjs/webcomponents.min.js"></script>
+    <script src="../../../web-component-tester/browser.js"></script>
+    <script src="../../../test-fixture/test-fixture-mocha.js"></script>
+    <link rel="import" href="../../../test-fixture/test-fixture.html">
 
     <!-- Import the element to test -->
-    <link rel="import" href="../simpla-img.html">
+    <link rel="import" href="../../simpla-img.html">
     <script src="./sm-img-canvas.fixtures.js"></script>
   </head>
   <body>
     <test-fixture id="trivialElement">
       <template>
-        <sm-img-canvas></sm-img-canvas>
+        <sm-img-canvas active></sm-img-canvas>
       </template>
     </test-fixture>
     <script>
@@ -95,12 +95,9 @@
         describe('setting values should be restricted', function() {
           it('has a minimum scale based on width of incoming image', function() {
 
-            component.width = fixtures.componentBounds.width;
-            component.height = fixtures.componentBounds.height;
-
-            // 4 times component, therefore scale min = 0.25
-            source.width = component.width * 4;
-            source.height = component.height * 4;
+            var minScale = Object.defineProperty(component, 'minScale', {
+                  get: () => 0.25
+                });
 
             // Try set above the minimum, should be fine
             component.scale = 0.5;
@@ -219,6 +216,23 @@
             component.width = null;
 
             expect(component.minScale).to.equal(1);
+          });
+        });
+
+        describe('active', function() {
+          it('is readonly properties, when not active', function() {
+            var firstAttempt = 1.5,
+                secondAttempt = 2;
+
+            component.active = true;
+
+            component.scale = firstAttempt;
+            expect(component.scale).to.equal(firstAttempt);
+
+            component.active = false;
+
+            component.scale = secondAttempt;
+            expect(component.scale).to.equal(firstAttempt);
           });
         });
       });

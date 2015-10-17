@@ -14,41 +14,71 @@ class SimplaImg {
         type: Object,
         value: { x: 0, y: 0}
       }
-    }
+    };
+  }
+
+  get behaviors() {
+    return [
+      simpla.behaviors.active({
+        observer: '_activeChanged'
+      })
+    ];
+  }
+
+  get listeners() {
+    return {
+      'tap': '_handleTap'
+    };
   }
 
   ready() {
+    // TODO: Move this to controls
     // Setup the minimum on the zoom
-    this.$.zoom.min = this._helper.minScale;
+    // this.$.zoom.min = this._canvas.minScale;
   }
 
   updatePosition() {
-    const image = this._helper;
+    const image = this._canvas;
 
     this.position = { x: image.translateX, y: image.translateY };
   }
 
-  get _helper() {
+  get _canvas() {
     return this.$.image;
   }
 
-  _fileChosen(event) {
-    let filePicker = event.target,
-        files = filePicker.files;
-
-    if (files) {
-      this._loadFile(files[0]);
-    } else {
-      throw new Error('Could not load file');
-    }
+  get _controls() {
+    return this.$.controls;
   }
 
-  _loadFile(file) {
-    let reader = new FileReader();
+  _fileChanged(event) {
+    let reader = new FileReader(),
+        file = event.detail.value,
+        src;
 
     reader.onloadend = () => this.src = reader.result;
 
     reader.readAsDataURL(file);
+  }
+
+  _activeChanged(value) {
+    const makeInactive = (event) => {
+      if (!event.__polymerGesturesHandled) {
+        this.active = false;
+      }
+    };
+
+    if (!this.active) {
+      window.addEventListener('click', makeInactive, false);
+    } else {
+      window.removeEventListener('click', makeInactive, false);
+    }
+  }
+
+  _handleTap(event) {
+    if (!this.active) {
+      this.active = true;
+    }
   }
 }
 

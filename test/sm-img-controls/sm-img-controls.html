@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>simpla-img</title>
+    <script src="../../../webcomponentsjs/webcomponents.min.js"></script>
+    <script src="../../../web-component-tester/browser.js"></script>
+    <script src="../../../test-fixture/test-fixture-mocha.js"></script>
+    <link rel="import" href="../../../test-fixture/test-fixture.html">
+
+    <!-- Import the element to test -->
+    <link rel="import" href="../../simpla-img.html">
+    <script src="./sm-img-controls.fixtures.js"></script>
+  </head>
+  <body>
+    <test-fixture id="default">
+      <template>
+        <sm-img-controls></sm-img-controls>
+      </template>
+    </test-fixture>
+    <script>
+      describe('<sm-img-controls>', function() {
+
+        var component,
+            componentFixtures;
+
+        componentFixtures = window.fixtures['sm-img-controls'];
+
+        beforeEach(function() {
+          component = fixture('default');
+        });
+
+        it('is okay', function() {
+          expect(component).to.be.ok;
+        });
+
+        describe('active', function() {
+          var fire;
+
+          beforeEach(function() {
+            fire = sinon.stub(component, 'fire');
+          });
+
+          it('should default to false', function() {
+            expect(component.active).to.be.false;
+          });
+
+          it('should fire activated / deactivated appropriately', function() {
+            component.active = undefined;
+
+            component.active = true;
+            expect(component.fire.calledWith('activated')).to.be.true;
+
+            component.active = false;
+            expect(component.fire.calledWith('deactivated')).to.be.true;
+          });
+        });
+
+        describe('_setPosition', function() {
+          var bounds = {};
+
+          beforeEach(function() {
+            sinon.stub(component, 'getBoundingClientRect').returns(bounds);
+
+            window.outerHeight = componentFixtures.windowSize.outerHeight;
+            window.outerWidth = componentFixtures.windowSize.outerWidth;
+          });
+
+          afterEach(function() {
+            component.getBoundingClientRect.restore();
+          });
+
+          it('should be on the right, when on the left', function() {
+            var centre = componentFixtures.centreLeft;
+
+            bounds.width = centre.width;
+            bounds.left = centre.left;
+
+            component._setPosition();
+            expect(component.position).to.equal('right');
+          });
+
+          it('should be on the left, when on the right', function() {
+            var centre = componentFixtures.centreRight;
+
+            bounds.width = centre.width;
+            bounds.left = centre.left;
+
+            component._setPosition();
+            expect(component.position).to.equal('left');
+          });
+        });
+
+        describe('files', function() {
+          it('should be able to get file from files-changed', function() {
+            var event = {
+              target: {
+                files: componentFixtures.files
+              }
+            };
+
+            component._filesChanged(event);
+
+            expect(component.file).to.deep.equal(componentFixtures.files[0]);
+          });
+
+          it('should open when calling openFilePicker', function() {
+            var filePicker = component.$.file;
+
+            sinon.stub(filePicker, 'click');
+            component.openFilePicker();
+
+            expect(filePicker.click.called).to.be.true;
+            filePicker.click.restore();
+          });
+        });
+
+        describe('title', function() {
+          it('should go active on click', function() {
+            var title = component.$.title,
+                titleButton = component.$.titleButton;
+
+            titleButton.click();
+
+            expect(titleButton.hasAttribute('active')).to.be.true;
+            expect(title.classList.contains('toolbox__title--expanded')).to.be.true;
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

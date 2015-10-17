@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>simpla-img</title>
+    <script src="../../../webcomponentsjs/webcomponents.min.js"></script>
+    <script src="../../../web-component-tester/browser.js"></script>
+    <script src="../../../test-fixture/test-fixture-mocha.js"></script>
+    <link rel="import" href="../../../test-fixture/test-fixture.html">
+
+    <!-- Import the element to test -->
+    <link rel="import" href="../../simpla-img.html">
+    <script src="./simpla-img.fixtures.js"></script>
+  </head>
+  <body>
+    <test-fixture id="default">
+      <template>
+        <simpla-img></simpla-img>
+      </template>
+    </test-fixture>
+    <script>
+      describe('<simpla-img>', function() {
+
+        var component,
+            componentFixtures,
+            canvas,
+            controls;
+
+        componentFixtures = window.fixtures['simpla-img'];
+
+        beforeEach(function() {
+          component = fixture('default');
+          component.active = true;
+          canvas = component.$.image;
+          controls = component.$.controls;
+
+          window.FileReader = function() {};
+          window.FileReader.prototype = {
+            readAsDataURL(mockFile) {
+              this.result = mockFile.src;
+              if (typeof this.onloadend === 'function') {
+                this.onloadend();
+              }
+            }
+          };
+        });
+
+        it('is okay', function() {
+          expect(component).to.be.ok;
+        });
+
+        it('updatePosition changes its position based on canvas', function() {
+          canvas.translateX = 45;
+          canvas.translateY = 50;
+
+          component.updatePosition();
+
+          expect(component.position.x).to.equal(45);
+          expect(component.position.y).to.equal(50);
+        });
+
+        it('calls updatePosition on image pan-finished', function() {
+          sinon.spy(component, 'updatePosition');
+
+          canvas.fire('pan-finished');
+          expect(component.updatePosition.called).to.be.true;
+
+          component.updatePosition.restore();
+        });
+
+        it('should set the src when file changes', function() {
+          var file = componentFixtures.file;
+
+          controls.file = file;
+
+          expect(component.src).to.equal(file.src);
+        });
+
+        it('should set scale when controls zoom changes', function() {
+          var zoomTo = 0.75;
+          controls.zoom = zoomTo;
+          expect(component.scale).to.equal(zoomTo);
+        });
+
+        it('should match the title to controls title', function() {
+          var title = 'foo bar';
+          controls.title = 'foo bar';
+          expect(component.title).to.equal(title);
+        });
+
+        it('should activate on click', function() {
+          component.active = false;
+          component.click();
+
+          expect(component.active).to.be.true;
+        });
+
+        it('should deactivate on click outside', function() {
+          component.active = true;
+          window.dispatchEvent(new Event('click'));
+
+          expect(component.active).to.be.false;
+        });
+
+        it('should not deactivate on click inside', function() {
+          component.active = true;
+          component.click();
+
+          expect(component.active).to.be.true;
+        });
+      });
+    </script>
+  </body>
+</html>

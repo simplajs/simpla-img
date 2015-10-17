@@ -15,7 +15,7 @@
   ],
   "ignore": [
     "*",
-    "!src",
+    "!src/**/*",
     "!simpla-img.html",
     "!LICENSE"
   ],
@@ -23,7 +23,6 @@
     "webcomponentsjs": "^0.7.14",
     "polymer": "^1.1.4",
     "simpla": "git@github.com:simplaio/simpla.git",
-    "sm-css": "git@github.com:simplaio/sm-css.git",
     "sm-helper-button": "git@github.com:simplaio/sm-helper-button.git"
   },
   "devDependencies": {
@@ -32,7 +31,7 @@
   },
   "componentImports": [
     "polymer/polymer.html",
-    "sm-css/sm-css.html",
+    "simpla/simpla.html",
     "sm-helper-button/sm-helper-button.html"
   ]
 }
