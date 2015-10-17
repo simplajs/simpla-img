@@ -18,12 +18,12 @@ export default {
       'in': {
         easing: easings.easeOutBack,
         fill: 'both',
-        duration: 150
+        duration: 180
       },
       'out': {
         easing: easings.easeInCubic,
         fill: 'both',
-        duration: 120
+        duration: 100
       }
     };
   },
