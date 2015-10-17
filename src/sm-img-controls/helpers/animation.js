@@ -18,12 +18,13 @@ export default {
       'in': {
         easing: easings.easeOutBack,
         fill: 'both',
-        duration: 180
+        duration: 180,
+        delay: 15
       },
       'out': {
-        easing: easings.easeInCubic,
+        easing: easings.easeOutCubic,
         fill: 'both',
-        duration: 100
+        duration: 125
       }
     };
   },
@@ -36,13 +37,13 @@ export default {
     this.toggleAttribute('visible', true, bottom);
 
     top.animate([
-      { transform: 'translateY(-100%)' },
-      { transform: 'translateY(0)' }
+      { transform: 'translateY(-100%)', opacity: .5 },
+      { transform: 'translateY(0)', opacity: 1 }
     ], opts.in);
 
     bottom.animate([
-      { transform: 'translateY(100%)' },
-      { transform: 'translateY(0)' }
+      { transform: 'translateY(100%)', opacity: .5 },
+      { transform: 'translateY(0)', opacity: 1 }
     ], opts.in);
 
   },
@@ -54,13 +55,13 @@ export default {
         bottomAnimate;
 
     topAnimate = top.animate([
-      { transform: 'translateY(0)' },
-      { transform: 'translateY(-100%)' }
+      { transform: 'translateY(0)', opacity: 1 },
+      { transform: 'translateY(-100%)', opacity: .5 }
     ], opts.out);
 
     bottomAnimate = bottom.animate([
-      { transform: 'translateY(0)' },
-      { transform: 'translateY(100%)' }
+      { transform: 'translateY(0)', opacity: 1 },
+      { transform: 'translateY(100%)', opacity: .5 }
     ], opts.out);
 
     topAnimate.onfinish = () => {

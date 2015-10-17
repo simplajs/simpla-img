@@ -25,9 +25,10 @@
   display: none;
   align-items: center;
   background: var(--med-white);
-  top: -10px;
-  padding-top: 10px;
+  top: -5px;
+  padding-top: 5px;
   transform: translateY(-100%);
+  opacity: .5;
 }
 
 .toolbox[visible] {
@@ -108,9 +109,10 @@
   border-top-right-radius: var(--border-radius);
   background: var(--med-white);
   cursor: default;
-  bottom: -10px;
-  padding-bottom: 10px;
+  bottom: -5px;
+  padding-bottom: 5px;
   transform: translateY(100%);
+  opacity: .5;
 }
 
 .zoom[visible] {
