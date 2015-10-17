@@ -114,6 +114,18 @@
             filePicker.click.restore();
           });
         });
+
+        describe('title', function() {
+          it('should go active on click', function() {
+            var title = component.$.title,
+                titleButton = component.$.titleButton;
+
+            titleButton.click();
+
+            expect(titleButton.hasAttribute('active')).to.be.true;
+            expect(title.classList.contains('toolbox__title--expanded')).to.be.true;
+          });
+        });
       });
     </script>
   </body>
