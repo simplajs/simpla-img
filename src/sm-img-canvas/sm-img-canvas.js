@@ -3,6 +3,7 @@ import { fitInside } from './helpers/utils.js';
 const DEFAULT_SCALE = 1,
       DEFAULT_TRANSLATE_X = 0,
       DEFAULT_TRANSLATE_Y = 0,
+      DEFAULT_SIZING = 'length',
       PAN_FINISHED = 'pan-finished';
 
 /**
@@ -19,8 +20,13 @@ class smImgCanvas {
       src: String,
       scale: Number,
       translateX: Number,
-      translateY: Number
-    }
+      translateY: Number,
+      sizing: {
+        type: String,
+        observer: '_sizingChanged',
+        value: 'length'
+      }
+    };
   }
 
   get behaviors() {
@@ -123,6 +129,7 @@ class smImgCanvas {
     let scaleHeight = this.height / this.$.source.height,
         scaleWidth = this.width / this.$.source.width;
 
+
     if (isNaN(scaleHeight) || isNaN(scaleWidth)) {
       return 1;
     }
@@ -183,6 +190,20 @@ class smImgCanvas {
 
   _imageLoaded() {
     this._resetDimensions();
+  }
+
+  _sizingChanged(sizing) {
+    const sizingToStyle = {
+      length: 'inherit',
+      percentage: '100%'
+    };
+
+    let styleValue = sizingToStyle[sizing];
+
+    styleValue = styleValue || '';
+
+    this.$.source.style.width = styleValue;
+    this.$.source.style.height = styleValue;
   }
 }
 
