@@ -1,6 +1,6 @@
 {
   "name": "simpla-img",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Simpla component that provides an editable image",
   "main": "simpla-img.html",
   "authors": [
