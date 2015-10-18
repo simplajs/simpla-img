@@ -149,6 +149,25 @@
             expect(component.offsetWidth).to.equal(canvas.offsetWidth);
             expect(component.offsetHeight).to.equal(canvas.offsetHeight);
           });
+
+          it('should be triggered on debounced window event', function() {
+            var syncStub = sinon.stub(component, '_syncImgSizing'),
+                debounceStub = sinon.stub(component, 'debounce', function(job, callback) {
+                  callback();
+                });
+
+            component.ready();
+            expect(syncStub.called).to.be.false;
+
+            window.dispatchEvent(new Event('resize'));
+            expect(syncStub.called).to.be.true;
+
+            // Ensure it was called with right context
+            expect(syncStub.alwaysCalledOn(component)).to.be.true;
+
+            syncStub.restore();
+            debounceStub.restore();
+          });
         });
       });
     </script>

@@ -32,6 +32,10 @@ class SimplaImg {
   }
 
   ready() {
+    window.addEventListener('resize', () => {
+      this.debounce('syncImgSizing', this._syncImgSizing.bind(this));
+    });
+
     // TODO: Move this to controls
     // Setup the minimum on the zoom
     // this.$.zoom.min = this._canvas.minScale;
