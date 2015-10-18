@@ -37,12 +37,12 @@ export default {
     this.toggleAttribute('visible', true, bottom);
 
     top.animate([
-      { transform: 'translateY(-100%)', opacity: .5 },
+      { transform: 'translateY(-100%)', opacity: 0.5 },
       { transform: 'translateY(0)', opacity: 1 }
     ], opts.in);
 
     bottom.animate([
-      { transform: 'translateY(100%)', opacity: .5 },
+      { transform: 'translateY(100%)', opacity: 0.5 },
       { transform: 'translateY(0)', opacity: 1 }
     ], opts.in);
 
@@ -56,12 +56,12 @@ export default {
 
     topAnimate = top.animate([
       { transform: 'translateY(0)', opacity: 1 },
-      { transform: 'translateY(-100%)', opacity: .5 }
+      { transform: 'translateY(-100%)', opacity: 0.5 }
     ], opts.out);
 
     bottomAnimate = bottom.animate([
       { transform: 'translateY(0)', opacity: 1 },
-      { transform: 'translateY(100%)', opacity: .5 }
+      { transform: 'translateY(100%)', opacity: 0.5 }
     ], opts.out);
 
     topAnimate.onfinish = () => {

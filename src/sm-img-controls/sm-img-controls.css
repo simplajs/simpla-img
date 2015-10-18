@@ -47,7 +47,6 @@
   border-radius: 0 0 var(--border-radius) 0;
 }
 
-
 .toolbox__tool {
   color: var(--med-black);
   width: var(--tool-size);
@@ -86,7 +85,6 @@
 
 .toolbox__title--expanded {
   width: 220px;
-  transition: width 140ms ease-out-cubic;
 }
 
 :host([position="right"]) .toolbox__title--expanded {
