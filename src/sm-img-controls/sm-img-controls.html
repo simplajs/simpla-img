@@ -7,10 +7,10 @@
 
       <!-- Image title -->
       <input type="text" id="title" class="toolbox__title" placeholder="Enter image title" value="{{title::input}}">
-      <sm-helper-button id="titleButton" class="toolbox__tool" on-click="toggleTitle" icon="&#x54;"></sm-helper-button>
+      <sm-helper-button id="titleButton" class="toolbox__tool" on-click="toggleTitle" icon="simpla:title"></sm-helper-button>
 
       <!-- Image upload (file input hidden, since it can't be styled) -->
-      <sm-helper-button class="toolbox__tool" icon="&#xe619;" on-tap="openFilePicker">
+      <sm-helper-button class="toolbox__tool" icon="simpla:camera" on-tap="openFilePicker">
         <input id="file" class="toolbox__file" type="file" on-change="_filesChanged" />
       </sm-helper-button>
 
