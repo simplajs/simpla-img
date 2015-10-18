@@ -150,23 +150,34 @@
             expect(component.offsetHeight).to.equal(canvas.offsetHeight);
           });
 
-          it('should be triggered on debounced window event', function() {
-            var syncStub = sinon.stub(component, '_syncImgSizing'),
-                debounceStub = sinon.stub(component, 'debounce', function(job, callback) {
-                  callback();
-                });
+          describe('triggering', function() {
+            var syncStub,
+                debounceStub;
 
-            component.ready();
-            expect(syncStub.called).to.be.false;
+            beforeEach(function() {
+              syncStub = sinon.stub(component, '_syncImgSizing');
+              debounceStub = sinon.stub(component, 'debounce', function(job, callback) {
+                callback();
+              });
+            });
 
-            window.dispatchEvent(new Event('resize'));
-            expect(syncStub.called).to.be.true;
+            afterEach(function() {
+              syncStub.restore();
+              debounceStub.restore();
+            });
 
-            // Ensure it was called with right context
-            expect(syncStub.alwaysCalledOn(component)).to.be.true;
+            it('should be triggered on debounced window event', function() {
+              component.fire('resize', null, { node: window });
+              expect(syncStub.callCount).to.equal(1);
 
-            syncStub.restore();
-            debounceStub.restore();
+              // Ensure it was called with right context
+              expect(syncStub.alwaysCalledOn(component)).to.be.true;
+            });
+
+            it('should be called once on ready call', function() {
+              component.ready();
+              expect(syncStub.callCount).to.equal(1);
+            });
           });
         });
       });

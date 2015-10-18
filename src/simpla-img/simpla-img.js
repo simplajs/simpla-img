@@ -32,6 +32,8 @@ class SimplaImg {
   }
 
   ready() {
+    // Sync image sizes is working appropriately
+    this._syncImgSizing();
     window.addEventListener('resize', () => {
       this.debounce('syncImgSizing', this._syncImgSizing.bind(this));
     });
