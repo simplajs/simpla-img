@@ -108,6 +108,48 @@
 
           expect(component.active).to.be.true;
         });
+
+        describe('toggle sizing', function() {
+          var styleEl,
+              styles = {
+                'default': 'simpla-img { width: 250px }',
+                'percent': 'simpla-img.percentage { width: 50% }'
+              };
+
+          beforeEach(function() {
+            styleEl = document.createElement('style');
+            styleEl.innerHTML += styles.default;
+            styleEl.innerHTML += styles.percent;
+
+            document.body.appendChild(styleEl);
+          });
+
+          afterEach(function() {
+            styleEl.remove();
+          });
+
+          it('should be working on default', function() {
+            expect(component.offsetWidth).to.equal(250);
+
+            expect(component.offsetWidth).to.equal(canvas.offsetWidth);
+            expect(component.offsetHeight).to.equal(canvas.offsetHeight);
+          });
+
+          it('should change the size type if widths dont match', function() {
+            component.toggleClass('percentage', true);
+
+            component._syncImgSizing();
+            expect(canvas.sizing).to.equal('percentage');
+          });
+
+          it('should fix the width differences when sizing is different', function() {
+            component.toggleClass('percentage', true);
+
+            component._syncImgSizing();
+            expect(component.offsetWidth).to.equal(canvas.offsetWidth);
+            expect(component.offsetHeight).to.equal(canvas.offsetHeight);
+          });
+        });
       });
     </script>
   </body>

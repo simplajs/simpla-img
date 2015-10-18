@@ -80,6 +80,31 @@ class SimplaImg {
       this.active = true;
     }
   }
+
+  _syncImgSizing() {
+    let image = this.$.image,
+        widthInSync = image.offsetWidth === this.offsetWidth,
+        heightInSync = image.offsetHeight === this.offsetHeight,
+        sizesAreInSync = widthInSync && heightInSync,
+        isPercentage;
+
+    if (sizesAreInSync) {
+      return;
+    }
+
+    isPercentage = (() => {
+      const oldDisplay = this.style.display;
+
+      this.style.display = 'none';
+
+      let { width, height } = window.getComputedStyle(this);
+      this.style.display = oldDisplay;
+
+      return width.match(/%/) || height.match(/%/);
+    })();
+
+    image.sizing = isPercentage ? 'percentage' : 'length';
+  }
 }
 
 Polymer(SimplaImg);
