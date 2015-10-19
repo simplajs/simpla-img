@@ -20,12 +20,7 @@ class smImgCanvas {
       src: String,
       scale: Number,
       translateX: Number,
-      translateY: Number,
-      sizing: {
-        type: String,
-        observer: '_sizingChanged',
-        value: 'length'
-      }
+      translateY: Number
     };
   }
 
@@ -190,20 +185,6 @@ class smImgCanvas {
 
   _imageLoaded() {
     this._resetDimensions();
-  }
-
-  _sizingChanged(sizing) {
-    const sizingToStyle = {
-      length: 'inherit',
-      percentage: '100%'
-    };
-
-    let styleValue = sizingToStyle[sizing];
-
-    styleValue = styleValue || '';
-
-    this.style.width = styleValue;
-    this.style.height = styleValue;
   }
 }
 

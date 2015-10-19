@@ -235,26 +235,6 @@
             expect(component.scale).to.equal(firstAttempt);
           });
         });
-
-        describe('sizing', function() {
-          it('should default to length', function() {
-            expect(component.sizing).to.equal('length');
-          });
-
-          it('should apply percentage to img if percentage', function() {
-            component.sizing = 'percentage';
-
-            expect(component.style.width).to.equal('100%');
-            expect(component.style.height).to.equal('100%');
-          });
-
-          it('should apply inherit to img if length', function() {
-            component.sizing = 'length';
-
-            expect(component.style.width).to.equal('inherit');
-            expect(component.style.height).to.equal('inherit');
-          });
-        });
       });
     </script>
   </body>
