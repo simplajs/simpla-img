@@ -28,7 +28,7 @@
 
         componentFixtures = window.fixtures['simpla-img'];
 
-        beforeEach(function() {
+        beforeEach(function(done) {
           component = fixture('default');
           component.active = true;
           canvas = component.$.image;
@@ -43,6 +43,11 @@
               }
             }
           };
+
+          canvas.$.source.onload = function() {
+            done();
+          };
+          component.src = 'https://www.placecage.com/g/100/200';
         });
 
         it('is okay', function() {
@@ -50,13 +55,14 @@
         });
 
         it('updatePosition changes its position based on canvas', function() {
-          canvas.translateX = 45;
-          canvas.translateY = 50;
+          canvas.scale = 2;
+          canvas.translateX = -45;
+          canvas.translateY = -50;
 
           component.updatePosition();
 
-          expect(component.position.x).to.equal(45);
-          expect(component.position.y).to.equal(50);
+          expect(component.position.x).to.equal(-45);
+          expect(component.position.y).to.equal(-50);
         });
 
         it('calls updatePosition on image pan-finished', function() {
@@ -107,6 +113,99 @@
           component.click();
 
           expect(component.active).to.be.true;
+        });
+
+        describe('toggle sizing', function() {
+          var styleCases = [
+                { applied: '45%', good: '100%', defaultCase: 'inherit' },
+                { applied: '200px', good: 'inherit', defaultCase: 'inherit' }
+              ];
+
+          afterEach(function() {
+            component.style.width = '';
+            component.style.height = '';
+          });
+
+          it('should be working on default', function() {
+            expect(component.offsetWidth).to.equal(canvas.offsetWidth);
+            expect(component.offsetHeight).to.equal(canvas.offsetHeight);
+          });
+
+          describe('working with width', function() {
+            styleCases.forEach(function(styleCase) {
+              var property = styleCase.property,
+                  appliedValue = styleCase.applied,
+                  good = styleCase.good,
+                  defaultCase = styleCase.defaultCase;
+
+              it('host width = ' + appliedValue + ', canvas width should = ' + good, function() {
+                component.style.width = appliedValue;
+
+                component._syncImgSizing();
+                console.log(canvas.style.width);
+                console.log(canvas.style.height);
+                expect(canvas.style.width).to.equal(good);
+                expect(canvas.style.height).to.equal(defaultCase);
+              });
+            });
+
+            it('should retain same size', function() {
+              expect(component.offsetWidth).to.equal(canvas.offsetWidth);
+              expect(component.offsetHeight).to.equal(canvas.offsetHeight);
+            });
+          });
+
+          describe('working with height', function() {
+            styleCases.forEach(function(styleCase) {
+              var property = styleCase.property,
+                  appliedValue = styleCase.applied,
+                  good = styleCase.good,
+                  defaultCase = styleCase.defaultCase;
+
+              it('host height = ' + appliedValue + ', canvas height should = ' + good, function() {
+                component.style.height = appliedValue;
+
+                component._syncImgSizing();
+                expect(canvas.style.height).to.equal(good);
+                expect(canvas.style.width).to.equal(defaultCase);
+              });
+            });
+
+            it('should retain same size', function() {
+              expect(component.offsetWidth).to.equal(canvas.offsetWidth);
+              expect(component.offsetHeight).to.equal(canvas.offsetHeight);
+            });
+          });
+
+          describe('triggering', function() {
+            var syncStub,
+                debounceStub;
+
+            beforeEach(function() {
+              syncStub = sinon.stub(component, '_syncImgSizing');
+              debounceStub = sinon.stub(component, 'debounce', function(job, callback) {
+                callback();
+              });
+            });
+
+            afterEach(function() {
+              syncStub.restore();
+              debounceStub.restore();
+            });
+
+            it('should be triggered on debounced window event', function() {
+              component.fire('resize', null, { node: window });
+              expect(syncStub.callCount).to.equal(1);
+
+              // Ensure it was called with right context
+              expect(syncStub.alwaysCalledOn(component)).to.be.true;
+            });
+
+            it('should be called once on ready call', function() {
+              component.ready();
+              expect(syncStub.callCount).to.equal(1);
+            });
+          });
         });
       });
     </script>

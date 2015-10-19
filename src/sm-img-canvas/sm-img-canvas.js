@@ -3,6 +3,7 @@ import { fitInside } from './helpers/utils.js';
 const DEFAULT_SCALE = 1,
       DEFAULT_TRANSLATE_X = 0,
       DEFAULT_TRANSLATE_Y = 0,
+      DEFAULT_SIZING = 'length',
       PAN_FINISHED = 'pan-finished';
 
 /**
@@ -20,7 +21,7 @@ class smImgCanvas {
       scale: Number,
       translateX: Number,
       translateY: Number
-    }
+    };
   }
 
   get behaviors() {
@@ -122,6 +123,7 @@ class smImgCanvas {
   get minScale() {
     let scaleHeight = this.height / this.$.source.height,
         scaleWidth = this.width / this.$.source.width;
+
 
     if (isNaN(scaleHeight) || isNaN(scaleWidth)) {
       return 1;

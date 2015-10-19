@@ -32,6 +32,12 @@ class SimplaImg {
   }
 
   ready() {
+    // Sync image sizes is working appropriately
+    this._syncImgSizing();
+    window.addEventListener('resize', () => {
+      this.debounce('syncImgSizing', this._syncImgSizing.bind(this));
+    });
+
     // TODO: Move this to controls
     // Setup the minimum on the zoom
     // this.$.zoom.min = this._canvas.minScale;
@@ -79,6 +85,27 @@ class SimplaImg {
     if (!this.active) {
       this.active = true;
     }
+  }
+
+  _syncImgSizing() {
+    let image = this.$.image,
+        isPercentage = (dimension) => {
+          const oldDisplay = this.style.display;
+          let computed,
+              value;
+
+          // Stop page from rendering, thus computed will be inherited value, rather
+          //  than absolute value
+          this.style.display = 'none';
+          computed = window.getComputedStyle(this);
+          value = computed[dimension];
+          this.style.display = oldDisplay;
+
+          return value.match(/%/);
+        };
+
+    image.style['width'] = isPercentage('width') ? '100%' : 'inherit';
+    image.style['height'] = isPercentage('height') ? '100%' : 'inherit';
   }
 }
 
