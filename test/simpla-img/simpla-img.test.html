@@ -47,7 +47,7 @@
           canvas.$.source.onload = function() {
             done();
           };
-          component.src = 'https://www.placecage.com/g/10/6';
+          component.src = 'https://www.placecage.com/g/100/200';
         });
 
         it('is okay', function() {
@@ -55,13 +55,14 @@
         });
 
         it('updatePosition changes its position based on canvas', function() {
-          canvas.translateX = 45;
-          canvas.translateY = 50;
+          canvas.scale = 2;
+          canvas.translateX = -45;
+          canvas.translateY = -50;
 
           component.updatePosition();
 
-          expect(component.position.x).to.equal(45);
-          expect(component.position.y).to.equal(50);
+          expect(component.position.x).to.equal(-45);
+          expect(component.position.y).to.equal(-50);
         });
 
         it('calls updatePosition on image pan-finished', function() {
