@@ -28,7 +28,7 @@
 
         componentFixtures = window.fixtures['simpla-img'];
 
-        beforeEach(function() {
+        beforeEach(function(done) {
           component = fixture('default');
           component.active = true;
           canvas = component.$.image;
@@ -43,6 +43,11 @@
               }
             }
           };
+
+          canvas.$.source.onload = function() {
+            done();
+          };
+          component.src = 'https://www.placecage.com/g/10/6';
         });
 
         it('is okay', function() {
@@ -110,44 +115,65 @@
         });
 
         describe('toggle sizing', function() {
-          var styleEl,
-              styles = {
-                'default': 'simpla-img { width: 250px }',
-                'percent': 'simpla-img.percentage { width: 50% }'
-              };
-
-          beforeEach(function() {
-            styleEl = document.createElement('style');
-            styleEl.innerHTML += styles.default;
-            styleEl.innerHTML += styles.percent;
-
-            document.body.appendChild(styleEl);
-          });
+          var styleCases = [
+                { applied: '45%', good: '100%', defaultCase: 'inherit' },
+                { applied: '200px', good: 'inherit', defaultCase: 'inherit' }
+              ];
 
           afterEach(function() {
-            styleEl.remove();
+            component.style.width = '';
+            component.style.height = '';
           });
 
           it('should be working on default', function() {
-            expect(component.offsetWidth).to.equal(250);
-
             expect(component.offsetWidth).to.equal(canvas.offsetWidth);
             expect(component.offsetHeight).to.equal(canvas.offsetHeight);
           });
 
-          it('should change the size type if widths dont match', function() {
-            component.toggleClass('percentage', true);
+          describe('working with width', function() {
+            styleCases.forEach(function(styleCase) {
+              var property = styleCase.property,
+                  appliedValue = styleCase.applied,
+                  good = styleCase.good,
+                  defaultCase = styleCase.defaultCase;
 
-            component._syncImgSizing();
-            expect(canvas.sizing).to.equal('percentage');
+              it('host width = ' + appliedValue + ', canvas width should = ' + good, function() {
+                component.style.width = appliedValue;
+
+                component._syncImgSizing();
+                console.log(canvas.style.width);
+                console.log(canvas.style.height);
+                expect(canvas.style.width).to.equal(good);
+                expect(canvas.style.height).to.equal(defaultCase);
+              });
+            });
+
+            it('should retain same size', function() {
+              expect(component.offsetWidth).to.equal(canvas.offsetWidth);
+              expect(component.offsetHeight).to.equal(canvas.offsetHeight);
+            });
           });
 
-          it('should fix the width differences when sizing is different', function() {
-            component.toggleClass('percentage', true);
+          describe('working with height', function() {
+            styleCases.forEach(function(styleCase) {
+              var property = styleCase.property,
+                  appliedValue = styleCase.applied,
+                  good = styleCase.good,
+                  defaultCase = styleCase.defaultCase;
 
-            component._syncImgSizing();
-            expect(component.offsetWidth).to.equal(canvas.offsetWidth);
-            expect(component.offsetHeight).to.equal(canvas.offsetHeight);
+              it('host height = ' + appliedValue + ', canvas height should = ' + good, function() {
+                component.style.height = appliedValue;
+
+                component._syncImgSizing();
+                expect(canvas.style.height).to.equal(good);
+                expect(canvas.style.width).to.equal(defaultCase);
+              });
+            });
+
+            it('should retain same size', function() {
+              expect(component.offsetWidth).to.equal(canvas.offsetWidth);
+              expect(component.offsetHeight).to.equal(canvas.offsetHeight);
+            });
           });
 
           describe('triggering', function() {

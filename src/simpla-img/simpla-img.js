@@ -89,27 +89,23 @@ class SimplaImg {
 
   _syncImgSizing() {
     let image = this.$.image,
-        widthInSync = image.offsetWidth === this.offsetWidth,
-        heightInSync = image.offsetHeight === this.offsetHeight,
-        sizesAreInSync = widthInSync && heightInSync,
-        isPercentage;
+        isPercentage = (dimension) => {
+          const oldDisplay = this.style.display;
+          let computed,
+              value;
 
-    if (sizesAreInSync) {
-      return;
-    }
+          // Stop page from rendering, thus computed will be inherited value, rather
+          //  than absolute value
+          this.style.display = 'none';
+          computed = window.getComputedStyle(this);
+          value = computed[dimension];
+          this.style.display = oldDisplay;
 
-    isPercentage = (() => {
-      const oldDisplay = this.style.display;
+          return value.match(/%/);
+        };
 
-      this.style.display = 'none';
-
-      let { width, height } = window.getComputedStyle(this);
-      this.style.display = oldDisplay;
-
-      return width.match(/%/) || height.match(/%/);
-    })();
-
-    image.sizing = isPercentage ? 'percentage' : 'length';
+    image.style['width'] = isPercentage('width') ? '100%' : 'inherit';
+    image.style['height'] = isPercentage('height') ? '100%' : 'inherit';
   }
 }
 
