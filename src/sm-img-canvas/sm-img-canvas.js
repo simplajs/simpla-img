@@ -202,9 +202,6 @@ class smImgCanvas {
 
     styleValue = styleValue || '';
 
-    this.$.source.style.width = styleValue;
-    this.$.source.style.height = styleValue;
-
     this.style.width = styleValue;
     this.style.height = styleValue;
   }
