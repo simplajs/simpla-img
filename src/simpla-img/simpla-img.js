@@ -29,9 +29,8 @@ class SimplaImg {
       simpla.behaviors.editable(),
       simpla.behaviors.active({
         observer: '_activeChanged'
-      }),
-      placeholder
-    ];
+      })
+    ].concat(placeholder);
   }
 
   get listeners() {
@@ -104,7 +103,7 @@ class SimplaImg {
       return;
     }
 
-    if (target === this._placeholder || target.parentElement === this._placeholder) {
+    if (target === this._placeholder) {
       this._controls.openFilePicker();
     } else {
       this.active = true;

@@ -225,12 +225,14 @@
         });
 
         describe('placeholder', function() {
-          var placeholder,
-              placeholderImg;
+          var placeholder;
 
           beforeEach(function() {
             placeholder = component.$.placeholder;
-            placeholderImg = Polymer.dom(placeholder).querySelector('img');
+          });
+
+          it('should have the behavior, with a default', function() {
+            expect(component.placeholder).to.not.be.undefined;
           });
 
           describe('follows display rules', function() {
@@ -255,31 +257,52 @@
           });
 
           describe('has right properties', function() {
+            function calculateInheritedStyle(prop) {
+              var oldDisplay = placeholder.style.display,
+                  styles,
+                  value;
+
+              component.style.display = 'none';
+              styles = window.getComputedStyle(placeholder);
+              value = styles[prop];
+              component.style.display = oldDisplay;
+
+              return value;
+            };
+
             var defaults = {
-              src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNasBQAAe4BSJC52v0AAAAASUVORK5CYII=',
+              img: 'rgb(200, 200, 200)',
               height: 300,
               width: 300
             };
 
+            beforeEach(function() {
+              component.src = '';
+              component.usePlaceholder = true;
+            });
+
             it('should have the defaults when nothing is specified', function() {
-              expect(placeholderImg.src).to.equal(defaults.src);
-              expect(placeholderImg.height).to.equal(defaults.height);
-              expect(placeholderImg.width).to.equal(defaults.width);
+              console.log('wot');
+              expect(placeholder.offsetWidth).to.equal(defaults.width);
+              expect(placeholder.offsetHeight).to.equal(defaults.height);
+              expect(calculateInheritedStyle('backgroundColor')).to.equal(defaults.img);
             });
 
-            it('should follow the placeholder attr', function() {
+            it('placeholder should set a url', function() {
               component.placeholder = 'http://placecage.com/c/400/500';
-              expect(placeholderImg.src).to.equal('http://placecage.com/c/400/500');
+              expect(calculateInheritedStyle('background')).to.contain('http://placecage.com/c/400/500');
             });
 
-            it('should follow the width', function() {
-              component.width = 200;
-              expect(placeholderImg.width).to.equal(200);
+            it('or a color', function() {
+              component.placeholder = 'rgb(250, 243, 211)';
+              expect(calculateInheritedStyle('background')).to.contain('rgb(250, 243, 211)');
             });
 
-            it('should follow the height', function() {
-              component.height = 200;
-              expect(placeholderImg.height).to.equal(200);
+            it('should follow parent dimensions', function() {
+              component.style.width = '400px';
+              component.style.height = '240px';
+              expect(component.offsetHeight).to.equal(placeholder.offsetHeight);
+              expect(component.offsetWidth).to.equal(placeholder.offsetWidth);
             });
           });
 
@@ -305,13 +328,6 @@
             it('should open it on click', function() {
               component.usePlaceholder = true;
               placeholder.click();
-
-              expect(pickerStub.called).to.be.true;
-            });
-
-            it('should open it on img click', function() {
-              component.usePlaceholder = true;
-              placeholderImg.click();
 
               expect(pickerStub.called).to.be.true;
             });
