@@ -5,7 +5,12 @@ class SimplaImg {
     this.is = 'simpla-img';
 
     this.properties = {
-      src: String,
+      src: {
+        type: String,
+        // Must have a value so that multi-param observers will get triggered
+        //  straight away, see placeholder
+        value: ''
+      },
       width: Number,
       height: Number,
       scale: {
