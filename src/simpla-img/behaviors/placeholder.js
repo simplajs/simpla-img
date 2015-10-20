@@ -1,4 +1,3 @@
-import { DEFAULT_PLACEHOLDER, DEFAULT_WIDTH, DEFAULT_HEIGHT } from '../constants/defaults';
 import isColor from '../utils/isColor';
 
 const backgroundVar = '--placeholder-background';
