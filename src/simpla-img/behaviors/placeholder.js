@@ -24,7 +24,8 @@ export default {
   },
 
   observers: [
-    '_updatePlaceholder(src, editable)'
+    '_updatePlaceholder(src, editable)',
+    '_usePlaceholderChanged(usePlaceholder)'
   ],
 
   _updatePlaceholder(src, editable) {
@@ -41,5 +42,9 @@ export default {
 
   _computePlaceholderHeight(height) {
     return height || DEFAULT_HEIGHT;
+  },
+
+  _usePlaceholderChanged(value) {
+    this._canvas.style.display = value ? 'none' : '';
   }
 }

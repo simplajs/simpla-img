@@ -60,6 +60,10 @@ class SimplaImg {
     return this.$.controls;
   }
 
+  get _placeholder() {
+    return this.$.placeholder;
+  }
+
   _fileChanged(event) {
     let reader = new FileReader(),
         file = event.detail.value,
@@ -85,7 +89,11 @@ class SimplaImg {
   }
 
   _handleTap(event) {
-    if (!this.active) {
+    const target = event.target;
+
+    if (target === this._placeholder) {
+      this._controls.openFilePicker();
+    } else if (!this.active) {
       this.active = true;
     }
   }

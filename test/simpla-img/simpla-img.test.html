@@ -142,8 +142,6 @@
                 component.style.width = appliedValue;
 
                 component._syncImgSizing();
-                console.log(canvas.style.width);
-                console.log(canvas.style.height);
                 expect(canvas.style.width).to.equal(good);
                 expect(canvas.style.height).to.equal(defaultCase);
               });
@@ -209,10 +207,12 @@
         });
 
         describe('placeholder', function() {
-          var placeholder;
+          var placeholder,
+              placeholderImg;
 
           beforeEach(function() {
             placeholder = component.$.placeholder;
+            placeholderImg = Polymer.dom(placeholder).querySelector('img');
           });
 
           describe('follows display rules', function() {
@@ -242,11 +242,7 @@
               src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNasBQAAe4BSJC52v0AAAAASUVORK5CYII=',
               height: 300,
               width: 300
-            }, placeholderImg;
-
-            beforeEach(function() {
-              placeholderImg = Polymer.dom(placeholder).querySelector('img');
-            });
+            };
 
             it('should have the defaults when nothing is specified', function() {
               expect(placeholderImg.src).to.equal(defaults.src);
@@ -267,6 +263,33 @@
             it('should follow the height', function() {
               component.height = 200;
               expect(placeholderImg.height).to.equal(200);
+            });
+          });
+
+          it('should hide canvas when its active', function() {
+            component.usePlaceholder = true;
+            expect(component._canvas.style.display).to.equal('none');
+
+            component.usePlaceholder = false;
+            expect(component._canvas.style.display).to.not.equal('none');
+          });
+
+          describe('interacts with filepicker', function() {
+            var pickerStub;
+
+            beforeEach(function() {
+              pickerStub = sinon.stub(component.$.controls, 'openFilePicker');
+            });
+
+            afterEach(function() {
+              pickerStub.restore();
+            });
+
+            it('should open it on click', function() {
+              component.usePlaceholder = true;
+              placeholder.click();
+
+              expect(pickerStub.called).to.be.true;
             });
           });
         });

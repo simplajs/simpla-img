@@ -1227,9 +1227,15 @@ input[type="range"]::-moz-focus-outer {
   position: relative;
 }
 
+.placeholder img {
+  vertical-align: bottom;
+}
+
 </style>
 
-    <sm-meta-placeholder id="placeholder" show="[[usePlaceholder]]"><img src="[[_placeholderSrc]]" width="[[_placeholderWidth]]" height="[[_placeholderHeight]]"></sm-meta-placeholder>
+    <sm-meta-placeholder on-tap="_handleTap" id="placeholder" class="placeholder" show="[[usePlaceholder]]">
+      <img src="[[_placeholderSrc]]" width="[[_placeholderWidth]]" height="[[_placeholderHeight]]">
+    </sm-meta-placeholder>
 
     <sm-img-canvas id="image" src="[[src]]" width="[[width]]" height="[[height]]" scale="[[scale]]" translatex="[[position.x]]" translatey="[[position.y]]" active="[[active]]" on-pan-finished="updatePosition">
     </sm-img-canvas>
@@ -1384,7 +1390,11 @@ input[type="range"]::-moz-focus-outer {
 	  }, {
 	    key: '_handleTap',
 	    value: function _handleTap(event) {
-	      if (!this.active) {
+	      var target = event.target;
+
+	      if (target === this._placeholder) {
+	        this._controls.openFilePicker();
+	      } else if (!this.active) {
 	        this.active = true;
 	      }
 	    }
@@ -1436,6 +1446,11 @@ input[type="range"]::-moz-focus-outer {
 	    get: function get() {
 	      return this.$.controls;
 	    }
+	  }, {
+	    key: '_placeholder',
+	    get: function get() {
+	      return this.$.placeholder;
+	    }
 	  }]);
 
 	  return SimplaImg;
@@ -1476,7 +1491,7 @@ input[type="range"]::-moz-focus-outer {
 	    }
 	  },
 
-	  observers: ['_updatePlaceholder(src, editable)'],
+	  observers: ['_updatePlaceholder(src, editable)', '_usePlaceholderChanged(usePlaceholder)'],
 
 	  _updatePlaceholder: function _updatePlaceholder(src, editable) {
 	    this.usePlaceholder = editable && (!src || src === '');
@@ -1492,6 +1507,10 @@ input[type="range"]::-moz-focus-outer {
 
 	  _computePlaceholderHeight: function _computePlaceholderHeight(height) {
 	    return height || _constantsDefaults.DEFAULT_HEIGHT;
+	  },
+
+	  _usePlaceholderChanged: function _usePlaceholderChanged(value) {
+	    this._canvas.style.display = value ? 'none' : '';
 	  }
 	};
 	module.exports = exports['default'];
