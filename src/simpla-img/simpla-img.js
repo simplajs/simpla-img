@@ -1,11 +1,18 @@
+import placeholder from './behaviors/placeholder';
+
 class SimplaImg {
   beforeRegister() {
     this.is = 'simpla-img';
 
     this.properties = {
-      src: String,
-      width: String,
-      height: String,
+      src: {
+        type: String,
+        // Must have a value so that multi-param observers will get triggered
+        //  straight away, see placeholder
+        value: ''
+      },
+      width: Number,
+      height: Number,
       scale: {
         type: Number,
         value: 1
@@ -19,10 +26,11 @@ class SimplaImg {
 
   get behaviors() {
     return [
+      simpla.behaviors.editable(),
       simpla.behaviors.active({
         observer: '_activeChanged'
       })
-    ];
+    ].concat(placeholder);
   }
 
   get listeners() {
@@ -57,12 +65,19 @@ class SimplaImg {
     return this.$.controls;
   }
 
+  get _placeholder() {
+    return this.$.placeholder;
+  }
+
   _fileChanged(event) {
     let reader = new FileReader(),
         file = event.detail.value,
         src;
 
-    reader.onloadend = () => this.src = reader.result;
+    reader.onloadend = () => {
+      this.src = reader.result
+      this.active = true;
+    };
 
     reader.readAsDataURL(file);
   }
@@ -82,7 +97,15 @@ class SimplaImg {
   }
 
   _handleTap(event) {
-    if (!this.active) {
+    const target = event.target;
+
+    if (target.type === 'file') {
+      return;
+    }
+
+    if (target === this._placeholder) {
+      this._controls.openFilePicker();
+    } else {
       this.active = true;
     }
   }

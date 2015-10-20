@@ -115,6 +115,24 @@
           expect(component.active).to.be.true;
         });
 
+        it('should have editable behavior', function() {
+          expect(component.editable).to.not.be.undefined;
+        });
+
+        it('should become active when theres a change in file', function() {
+          component.active = false;
+          component._controls.file = { src: 'foo' };
+
+          expect(component.active).to.be.true;
+        });
+
+        it('should not go active when file input is clicked', function() {
+          component.active = false;
+          component._controls.$.file.click();
+
+          expect(component.active).to.be.false;
+        });
+
         describe('toggle sizing', function() {
           var styleCases = [
                 { applied: '45%', good: '100%', defaultCase: 'inherit' },
@@ -142,8 +160,6 @@
                 component.style.width = appliedValue;
 
                 component._syncImgSizing();
-                console.log(canvas.style.width);
-                console.log(canvas.style.height);
                 expect(canvas.style.width).to.equal(good);
                 expect(canvas.style.height).to.equal(defaultCase);
               });
@@ -204,6 +220,116 @@
             it('should be called once on ready call', function() {
               component.ready();
               expect(syncStub.callCount).to.equal(1);
+            });
+          });
+        });
+
+        describe('placeholder', function() {
+          var placeholder;
+
+          beforeEach(function() {
+            placeholder = component.$.placeholder;
+          });
+
+          it('should have the behavior, with a default', function() {
+            expect(component.placeholder).to.not.be.undefined;
+          });
+
+          describe('follows display rules', function() {
+            /**
+             * Placeholder should only be visible when the following rules are ALL true
+             *  - no src exists
+             *  - in edit mode
+             */
+            beforeEach(function() {
+              component.src = '';
+            });
+
+            it('should be there when src is empty', function() {
+              component.editable = true;
+              expect(component.usePlaceholder).to.be.true;
+            });
+
+            it('should not be there when not editing', function() {
+              component.editable = false;
+              expect(component.usePlaceholder).to.be.false;
+            });
+          });
+
+          describe('has right properties', function() {
+            function calculateInheritedStyle(prop) {
+              var oldDisplay = placeholder.style.display,
+                  styles,
+                  value;
+
+              component.style.display = 'none';
+              styles = window.getComputedStyle(placeholder);
+              value = styles[prop];
+              component.style.display = oldDisplay;
+
+              return value;
+            };
+
+            var defaults = {
+              img: 'rgb(200, 200, 200)',
+              height: 300,
+              width: 300
+            };
+
+            beforeEach(function() {
+              component.src = '';
+              component.usePlaceholder = true;
+            });
+
+            it('should have the defaults when nothing is specified', function() {
+              console.log('wot');
+              expect(placeholder.offsetWidth).to.equal(defaults.width);
+              expect(placeholder.offsetHeight).to.equal(defaults.height);
+              expect(calculateInheritedStyle('backgroundColor')).to.equal(defaults.img);
+            });
+
+            it('placeholder should set a url', function() {
+              component.placeholder = 'http://placecage.com/c/400/500';
+              expect(calculateInheritedStyle('background')).to.contain('http://placecage.com/c/400/500');
+            });
+
+            it('or a color', function() {
+              component.placeholder = 'rgb(250, 243, 211)';
+              expect(calculateInheritedStyle('background')).to.contain('rgb(250, 243, 211)');
+            });
+
+            it('should follow parent dimensions', function() {
+              component.style.width = '400px';
+              component.style.height = '240px';
+              expect(component.offsetHeight).to.equal(placeholder.offsetHeight);
+              expect(component.offsetWidth).to.equal(placeholder.offsetWidth);
+            });
+          });
+
+          it('should hide canvas when its active', function() {
+            component.usePlaceholder = true;
+            expect(component._canvas.style.display).to.equal('none');
+
+            component.usePlaceholder = false;
+            expect(component._canvas.style.display).to.not.equal('none');
+          });
+
+          describe('interacts with filepicker', function() {
+            var pickerStub;
+
+            beforeEach(function() {
+              pickerStub = sinon.stub(component.$.controls, 'openFilePicker');
+            });
+
+            afterEach(function() {
+              pickerStub.restore();
+            });
+
+            it('should open it on click', function() {
+              component.usePlaceholder = true;
+              placeholder.click();
+
+              expect(pickerStub.called).to.be.true;
             });
           });
         });
