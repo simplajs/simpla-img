@@ -34,6 +34,7 @@
     "polymer/polymer.html",
     "simpla/simpla.html",
     "sm-helper-button/sm-helper-button.html",
-    "sm-meta-placeholder/sm-meta-placeholder.html"
+    "sm-meta-placeholder/sm-meta-placeholder.html",
+    "default-content/default-content.html"
   ]
 }

@@ -18,6 +18,18 @@
         <simpla-img></simpla-img>
       </template>
     </test-fixture>
+
+    <test-fixture id="imgWithDefaultElement">
+      <template>
+        <simpla-img><default-content><img src="http://placecage.com/g/300/200" /></default-content></simpla-img>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="imgWithDefaultAttribute">
+      <template>
+        <simpla-img default="http://placecage.com/g/300/200"></simpla-img>
+      </template>
+    </test-fixture>
     <script>
       describe('<simpla-img>', function() {
 
@@ -282,7 +294,6 @@
             });
 
             it('should have the defaults when nothing is specified', function() {
-              console.log('wot');
               expect(placeholder.offsetWidth).to.equal(defaults.width);
               expect(placeholder.offsetHeight).to.equal(defaults.height);
               expect(calculateInheritedStyle('backgroundColor')).to.equal(defaults.img);
@@ -330,6 +341,47 @@
               placeholder.click();
 
               expect(pickerStub.called).to.be.true;
+            });
+          });
+        });
+
+        describe('default behavior', function() {
+          var url = 'http://placecage.com/g/300/200',
+              asAttribute,
+              asElement;
+
+          beforeEach(function() {
+            asAttribute = fixture('imgWithDefaultAttribute');
+            asElement = fixture('imgWithDefaultElement');
+          });
+
+          describe('using it', function() {
+            beforeEach(function() {
+              asAttribute.useDefault = true;
+              asElement.useDefault = true;
+            });
+
+            it('should set default based on attribute', function() {
+              expect(asAttribute.src).to.equal(url);
+            });
+
+            it('should set default based on element', function() {
+              expect(asElement.src).to.equal(url);
+            });
+          });
+
+          describe('not applying when useDefault is false', function() {
+            beforeEach(function() {
+              asAttribute.useDefault = false;
+              asElement.useDefault = false;
+            });
+
+            it('should not set default based on attribute', function() {
+              expect(asAttribute.src).to.not.equal(url);
+            });
+
+            it('should not set default based on element', function() {
+              expect(asElement.src).to.not.equal(url);
             });
           });
         });

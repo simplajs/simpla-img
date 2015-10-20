@@ -1,4 +1,5 @@
 import placeholder from './behaviors/placeholder';
+import customDefault from './behaviors/default';
 
 class SimplaImg {
   beforeRegister() {
@@ -30,7 +31,9 @@ class SimplaImg {
       simpla.behaviors.active({
         observer: '_activeChanged'
       })
-    ].concat(placeholder);
+    ]
+    .concat(placeholder)
+    .concat(customDefault);
   }
 
   get listeners() {
