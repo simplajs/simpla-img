@@ -207,6 +207,69 @@
             });
           });
         });
+
+        describe('placeholder', function() {
+          var placeholder;
+
+          beforeEach(function() {
+            placeholder = component.$.placeholder;
+          });
+
+          describe('follows display rules', function() {
+            /**
+             * Placeholder should only be visible when the following rules are ALL true
+             *  - no src exists
+             *  - in edit mode
+             */
+            beforeEach(function() {
+              component.src = '';
+              component.placeholder = 'http://placecage.com/g/300/200';
+            });
+
+            it('should be there when src is empty', function() {
+              component.editable = true;
+              expect(component.usePlaceholder).to.be.true;
+            });
+
+            it('should not be there when not editing', function() {
+              component.editable = false;
+              expect(component.usePlaceholder).to.be.false;
+            });
+          });
+
+          describe('has right properties', function() {
+            var defaults = {
+              src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNasBQAAe4BSJC52v0AAAAASUVORK5CYII=',
+              height: 300,
+              width: 300
+            }, placeholderImg;
+
+            beforeEach(function() {
+              placeholderImg = Polymer.dom(placeholder).querySelector('img');
+            });
+
+            it('should have the defaults when nothing is specified', function() {
+              expect(placeholderImg.src).to.equal(defaults.src);
+              expect(placeholderImg.height).to.equal(defaults.height);
+              expect(placeholderImg.width).to.equal(defaults.width);
+            });
+
+            it('should follow the placeholder attr', function() {
+              component.placeholder = 'http://placecage.com/c/400/500';
+              expect(placeholderImg.src).to.equal('http://placecage.com/c/400/500');
+            });
+
+            it('should follow the width', function() {
+              component.width = 200;
+              expect(placeholderImg.width).to.equal(200);
+            });
+
+            it('should follow the height', function() {
+              component.height = 200;
+              expect(placeholderImg.height).to.equal(200);
+            });
+          });
+        });
       });
     </script>
   </body>
