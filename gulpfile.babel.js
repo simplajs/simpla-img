@@ -101,7 +101,7 @@ gulp.task('clean', () => del([ '.tmp' ]));
 
 gulp.task('demo', (callback) => bs.init(options.browserSync));
 
-gulp.task('refresh', () => bs.reload);
+gulp.task('refresh', () => bs.reload());
 
 gulp.task('test', ['run', 'test:local']);
 
