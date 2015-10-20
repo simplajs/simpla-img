@@ -15,6 +15,7 @@
 
 :host {
   overflow: visible;
+  @apply(--typography);
 }
 
 /**
