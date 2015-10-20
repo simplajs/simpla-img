@@ -6,9 +6,20 @@
     <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
 
     <link rel="import" href="../simpla-img.html" />
+    <style media="screen">
+      body {
+        font-family: sans-serif;
+      }
+    </style>
   </head>
   <body>
+    <h1>Normal</h1>
     <simpla-img src="http://placecage.com/g/600/400"></simpla-img>
+    <h1>Placeholders</h1>
     <simpla-img editable></simpla-img>
+    <simpla-img editable placeholder="pink"></simpla-img>
+    <simpla-img editable placeholder="rgb(200,200,0)"></simpla-img>
+    <simpla-img editable placeholder="http://placecage.com/c/300/250"></simpla-img>
+    <simpla-img editable placeholder="http://placecage.com/gif/300/400" style="width: 200px;"></simpla-img>
   </body>
 </html>
