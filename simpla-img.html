@@ -40,7 +40,7 @@
 </div><dom-module id="simpla-img">
   <template>
     <style include="sm-css"></style>
-    <style>:host{overflow:hidden;display:inline-block;height:auto;width:auto;position:relative}.placeholder img{vertical-align:bottom}</style>
+    <style>:host{@apply(--typography);position:relative;overflow:hidden;display:inline-block;height:auto;width:auto}.placeholder img{vertical-align:bottom;cursor:pointer}.placeholder:hover::before{content:'Upload an image';position:absolute;top:0;right:0;bottom:0;left:0;margin:auto;width:150px;height:50px;text-align:center;font-size:21px;line-height:1.3;font-weight:900;color:var(--med-white);cursor:pointer;z-index:1}</style>
 
     <sm-meta-placeholder id="placeholder" class="placeholder" show="[[usePlaceholder]]">
       <img src="[[_placeholderSrc]]" width="[[_placeholderWidth]]" height="[[_placeholderHeight]]">
