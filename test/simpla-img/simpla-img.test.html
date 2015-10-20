@@ -115,6 +115,10 @@
           expect(component.active).to.be.true;
         });
 
+        it('should have editable behavior', function() {
+          expect(component.editable).to.not.be.undefined;
+        });
+
         describe('toggle sizing', function() {
           var styleCases = [
                 { applied: '45%', good: '100%', defaultCase: 'inherit' },
@@ -223,7 +227,6 @@
              */
             beforeEach(function() {
               component.src = '';
-              component.placeholder = 'http://placecage.com/g/300/200';
             });
 
             it('should be there when src is empty', function() {

@@ -1425,7 +1425,7 @@ input[type="range"]::-moz-focus-outer {
 	  }, {
 	    key: 'behaviors',
 	    get: function get() {
-	      return [simpla.behaviors.active({
+	      return [simpla.behaviors.editable(), simpla.behaviors.active({
 	        observer: '_activeChanged'
 	      }), _behaviorsPlaceholder2['default']];
 	    }

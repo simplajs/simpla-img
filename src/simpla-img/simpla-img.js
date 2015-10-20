@@ -21,6 +21,7 @@ class SimplaImg {
 
   get behaviors() {
     return [
+      simpla.behaviors.editable(),
       simpla.behaviors.active({
         observer: '_activeChanged'
       }),
