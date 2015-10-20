@@ -6,3 +6,7 @@
   width: auto;
   position: relative;
 }
+
+.placeholder img {
+  vertical-align: bottom;
+}
