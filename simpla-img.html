@@ -1233,7 +1233,7 @@ input[type="range"]::-moz-focus-outer {
 
 </style>
 
-    <sm-meta-placeholder on-tap="_handleTap" id="placeholder" class="placeholder" show="[[usePlaceholder]]">
+    <sm-meta-placeholder id="placeholder" class="placeholder" show="[[usePlaceholder]]">
       <img src="[[_placeholderSrc]]" width="[[_placeholderWidth]]" height="[[_placeholderHeight]]">
     </sm-meta-placeholder>
 
@@ -1370,7 +1370,8 @@ input[type="range"]::-moz-focus-outer {
 	          src = undefined;
 
 	      reader.onloadend = function () {
-	        return _this2.src = reader.result;
+	        _this2.src = reader.result;
+	        _this2.active = true;
 	      };
 
 	      reader.readAsDataURL(file);
@@ -1397,9 +1398,13 @@ input[type="range"]::-moz-focus-outer {
 	    value: function _handleTap(event) {
 	      var target = event.target;
 
-	      if (target === this._placeholder) {
+	      if (target.type === 'file') {
+	        return;
+	      }
+
+	      if (target === this._placeholder || target.parentElement === this._placeholder) {
 	        this._controls.openFilePicker();
-	      } else if (!this.active) {
+	      } else {
 	        this.active = true;
 	      }
 	    }

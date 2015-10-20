@@ -119,6 +119,20 @@
           expect(component.editable).to.not.be.undefined;
         });
 
+        it('should become active when theres a change in file', function() {
+          component.active = false;
+          component._controls.file = { src: 'foo' };
+
+          expect(component.active).to.be.true;
+        });
+
+        it('should not go active when file input is clicked', function() {
+          component.active = false;
+          component._controls.$.file.click();
+
+          expect(component.active).to.be.false;
+        });
+
         describe('toggle sizing', function() {
           var styleCases = [
                 { applied: '45%', good: '100%', defaultCase: 'inherit' },
@@ -291,6 +305,13 @@
             it('should open it on click', function() {
               component.usePlaceholder = true;
               placeholder.click();
+
+              expect(pickerStub.called).to.be.true;
+            });
+
+            it('should open it on img click', function() {
+              component.usePlaceholder = true;
+              placeholderImg.click();
 
               expect(pickerStub.called).to.be.true;
             });

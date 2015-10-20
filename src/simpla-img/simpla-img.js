@@ -75,7 +75,10 @@ class SimplaImg {
         file = event.detail.value,
         src;
 
-    reader.onloadend = () => this.src = reader.result;
+    reader.onloadend = () => {
+      this.src = reader.result
+      this.active = true;
+    };
 
     reader.readAsDataURL(file);
   }
@@ -97,9 +100,13 @@ class SimplaImg {
   _handleTap(event) {
     const target = event.target;
 
-    if (target === this._placeholder) {
+    if (target.type === 'file') {
+      return;
+    }
+
+    if (target === this._placeholder || target.parentElement === this._placeholder) {
       this._controls.openFilePicker();
-    } else if (!this.active) {
+    } else {
       this.active = true;
     }
   }
