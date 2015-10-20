@@ -1,74 +1,56 @@
-const easings = simpla.constants.easings;
+const easings = simpla.constants.easings,
+      opts = {
+        open: {
+          easing: easings.easeOutBack,
+          fill: 'both',
+          duration: 180,
+          delay: 15
+        },
+        close: {
+          easing: easings.easeOutCubic,
+          fill: 'both',
+          duration: 125
+        }
+      };
 
 export default {
   listeners: {
-    'activated': '_animateIn',
-    'deactivated': '_animateOut'
+    'activated': '_openControls',
+    'deactivated': '_closeControls'
   },
 
-  get _animateControls() {
-    return {
-      top: this.$['controls-top'],
-      bottom: this.$['controls-bottom']
-    };
-  },
+  get _controlAnimations() {
+    let topControls = this.$['controls-top'],
+        bottomControls = this.$['controls-bottom'];
 
-  get _animateOptions() {
-    return {
-      'in': {
-        easing: easings.easeOutBack,
-        fill: 'both',
-        duration: 180,
-        delay: 15
+    return [
+      {
+        target: topControls,
+        begin: { transform: 'translateY(-100%)', opacity: 0.5 },
+        end: { transform: 'translateY(0)', opacity: 1 }
       },
-      'out': {
-        easing: easings.easeOutCubic,
-        fill: 'both',
-        duration: 125
+      {
+        target: bottomControls,
+        begin: { transform: 'translateY(100%)', opacity: 0.5 },
+        end: { transform: 'translateY(0)', opacity: 1 }
       }
-    };
+    ]
   },
 
-  _animateIn() {
-    let { top, bottom } = this._animateControls,
-        opts = this._animateOptions;
-
-    this.toggleAttribute('visible', true, top);
-    this.toggleAttribute('visible', true, bottom);
-
-    top.animate([
-      { transform: 'translateY(-100%)', opacity: 0.5 },
-      { transform: 'translateY(0)', opacity: 1 }
-    ], opts.in);
-
-    bottom.animate([
-      { transform: 'translateY(100%)', opacity: 0.5 },
-      { transform: 'translateY(0)', opacity: 1 }
-    ], opts.in);
-
+  _openControls(){
+    this._controlAnimations.forEach(({ target, begin, end }) => {
+      this.toggleAttribute('visible', true, target);
+      target.animate([begin, end], opts.open);
+    });
   },
 
-  _animateOut() {
-    let { top, bottom } = this._animateControls,
-        opts = this._animateOptions,
-        topAnimate,
-        bottomAnimate;
-
-    topAnimate = top.animate([
-      { transform: 'translateY(0)', opacity: 1 },
-      { transform: 'translateY(-100%)', opacity: 0.5 }
-    ], opts.out);
-
-    bottomAnimate = bottom.animate([
-      { transform: 'translateY(0)', opacity: 1 },
-      { transform: 'translateY(100%)', opacity: 0.5 }
-    ], opts.out);
-
-    topAnimate.onfinish = () => {
-      this.toggleAttribute('visible', false, top);
-    }
-    bottomAnimate.onfinish = () => {
-      this.toggleAttribute('visible', false, bottom);
-    }
+  _closeControls() {
+    this._controlAnimations.forEach(({ target, begin, end, }) => {
+      let animation = target.animate([end, begin], opts.close);
+      animation.onfinish = () => {
+        this.toggleAttribute('visible', false, target);
+      };
+    });
   }
+
 };
