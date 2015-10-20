@@ -1,6 +1,13 @@
 :root {
+
   --placeholder-background: var(--gray);
-  --placeholder-sizing: cover;
+
+  --placeholder-settings: {
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+  };
+
 }
 
 :host {
@@ -13,25 +20,20 @@
 }
 
 .placeholder {
-  min-width: 100%;
-  min-height: 100%;
   width: 300px;
   height: 300px;
+  min-width: 100%;
+  min-height: 100%;
   max-width: 100%;
   max-height: 100%;
-
-  background: var(--placeholder-background) center center no-repeat;
-  
-  /* Note: storing it in a var may seem unecessary, but otherwise background
-      is given a higher specificity (due to polymer's var shim) and this rule
-      will not get applied
-  */
-  background-size: var(--placeholder-sizing);
-}
-
-.placeholder img {
-  vertical-align: bottom;
   cursor: pointer;
+
+  background: var(--placeholder-background);
+
+  /* Other props must also be in vars, otherwise 'background' gets
+     higher specificity due to polymer's custom-property shim.
+  */
+  @apply(--placeholder-settings)
 }
 
 .placeholder:hover::before {
