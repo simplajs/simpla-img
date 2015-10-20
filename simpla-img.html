@@ -98,13 +98,14 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(3);
+	module.exports = __webpack_require__(4);
 
 
 /***/ },
 /* 1 */,
 /* 2 */,
-/* 3 */
+/* 3 */,
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -113,7 +114,7 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-	var _helpersUtilsJs = __webpack_require__(4);
+	var _helpersUtilsJs = __webpack_require__(5);
 
 	var DEFAULT_SCALE = 1,
 	    DEFAULT_TRANSLATE_X = 0,
@@ -341,7 +342,7 @@
 	Polymer(smImgCanvas);
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -992,7 +993,7 @@ input[type="range"]::-moz-focus-outer {
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(5);
+	module.exports = __webpack_require__(6);
 
 
 /***/ },
@@ -1000,7 +1001,8 @@ input[type="range"]::-moz-focus-outer {
 /* 2 */,
 /* 3 */,
 /* 4 */,
-/* 5 */
+/* 5 */,
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1011,7 +1013,7 @@ input[type="range"]::-moz-focus-outer {
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-	var _helpersAnimation = __webpack_require__(6);
+	var _helpersAnimation = __webpack_require__(7);
 
 	var _helpersAnimation2 = _interopRequireDefault(_helpersAnimation);
 
@@ -1125,7 +1127,7 @@ input[type="range"]::-moz-focus-outer {
 	Polymer(SmImgControls);
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1227,7 +1229,7 @@ input[type="range"]::-moz-focus-outer {
 
 </style>
 
-    <sm-meta-placeholder id="placeholder" show="[[usePlaceholder]]"><img src="[[placeholder]]" width="[[_placeholderWidth]]" height="[[_placeholderHeight]]"></sm-meta-placeholder>
+    <sm-meta-placeholder id="placeholder" show="[[usePlaceholder]]"><img src="[[_placeholderSrc]]" width="[[_placeholderWidth]]" height="[[_placeholderHeight]]"></sm-meta-placeholder>
 
     <sm-img-canvas id="image" src="[[src]]" width="[[width]]" height="[[height]]" scale="[[scale]]" translatex="[[position.x]]" translatey="[[position.y]]" active="[[active]]" on-pan-finished="updatePosition">
     </sm-img-canvas>
@@ -1293,9 +1295,13 @@ input[type="range"]::-moz-focus-outer {
 
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-	var _constantsDefaults = __webpack_require__(2);
+	var _behaviorsPlaceholder = __webpack_require__(2);
+
+	var _behaviorsPlaceholder2 = _interopRequireDefault(_behaviorsPlaceholder);
 
 	var SimplaImg = (function () {
 	  function SimplaImg() {
@@ -1318,20 +1324,8 @@ input[type="range"]::-moz-focus-outer {
 	        position: {
 	          type: Object,
 	          value: { x: 0, y: 0 }
-	        },
-	        _placeholderWidth: {
-	          type: Number,
-	          computed: '_computePlaceholderWidth(width)',
-	          value: _constantsDefaults.DEFAULT_WIDTH
-	        },
-	        _placeholderHeight: {
-	          type: Number,
-	          computed: '_computePlaceholderHeight(height)',
-	          value: _constantsDefaults.DEFAULT_HEIGHT
 	        }
 	      };
-
-	      this.observers = ['_updatePlaceholder(src, editable)'];
 	    }
 	  }, {
 	    key: 'ready',
@@ -1419,28 +1413,11 @@ input[type="range"]::-moz-focus-outer {
 	      image.style['height'] = isPercentage('height') ? '100%' : 'inherit';
 	    }
 	  }, {
-	    key: '_updatePlaceholder',
-	    value: function _updatePlaceholder(src, editable) {
-	      this.usePlaceholder = editable && (!src || src === '');
-	    }
-	  }, {
-	    key: '_computePlaceholderWidth',
-	    value: function _computePlaceholderWidth(width) {
-	      return width || _constantsDefaults.DEFAULT_WIDTH;
-	    }
-	  }, {
-	    key: '_computePlaceholderHeight',
-	    value: function _computePlaceholderHeight(height) {
-	      return height || _constantsDefaults.DEFAULT_HEIGHT;
-	    }
-	  }, {
 	    key: 'behaviors',
 	    get: function get() {
 	      return [simpla.behaviors.active({
 	        observer: '_activeChanged'
-	      }), simpla.behaviors.placeholder({
-	        value: _constantsDefaults.DEFAULT_PLACEHOLDER
-	      })];
+	      }), _behaviorsPlaceholder2['default']];
 	    }
 	  }, {
 	    key: 'listeners',
@@ -1468,6 +1445,59 @@ input[type="range"]::-moz-focus-outer {
 
 /***/ },
 /* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var _constantsDefaults = __webpack_require__(3);
+
+	exports['default'] = {
+	  behaviors: [simpla.behaviors.placeholder()],
+
+	  properties: {
+	    _placeholderSrc: {
+	      type: String,
+	      computed: '_computePlaceholderSrc(placeholder)',
+	      value: _constantsDefaults.DEFAULT_PLACEHOLDER
+	    },
+	    _placeholderWidth: {
+	      type: Number,
+	      computed: '_computePlaceholderWidth(width)',
+	      value: _constantsDefaults.DEFAULT_WIDTH
+	    },
+	    _placeholderHeight: {
+	      type: Number,
+	      computed: '_computePlaceholderHeight(height)',
+	      value: _constantsDefaults.DEFAULT_HEIGHT
+	    }
+	  },
+
+	  observers: ['_updatePlaceholder(src, editable)'],
+
+	  _updatePlaceholder: function _updatePlaceholder(src, editable) {
+	    this.usePlaceholder = editable && (!src || src === '');
+	  },
+
+	  _computePlaceholderSrc: function _computePlaceholderSrc(placeholder) {
+	    return placeholder || _constantsDefaults.DEFAULT_PLACEHOLDER;
+	  },
+
+	  _computePlaceholderWidth: function _computePlaceholderWidth(width) {
+	    return width || _constantsDefaults.DEFAULT_WIDTH;
+	  },
+
+	  _computePlaceholderHeight: function _computePlaceholderHeight(height) {
+	    return height || _constantsDefaults.DEFAULT_HEIGHT;
+	  }
+	};
+	module.exports = exports['default'];
+
+/***/ },
+/* 3 */
 /***/ function(module, exports) {
 
 	/* eslint-disable */

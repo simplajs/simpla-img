@@ -1,4 +1,4 @@
-import { DEFAULT_PLACEHOLDER, DEFAULT_WIDTH, DEFAULT_HEIGHT } from './constants/defaults';
+import placeholder from './behaviors/placeholder';
 
 class SimplaImg {
   beforeRegister() {
@@ -15,22 +15,8 @@ class SimplaImg {
       position: {
         type: Object,
         value: { x: 0, y: 0}
-      },
-      _placeholderWidth: {
-        type: Number,
-        computed: '_computePlaceholderWidth(width)',
-        value: DEFAULT_WIDTH
-      },
-      _placeholderHeight: {
-        type: Number,
-        computed: '_computePlaceholderHeight(height)',
-        value: DEFAULT_HEIGHT
       }
     };
-
-    this.observers = [
-      '_updatePlaceholder(src, editable)'
-    ];
   }
 
   get behaviors() {
@@ -38,9 +24,7 @@ class SimplaImg {
       simpla.behaviors.active({
         observer: '_activeChanged'
       }),
-      simpla.behaviors.placeholder({
-        value: DEFAULT_PLACEHOLDER
-      })
+      placeholder
     ];
   }
 
@@ -125,18 +109,6 @@ class SimplaImg {
 
     image.style['width'] = isPercentage('width') ? '100%' : 'inherit';
     image.style['height'] = isPercentage('height') ? '100%' : 'inherit';
-  }
-
-  _updatePlaceholder(src, editable) {
-    this.usePlaceholder = editable && (!src || src === '');
-  }
-
-  _computePlaceholderWidth(width) {
-    return width || DEFAULT_WIDTH;
-  }
-
-  _computePlaceholderHeight(height) {
-    return height || DEFAULT_HEIGHT;
   }
 }
 
