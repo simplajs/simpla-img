@@ -14,9 +14,17 @@ const easings = simpla.constants.easings,
       };
 
 export default {
-  listeners: {
-    'activated': '_openControls',
-    'deactivated': '_closeControls'
+  observers: [
+    '_toggleControls(active)'
+  ],
+
+  _toggleControls(active) {
+    if (active){
+      this._setPosition();
+      this._openControls();
+    } else {
+      this._closeControls();
+    }
   },
 
   get _controlAnimations() {

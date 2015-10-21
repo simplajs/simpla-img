@@ -31,11 +31,7 @@ class SmImgControls {
   get behaviors() {
     return [
       animation,
-      simpla.behaviors.active({
-        observer: '_activeObserver',
-        notify: false,
-        reflectToAttribute: true
-      })
+      simpla.behaviors.active()
     ];
   }
 
@@ -50,15 +46,6 @@ class SmImgControls {
 
   openFilePicker() {
     this.$.file.click();
-  }
-
-  _activeObserver(active) {
-    if (active){
-      this._setPosition();
-      this.fire('activated');
-    } else {
-      this.fire('deactivated');
-    }
   }
 
   /**

@@ -35,25 +35,11 @@
         });
 
         describe('active', function() {
-          var fire;
-
-          beforeEach(function() {
-            fire = sinon.stub(component, 'fire');
-          });
 
           it('should default to false', function() {
             expect(component.active).to.be.false;
           });
 
-          it('should fire activated / deactivated appropriately', function() {
-            component.active = undefined;
-
-            component.active = true;
-            expect(component.fire.calledWith('activated')).to.be.true;
-
-            component.active = false;
-            expect(component.fire.calledWith('deactivated')).to.be.true;
-          });
         });
 
         describe('_setPosition', function() {
