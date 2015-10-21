@@ -46,6 +46,8 @@
           canvas = component.$.image;
           controls = component.$.controls;
 
+          canvas.editable = true;
+
           window.FileReader = function() {};
           window.FileReader.prototype = {
             readAsDataURL(mockFile) {

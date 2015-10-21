@@ -26,8 +26,7 @@ class smImgCanvas {
 
   get behaviors() {
     return [
-      simpla.behaviors.active({
-        reflectToAttribute: true,
+      simpla.behaviors.editable({
         notify: false
       })
     ];
@@ -61,7 +60,7 @@ class smImgCanvas {
    * @type {Number}
    */
   set scale(value) {
-    if (!this.active) {
+    if (!this.editable) {
       return;
     }
 
@@ -90,7 +89,7 @@ class smImgCanvas {
    * @type {Number}
    */
   set translateX(value) {
-    if (!this.active) {
+    if (!this.editable) {
       return;
     }
 
@@ -109,7 +108,7 @@ class smImgCanvas {
    * @type {Number}
    */
   set translateY(value) {
-    if (!this.active) {
+    if (!this.editable) {
       return;
     }
 
