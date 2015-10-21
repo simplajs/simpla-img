@@ -1,25 +1,10 @@
 let corePersists,
     customPersists;
 
-corePersists = simpla.behaviors.persists();
+corePersists = simpla.behaviors.persists('api');
 customPersists = {
   listeners: {
     'loaded': '_updateFromLoad'
-  },
-
-  save() {
-    let previous = this.$.api.value,
-        current = this._toObject();
-
-    this.$.api.value = current;
-
-    if (!this._equal(current, previous)) {
-      this.$.api.save();
-    }
-  },
-
-  load() {
-    this.$.api.load();
   },
 
   _toObject() {
