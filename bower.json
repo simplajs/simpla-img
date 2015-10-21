@@ -24,7 +24,8 @@
     "polymer": "^1.1.4",
     "simpla": "git@github.com:simplaio/simpla.git",
     "sm-helper-button": "git@github.com:simplaio/sm-helper-button.git",
-    "sm-meta-placeholder": "git@github.com:simplaio/sm-meta-placeholder.git"
+    "sm-meta-placeholder": "git@github.com:simplaio/sm-meta-placeholder.git",
+    "default-content": "git@github.com:simplaio/default-content.git"
   },
   "devDependencies": {
     "web-component-tester": "^3.3.22",
