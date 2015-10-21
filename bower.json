@@ -36,6 +36,7 @@
     "simpla/simpla.html",
     "sm-helper-button/sm-helper-button.html",
     "sm-meta-placeholder/sm-meta-placeholder.html",
-    "default-content/default-content.html"
+    "default-content/default-content.html",
+    "sm-connect-api/sm-connect-api.html"
   ]
 }

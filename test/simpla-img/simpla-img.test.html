@@ -385,6 +385,105 @@
             });
           });
         });
+
+        describe('persists behavior', function() {
+          it('should expose save, load, _equal, _toObject and _fromObject functions', function() {
+            ['save', 'load', '_toObject', '_fromObject', '_equal']
+              .forEach(function(fn) {
+                expect(typeof component[fn]).to.equal('function');
+              });
+          });
+
+          it('should have _toObject which turns it into an object', function() {
+            component.src = 'foobar';
+            component.scale = 1.5;
+            component.position = { x: 25, y: 10 };
+            component.title = 'some image';
+
+            expect(component._toObject()).to.deep.equal({
+              src: 'foobar',
+              scale: 1.5,
+              position: { x: 25, y: 10 },
+              title: 'some image'
+            });
+          });
+
+          it('should expose equal that compares two "images"', function() {
+            var first,
+                second,
+                third,
+                firstSerial,
+                secondSerial,
+                thirdSerial;
+
+            first = fixture('default');
+            first.src = 'foobar';
+            first.scale = 1.5;
+            first.position = { x: 25, y: 10 };
+
+            second = fixture('default');
+            second.src = 'floop';
+            second.scale = 1.25;
+            second.position = { x: 0, y: 0 };
+
+            third = fixture('default');
+            third.src = 'foobar';
+            third.scale = 1.5;
+            third.position = { x: 25, y: 10 };
+
+            firstSerial = first._toObject();
+            secondSerial = second._toObject();
+            thirdSerial = third._toObject();
+
+            expect(component._equal(firstSerial, secondSerial)).to.not.be.true;
+            expect(component._equal(firstSerial, thirdSerial)).to.be.true;
+            expect(component._equal(firstSerial, null)).to.be.false;
+          });
+
+          describe('saving', function() {
+            it('should call save() on api when not equal', function() {
+              sinon.stub(component, '_equal').returns(false);
+              sinon.spy(component.$.api, 'save');
+              component.src = 'foo';
+              component.save();
+              expect(component.$.api.save.called).to.be.true;
+              expect(component.$.api.value.src).to.equal('foo');
+            });
+
+            it('should not call save() on api when equal', function() {
+              sinon.stub(component, '_equal').returns(true);
+              sinon.spy(component.$.api, 'save');
+
+              component.save();
+              expect(component.$.api.save.called).to.be.false;
+            });
+
+            it('should follow attribute', function() {
+              component.$.api.saving = true;
+              expect(component.saving).to.be.true;
+            });
+          });
+
+          describe('loading', function() {
+            it('should call load on api', function() {
+              sinon.stub(component.$.api, 'load');
+
+              component.load();
+              expect(component.$.api.load.called).to.be.true;
+            });
+
+            it('should update its value when api loaded', function() {
+              component.$.api.fire('loaded', { value: { src: 'foo', position: {} } });
+
+              expect(component.src).to.equal('foo');
+            });
+
+            it('should follow attribute', function() {
+              component.$.api.loading = true;
+              expect(component.loading).to.be.true;
+            });
+          });
+        });
       });
     </script>
   </body>

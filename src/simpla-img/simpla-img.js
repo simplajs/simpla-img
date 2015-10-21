@@ -1,5 +1,6 @@
 import placeholder from './behaviors/placeholder';
 import customDefault from './behaviors/default';
+import persists from './behaviors/persists';
 
 class SimplaImg {
   beforeRegister() {
@@ -33,7 +34,8 @@ class SimplaImg {
       })
     ]
     .concat(placeholder)
-    .concat(customDefault);
+    .concat(customDefault)
+    .concat(persists);
   }
 
   get listeners() {
