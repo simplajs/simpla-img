@@ -30,13 +30,20 @@
         <simpla-img default="http://placecage.com/g/300/200"></simpla-img>
       </template>
     </test-fixture>
+
+    <test-fixture id="shared">
+      <template>
+        <sm-helper-share type="state" key="editable"></sm-helper-share>
+      </template>
+    </test-fixture>
     <script>
       describe('<simpla-img>', function() {
 
         var component,
             componentFixtures,
             canvas,
-            controls;
+            controls,
+            sharedEditable;
 
         componentFixtures = window.fixtures['simpla-img'];
 
@@ -62,10 +69,21 @@
             done();
           };
           component.src = 'https://www.placecage.com/g/100/200';
+
+          sharedEditable = fixture('shared');
         });
 
         it('is okay', function() {
           expect(component).to.be.ok;
+        });
+
+        it('should bind its editable value to shared editable value', function() {
+          component.editable = false;
+          sharedEditable.value = true;
+          expect(component.editable).to.be.true;
+
+          component.editable = false;
+          expect(sharedEditable.value).to.be.false;
         });
 
         it('updatePosition changes its position based on canvas', function() {

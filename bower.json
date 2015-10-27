@@ -25,12 +25,13 @@
     "simpla": "git@github.com:simplaio/simpla.git",
     "sm-helper-button": "git@github.com:simplaio/sm-helper-button.git",
     "sm-meta-placeholder": "git@github.com:simplaio/sm-meta-placeholder.git",
-    "default-content": "git@github.com:simplaio/default-content.git"
+    "default-content": "git@github.com:simplaio/default-content.git",
+    "sm-connect-api": "git@github.com:simplaio/sm-connect-api.git",
+    "sm-helper-share": "git@github.com:simplaio/sm-helper-share.git"
   },
   "devDependencies": {
     "web-component-tester": "^3.3.22",
-    "test-fixture": "PolymerElements/test-fixture#~1.0.0",
-    "sm-connect-api": "git@github.com:simplaio/sm-connect-api.git#~0.2.0"
+    "test-fixture": "PolymerElements/test-fixture#~1.0.0"
   },
   "componentImports": [
     "polymer/polymer.html",
@@ -38,6 +39,7 @@
     "sm-helper-button/sm-helper-button.html",
     "sm-meta-placeholder/sm-meta-placeholder.html",
     "default-content/default-content.html",
-    "sm-connect-api/sm-connect-api.html"
+    "sm-connect-api/sm-connect-api.html",
+    "sm-helper-share/sm-helper-share.html"
   ]
 }
