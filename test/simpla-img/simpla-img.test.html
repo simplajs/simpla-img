@@ -463,7 +463,7 @@
           describe('saving', function() {
             it('should call save() on api when not equal', function() {
               sinon.stub(component, '_equal').returns(false);
-              sinon.spy(component.$.api, 'save');
+              sinon.stub(component.$.api, 'save');
               component.src = 'foo';
               component.save();
               expect(component.$.api.save.called).to.be.true;
@@ -472,7 +472,7 @@
 
             it('should not call save() on api when equal', function() {
               sinon.stub(component, '_equal').returns(true);
-              sinon.spy(component.$.api, 'save');
+              sinon.stub(component.$.api, 'save');
 
               component.save();
               expect(component.$.api.save.called).to.be.false;
