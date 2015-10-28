@@ -36,7 +36,7 @@
   @apply(--placeholder-settings)
 }
 
-.placeholder:hover::before {
+.placeholder::before {
   content: 'Upload an image';
   position: absolute;
   top: 0;
