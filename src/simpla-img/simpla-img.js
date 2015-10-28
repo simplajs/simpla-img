@@ -66,7 +66,7 @@ class SimplaImg {
     if (event) {
       event.stopPropagation();
     }
-    
+
     this._controls.openFilePicker();
   }
 
@@ -112,7 +112,7 @@ class SimplaImg {
   _handleTap(event) {
     const target = event.target;
 
-    if (target.type === 'file') {
+    if (!this.editable || target.type === 'file') {
       return;
     }
 

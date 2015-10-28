@@ -132,9 +132,18 @@
 
         it('should activate on click', function() {
           component.active = false;
+          component.editable = true;
           component.click();
 
           expect(component.active).to.be.true;
+        });
+
+        it('should not activate on click, if not editable', function() {
+          component.active = false;
+          component.editable = false
+          component.click();
+
+          expect(component.active).to.be.false;
         });
 
         it('should deactivate on click outside', function() {
