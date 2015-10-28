@@ -234,6 +234,24 @@
             component.scale = secondAttempt;
             expect(component.scale).to.equal(firstAttempt);
           });
+
+          it('should reflect to attribute', function() {
+            component.editable = false;
+            expect(component.hasAttribute('editable')).to.be.false;
+
+            component.editable = true;
+            expect(component.hasAttribute('editable')).to.be.true;
+          });
+        });
+
+        describe('active', function() {
+          it('should reflect to attribute', function() {
+            component.active = false;
+            expect(component.hasAttribute('active')).to.be.false;
+
+            component.active = true;
+            expect(component.hasAttribute('active')).to.be.true;
+          });
         });
       });
     </script>

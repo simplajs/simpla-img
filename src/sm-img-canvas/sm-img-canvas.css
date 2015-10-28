@@ -15,7 +15,7 @@
 }
 
 /* Hover highlight */
-:host(:hover)::before {
+:host([editable]:hover)::before {
   content: '';
   position: absolute;
   top: 0;

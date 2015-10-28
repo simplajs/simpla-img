@@ -27,7 +27,11 @@ class smImgCanvas {
   get behaviors() {
     return [
       simpla.behaviors.editable({
+        reflectToAttribute: true,
         notify: false
+      }),
+      simpla.behaviors.active({
+        reflectToAttribute: true
       })
     ];
   }
