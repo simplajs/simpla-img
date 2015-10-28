@@ -35,6 +35,12 @@
       </template>
     </test-fixture>
 
+    <test-fixture id="useDefaultAsAttribute">
+      <template>
+        <simpla-img use-default default="http://placecage.com/g/300/200"></simpla-img>
+      </template>
+    </test-fixture>
+
     <test-fixture id="shared">
       <template>
         <sm-helper-share type="state" key="editable"></sm-helper-share>
@@ -381,11 +387,13 @@
         describe('default behavior', function() {
           var url = 'http://placecage.com/g/300/200',
               asAttribute,
-              asElement;
+              asElement,
+              useDefaultAttribute;
 
           beforeEach(function() {
             asAttribute = fixture('imgWithDefaultAttribute');
             asElement = fixture('imgWithDefaultElement');
+            useDefaultAsAttribute = fixture('useDefaultAsAttribute');
           });
 
           describe('using it', function() {
@@ -400,6 +408,10 @@
 
             it('should set default based on element', function() {
               expect(asElement.src).to.equal(url);
+            });
+
+            it('useDefault applied as attribute should cause default to be used', function() {
+              expect(useDefaultAsAttribute.src).to.equal(url);
             });
           });
 
