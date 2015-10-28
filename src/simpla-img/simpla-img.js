@@ -62,6 +62,14 @@ class SimplaImg {
     this.position = { x: image.translateX, y: image.translateY };
   }
 
+  chooseFile(event) {
+    if (event) {
+      event.stopPropagation();
+    }
+    
+    this._controls.openFilePicker();
+  }
+
   get _canvas() {
     return this.$.image;
   }
