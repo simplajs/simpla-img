@@ -27,7 +27,7 @@ customPersists = {
       y: value.position.y
     } : { x: 0, y: 0 };
     this.title = value.title;
-    this.scale = value.scale;
+    this.scale = value.scale || 1;
 
     this._canvas.editable = pastEditable;
   },

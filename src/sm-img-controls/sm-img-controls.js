@@ -48,7 +48,7 @@ class SmImgControls {
     if (event) {
       event.stopPropagation();
     }
-    
+
     this.$.file.click();
   }
 

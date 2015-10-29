@@ -111,6 +111,14 @@
           expect(canvas.scale).to.equal(1.2);
         });
 
+        it('should set scale to 1 when undefined', function() {
+          component._fromObject({
+            scale: undefined
+          });
+
+          expect(component.scale).to.equal(1);
+        });
+
         it('updatePosition changes its position based on canvas', function() {
           canvas.scale = 2;
           canvas.translateX = -45;
