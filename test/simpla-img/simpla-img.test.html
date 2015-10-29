@@ -97,26 +97,43 @@
           expect(sharedEditable.value).to.be.false;
         });
 
-        it('should make canvas editable while loading from object', function() {
-          component.editable = false;
-          component._canvas.editable = false;
+        describe('_fromObject', function() {
+          it('should make canvas editable while loading from object', function() {
+            component.editable = false;
+            component._canvas.editable = false;
 
-          component._fromObject({
-            src: 'foobar.jpg',
-            title: 'foo',
-            scale: 1.2,
-            position: { x: 10, y: 10 }
+            component._fromObject({
+              src: 'foobar.jpg',
+              title: 'foo',
+              scale: 1.2,
+              position: { x: 10, y: 10 }
+            });
+
+            expect(canvas.scale).to.equal(1.2);
           });
 
-          expect(canvas.scale).to.equal(1.2);
-        });
+          it('should set scale to 1 when undefined', function() {
+            component._fromObject({
+              scale: undefined
+            });
 
-        it('should set scale to 1 when undefined', function() {
-          component._fromObject({
-            scale: undefined
+            expect(component.scale).to.equal(1);
           });
 
-          expect(component.scale).to.equal(1);
+          it('should update translate on canvas when positions are set', function() {
+            canvas._imgWidth = null;
+            canvas._width = null;
+            canvas._imgHeight = null;
+            canvas._height = null;
+            
+            component._fromObject({
+              scale: 1.5,
+              position: { x: -5, y: -15 }
+            });
+
+            expect(canvas.translateX).to.equal(-5);
+            expect(canvas.translateY).to.equal(-15);
+          });
         });
 
         it('updatePosition changes its position based on canvas', function() {

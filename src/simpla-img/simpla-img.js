@@ -21,9 +21,15 @@ class SimplaImg {
       },
       position: {
         type: Object,
-        value: { x: 0, y: 0}
+        value: { x: 0, y: 0},
+        observer: '_positionChanged'
       }
     };
+  }
+
+  _positionChanged(position) {
+    this._canvas.translateX = position.x;
+    this._canvas.translateY = position.y;
   }
 
   get behaviors() {
