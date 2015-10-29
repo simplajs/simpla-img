@@ -56,8 +56,12 @@
 }
 
 /**
- * Image uploading spinner
+ * Image uploading state/spinner
  */
+:host([saving]) {
+  pointer-events: none;
+}
+
 :host([saving])::before {
   content: '';
   position: absolute;

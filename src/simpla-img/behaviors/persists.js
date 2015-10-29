@@ -8,8 +8,15 @@ customPersists = {
   },
 
   observers: [
-    '_uidChanged(uid)'
+    '_uidChanged(uid)',
+    '_savingChanged(saving)'
   ],
+
+  _savingChanged(saving) {
+    if (saving) {
+      this.$.controls.active = false
+    }
+  },
 
   _toObject() {
     let { src, position, title, scale } = this,
