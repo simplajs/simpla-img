@@ -14,11 +14,16 @@ corePlaceholder = simpla.behaviors.placeholder({
 
 placeholder = {
   observers: [
-    '_updatePlaceholder(src, editable)'
+    '_setPlaceholderFromEditable(editable)',
+    '_setPlaceholderFromSrc(src)'
   ],
 
-  _updatePlaceholder(src, editable) {
-    this.usePlaceholder = editable && (!src || src === '');
+  _setPlaceholderFromEditable(editable) {
+    this.usePlaceholder = editable && (!this.src || this.src === '');
+  },
+
+  _setPlaceholderFromSrc(src) {
+    this.usePlaceholder = this.editable && (!src || src === '');
   },
 
   _usePlaceholderChanged(value) {

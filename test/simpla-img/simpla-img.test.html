@@ -320,6 +320,12 @@
               component.editable = false;
               expect(component.usePlaceholder).to.be.false;
             });
+
+            it('should behave appropriately even if src is undefined', function() {
+              component.src = undefined;
+              component.editable = true;
+              expect(component.usePlaceholder).to.be.true;
+            });
           });
 
           describe('has right properties', function() {
