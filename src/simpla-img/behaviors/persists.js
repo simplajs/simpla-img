@@ -18,6 +18,9 @@ customPersists = {
   },
 
   _fromObject(value) {
+    const pastEditable = this._canvas.editable;
+    this._canvas.editable = true;
+
     this.src = value.src;
     this.position = value.position ? {
       x: value.position.x,
@@ -25,6 +28,8 @@ customPersists = {
     } : { x: 0, y: 0 };
     this.title = value.title;
     this.scale = value.scale;
+
+    this._canvas.editable = pastEditable;
   },
 
   _equal(imageA, imageB) {

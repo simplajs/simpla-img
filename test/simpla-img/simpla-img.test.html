@@ -77,6 +77,7 @@
 
           canvas.$.source.onload = function() {
             done();
+            canvas.$.source.onload = null;
           };
           component.src = 'https://www.placecage.com/g/100/200';
 
@@ -94,6 +95,20 @@
 
           component.editable = false;
           expect(sharedEditable.value).to.be.false;
+        });
+
+        it('should make canvas editable while loading from object', function() {
+          component.editable = false;
+          component._canvas.editable = false;
+
+          component._fromObject({
+            src: 'foobar.jpg',
+            title: 'foo',
+            scale: 1.2,
+            position: { x: 10, y: 10 }
+          });
+
+          expect(canvas.scale).to.equal(1.2);
         });
 
         it('updatePosition changes its position based on canvas', function() {
