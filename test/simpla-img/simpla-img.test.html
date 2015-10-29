@@ -527,6 +527,14 @@
               component.$.api.loading = true;
               expect(component.loading).to.be.true;
             });
+
+            it('should be called when uid changes', function() {
+              sinon.stub(component, 'load');
+
+              component.uid = 'a';
+              component.uid = 'b';
+              expect(component.load.called).to.be.true;
+            });
           });
         });
       });

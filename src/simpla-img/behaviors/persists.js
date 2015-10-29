@@ -7,6 +7,10 @@ customPersists = {
     'loaded': '_updateFromLoad'
   },
 
+  observers: [
+    '_uidChanged(uid)'
+  ],
+
   _toObject() {
     let { src, position, title, scale } = this,
         { x, y } = position;
@@ -35,6 +39,10 @@ customPersists = {
 
   _updateFromLoad({ detail }) {
     this._fromObject(detail.value);
+  },
+
+  _uidChanged() {
+    this.load();
   }
 };
 
