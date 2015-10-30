@@ -40,7 +40,7 @@
 </div><dom-module id="simpla-img">
   <template>
     <style include="sm-css"></style>
-    <style>:root{--placeholder-background:var(--gray);--placeholder-settings:{background-size:cover;background-position:center center;background-repeat:no-repeat};}:host{@apply(--typography);position:relative;overflow:hidden;display:inline-block;height:auto;width:auto}:host([saving]){pointer-events:none}.placeholder{width:300px;height:300px;min-width:100%;min-height:100%;max-width:100%;max-height:100%;cursor:pointer;background:var(--placeholder-background);@apply(--placeholder-settings)}.placeholder::before{content:'Upload an image';position:absolute;top:0;right:0;bottom:0;left:0;margin:auto;width:150px;height:50px;text-align:center;font-size:21px;line-height:1.3;font-weight:900;color:var(--med-white);cursor:pointer;z-index:1}</style>
+    <style>:root{--placeholder-background:var(--gray);--placeholder-settings:{background-size:cover;background-position:center center;background-repeat:no-repeat};}:host{@apply(--typography);position:relative;overflow:hidden;display:inline-block;height:auto;width:auto}:host([saving]){pointer-events:none}:host([loading]) .placeholder{visibility:hidden}.placeholder{width:300px;height:300px;min-width:100%;min-height:100%;max-width:100%;max-height:100%;cursor:pointer;background:var(--placeholder-background);@apply(--placeholder-settings)}.placeholder::before{content:'Upload an image';position:absolute;top:0;right:0;bottom:0;left:0;margin:auto;width:150px;height:50px;text-align:center;font-size:21px;line-height:1.3;font-weight:900;color:var(--med-white);cursor:pointer;z-index:1}</style>
 
     <sm-meta-placeholder id="placeholder" class="placeholder" show="[[usePlaceholder]]" on-tap="chooseFile"></sm-meta-placeholder>
 
