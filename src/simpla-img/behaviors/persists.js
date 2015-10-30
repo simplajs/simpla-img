@@ -14,9 +14,9 @@ customPersists = {
 
   get _uploadingAnimation() {
     const OPACITY_THRESHOLD = 0.3,
-          MORE_OPAQUE = 0.7,
-          MORE_TRANSPARENT = 1.5,
-          DURATION = 1750;
+          PULSE_DOWN = 0.7,
+          PUSLE_UP = 1.5,
+          DURATION = 875;
 
     let opacity,
         pulseOpacity,
@@ -25,21 +25,20 @@ customPersists = {
     opacity = window.getComputedStyle(this).opacity;
 
     if (opacity > OPACITY_THRESHOLD) {
-      pulseOpacity = opacity * MORE_OPAQUE;
+      pulseOpacity = opacity * PULSE_DOWN;
     } else {
-      pulseOpacity = opacity * MORE_TRANSPARENT;
+      pulseOpacity = opacity * PULSE_UP;
     }
 
-    animation = this.animate([
+    animation = new KeyframeEffect(this, [
       { opacity: opacity },
-      { opacity: pulseOpacity },
-      { opacity: opacity }
+      { opacity: pulseOpacity }
     ], {
       easing: 'ease-in-out',
-      duration: DURATION
+      duration: DURATION,
+      direction: 'alternate',
+      iterations: 2
     });
-
-    animation.pause();
 
     return animation;
   },
@@ -84,14 +83,15 @@ customPersists = {
   },
 
   _savingChanged(saving) {
-    let animation = this._uploadingAnimation;
+    let animation = this._uploadingAnimation,
+        player;
 
     if (saving) {
       this.active = false
-      animation.play();
-      animation.onfinish = () => {
-        if (saving){
-          animation.play();
+      player = document.timeline.play(animation);
+      player.onfinish = () => {
+        if (this.saving) {
+          player.play();
         }
       }
     }
