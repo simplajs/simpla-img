@@ -20,6 +20,7 @@ customPersists = {
 
     let opacity,
         pulseOpacity,
+        pulse,
         animation;
 
     opacity = window.getComputedStyle(this).opacity;
@@ -30,7 +31,7 @@ customPersists = {
       pulseOpacity = opacity * PULSE_UP;
     }
 
-    animation = new KeyframeEffect(this, [
+    animation = this.animate([
       { opacity: opacity },
       { opacity: pulseOpacity }
     ], {
@@ -39,6 +40,8 @@ customPersists = {
       direction: 'alternate',
       iterations: 2
     });
+
+    animation.finish()
 
     return animation;
   },
@@ -83,15 +86,14 @@ customPersists = {
   },
 
   _savingChanged(saving) {
-    let animation = this._uploadingAnimation,
-        player;
+    let animation = this._uploadingAnimation;
 
     if (saving) {
       this.active = false
-      player = document.timeline.play(animation);
-      player.onfinish = () => {
+      animation.play();
+      animation.onfinish = () => {
         if (this.saving) {
-          player.play();
+          animation.play();
         }
       }
     }
