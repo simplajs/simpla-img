@@ -13,16 +13,21 @@ customPersists = {
   ],
 
   get _uploadingAnimation() {
+    const OPACITY_THRESHOLD = 0.3,
+          MORE_OPAQUE = 0.7,
+          MORE_TRANSPARENT = 1.5,
+          DURATION = 1750;
+
     let opacity,
         pulseOpacity,
         animation;
 
-    opacity = window.getComputedStyle(this)['opacity'];
+    opacity = window.getComputedStyle(this).opacity;
 
-    if (opacity > 0.3) {
-      pulseOpacity = opacity * 0.7;
+    if (opacity > OPACITY_THRESHOLD) {
+      pulseOpacity = opacity * MORE_OPAQUE;
     } else {
-      pulseOpacity = opacity * 1.5;
+      pulseOpacity = opacity * MORE_TRANSPARENT;
     }
 
     animation = this.animate([
@@ -31,7 +36,7 @@ customPersists = {
       { opacity: opacity }
     ], {
       easing: 'ease-in-out',
-      duration: 1750
+      duration: DURATION
     });
 
     animation.pause();
