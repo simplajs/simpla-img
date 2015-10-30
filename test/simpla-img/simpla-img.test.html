@@ -125,7 +125,7 @@
             canvas._width = null;
             canvas._imgHeight = null;
             canvas._height = null;
-            
+
             component._fromObject({
               scale: 1.5,
               position: { x: -5, y: -15 }
@@ -459,6 +459,12 @@
             it('useDefault applied as attribute should cause default to be used', function() {
               expect(useDefaultAsAttribute.src).to.equal(url);
             });
+          });
+
+          it('useDefault should be auto set when _fromObject is used with {}', function() {
+            expect(component.useDefault).to.be.false;
+            component._fromObject({});
+            expect(component.useDefault).to.be.true;
           });
 
           describe('not applying when useDefault is false', function() {

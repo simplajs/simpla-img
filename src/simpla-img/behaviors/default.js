@@ -22,7 +22,7 @@ customDefault = {
   },
 
   _useDefaultChanged(value) {
-    if (value) {
+    if (value && this._default) {
       this.src = this._default;
     }
   },

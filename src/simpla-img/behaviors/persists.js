@@ -15,7 +15,7 @@ customPersists = {
   get _uploadingAnimation() {
     const OPACITY_THRESHOLD = 0.3,
           PULSE_DOWN = 0.7,
-          PUSLE_UP = 1.5,
+          PULSE_UP = 1.5,
           DURATION = 875;
 
     let opacity,
@@ -53,18 +53,22 @@ customPersists = {
   },
 
   _fromObject(value) {
-    const pastEditable = this._canvas.editable;
-    this._canvas.editable = true;
+    if (!value || Object.keys(value).length === 0) {
+      this.useDefault = true;
+    } else {
+      const pastEditable = this._canvas.editable;
+      this._canvas.editable = true;
 
-    this.src = value.src;
-    this.position = value.position ? {
-      x: value.position.x,
-      y: value.position.y
-    } : { x: 0, y: 0 };
-    this.title = value.title;
-    this.scale = value.scale || 1;
+      this.src = value.src;
+      this.position = value.position ? {
+        x: value.position.x,
+        y: value.position.y
+      } : { x: 0, y: 0 };
+      this.title = value.title;
+      this.scale = value.scale || 1;
 
-    this._canvas.editable = pastEditable;
+      this._canvas.editable = pastEditable;
+    }
   },
 
   _equal(imageA, imageB) {
