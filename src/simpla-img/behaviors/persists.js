@@ -23,7 +23,7 @@ customPersists = {
         pulse,
         animation;
 
-    opacity = window.getComputedStyle(this).opacity;
+    opacity = parseFloat(window.getComputedStyle(this).opacity);
 
     if (opacity > OPACITY_THRESHOLD) {
       pulseOpacity = opacity * PULSE_DOWN;
