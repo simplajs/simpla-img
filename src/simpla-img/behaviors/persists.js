@@ -8,8 +8,41 @@ customPersists = {
   },
 
   observers: [
-    '_uidChanged(uid)'
+    '_uidChanged(uid)',
+    '_savingChanged(saving)'
   ],
+
+  get _uploadingAnimation() {
+    const OPACITY_THRESHOLD = 0.3,
+          MORE_OPAQUE = 0.7,
+          MORE_TRANSPARENT = 1.5,
+          DURATION = 1750;
+
+    let opacity,
+        pulseOpacity,
+        animation;
+
+    opacity = window.getComputedStyle(this).opacity;
+
+    if (opacity > OPACITY_THRESHOLD) {
+      pulseOpacity = opacity * MORE_OPAQUE;
+    } else {
+      pulseOpacity = opacity * MORE_TRANSPARENT;
+    }
+
+    animation = this.animate([
+      { opacity: opacity },
+      { opacity: pulseOpacity },
+      { opacity: opacity }
+    ], {
+      easing: 'ease-in-out',
+      duration: DURATION
+    });
+
+    animation.pause();
+
+    return animation;
+  },
 
   _toObject() {
     let { src, position, title, scale } = this,
@@ -48,7 +81,22 @@ customPersists = {
 
   _uidChanged() {
     this.load();
+  },
+
+  _savingChanged(saving) {
+    let animation = this._uploadingAnimation;
+
+    if (saving) {
+      this.active = false
+      animation.play();
+      animation.onfinish = () => {
+        if (saving){
+          animation.play();
+        }
+      }
+    }
   }
+
 };
 
 export default [ corePersists, customPersists ];
