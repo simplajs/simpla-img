@@ -12,10 +12,31 @@ customPersists = {
     '_savingChanged(saving)'
   ],
 
-  _savingChanged(saving) {
-    if (saving) {
-      this.$.controls.active = false
+  get _uploadingAnimation() {
+    let opacity,
+        pulseOpacity,
+        animation;
+
+    opacity = window.getComputedStyle(this)['opacity'];
+
+    if (opacity > 0.3) {
+      pulseOpacity = opacity * 0.7;
+    } else {
+      pulseOpacity = opacity * 1.5;
     }
+
+    animation = this.animate([
+      { opacity: opacity },
+      { opacity: pulseOpacity },
+      { opacity: opacity }
+    ], {
+      easing: 'ease-in-out',
+      duration: 1750
+    });
+
+    animation.pause();
+
+    return animation;
   },
 
   _toObject() {
@@ -55,7 +76,22 @@ customPersists = {
 
   _uidChanged() {
     this.load();
+  },
+
+  _savingChanged(saving) {
+    let animation = this._uploadingAnimation;
+
+    if (saving) {
+      this.active = false
+      animation.play();
+      animation.onfinish = () => {
+        if (saving){
+          animation.play();
+        }
+      }
+    }
   }
+
 };
 
 export default [ corePersists, customPersists ];
