@@ -1,6 +1,7 @@
 import placeholder from './behaviors/placeholder';
 import customDefault from './behaviors/default';
 import persists from './behaviors/persists';
+import popout from './behaviors/popout';
 
 class SimplaImg {
   beforeRegister() {
@@ -21,8 +22,16 @@ class SimplaImg {
       },
       position: {
         type: Object,
-        value: { x: 0, y: 0},
+        value: { x: 0, y: 0 },
         observer: '_positionChanged'
+      },
+      popout: {
+        type: Boolean,
+        reflectToAttribute: true
+      },
+      offscreen: {
+        type: Object,
+        value: { x: 0, y: 0 }
       }
     };
   }
@@ -36,12 +45,14 @@ class SimplaImg {
     return [
       simpla.behaviors.editable(),
       simpla.behaviors.active({
-        observer: '_activeChanged'
+        observer: '_activeChanged',
+        reflectToAttribute: true
       })
     ]
     .concat(placeholder)
     .concat(customDefault)
-    .concat(persists);
+    .concat(persists)
+    .concat(popout);
   }
 
   get listeners() {
@@ -55,6 +66,12 @@ class SimplaImg {
     this._syncImgSizing();
     window.addEventListener('resize', () => {
       this.debounce('syncImgSizing', this._syncImgSizing.bind(this));
+    });
+
+    window.addEventListener('scroll', () => {
+      if (this.active && this.popout) {
+        this.active = false
+      }
     });
 
     // TODO: Move this to controls

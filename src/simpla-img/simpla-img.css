@@ -23,6 +23,17 @@
   pointer-events: none;
 }
 
+.editor {
+  width: inherit;
+  height: inherit;
+  overflow: hidden;
+}
+
+:host([active][popout]) .editor {
+  box-shadow: 0 2px 2px var(--light-black);
+  z-index: var(--on-top);
+}
+
 .placeholder {
   width: 300px;
   height: 300px;
