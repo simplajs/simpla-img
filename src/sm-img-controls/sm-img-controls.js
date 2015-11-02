@@ -1,4 +1,4 @@
-import animation from './helpers/animation';
+import animation from './behaviors/animation';
 
 const TITLE_OPEN_CLASS = 'toolbox__title--expanded';
 
