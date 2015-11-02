@@ -28,10 +28,6 @@ class SimplaImg {
       popout: {
         type: Boolean,
         reflectToAttribute: true
-      },
-      offscreen: {
-        type: Object,
-        value: { x: 0, y: 0 }
       }
     };
   }
@@ -129,6 +125,7 @@ class SimplaImg {
       window.addEventListener('click', makeInactive, false);
     } else {
       window.removeEventListener('click', makeInactive, false);
+      this.popout = this.popout || !this._inViewport();
     }
   }
 

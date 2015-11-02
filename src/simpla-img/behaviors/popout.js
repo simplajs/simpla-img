@@ -77,7 +77,18 @@ export default {
 
     }
 
+  },
+
+  /**
+   * Helper for toggling popout mode on tap
+   * @return {Boolean} if img is in viewport or not
+   */
+  _inViewport() {
+    let bounds = this.getBoundingClientRect();
+    return bounds.top >= 0 && bounds.left >= 0 && bounds.bottom <= window.innerHeight && bounds.right <= window.innerWidth;
   }
+
+
 
 
 }
