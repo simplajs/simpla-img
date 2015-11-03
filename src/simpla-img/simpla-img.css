@@ -13,10 +13,10 @@
 :host {
   @apply(--typography);
   position: relative;
-  overflow: hidden;
   display: inline-block;
   height: auto;
   width: auto;
+  overflow: hidden;
 }
 
 :host([saving]) {
@@ -29,7 +29,7 @@
   overflow: hidden;
 }
 
-:host([active][popout]) .editor {
+:host([popped]) .editor {
   box-shadow: 0 2px 2px var(--light-black);
   z-index: var(--on-top);
 }

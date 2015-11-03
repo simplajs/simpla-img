@@ -24,10 +24,6 @@ class SimplaImg {
         type: Object,
         value: { x: 0, y: 0 },
         observer: '_positionChanged'
-      },
-      popout: {
-        type: Boolean,
-        reflectToAttribute: true
       }
     };
   }
@@ -41,14 +37,13 @@ class SimplaImg {
     return [
       simpla.behaviors.editable(),
       simpla.behaviors.active({
-        observer: '_activeChanged',
-        reflectToAttribute: true
-      })
+        observer: '_activeChanged'
+      }),
+      popout
     ]
     .concat(placeholder)
     .concat(customDefault)
-    .concat(persists)
-    .concat(popout);
+    .concat(persists);
   }
 
   get listeners() {
@@ -64,12 +59,6 @@ class SimplaImg {
       this.debounce('syncImgSizing', this._syncImgSizing.bind(this));
     });
 
-    window.addEventListener('scroll', () => {
-      if (this.active && this.popout) {
-        this.active = false
-      }
-    });
-
     // TODO: Move this to controls
     // Setup the minimum on the zoom
     // this.$.zoom.min = this._canvas.minScale;
@@ -77,7 +66,6 @@ class SimplaImg {
 
   updatePosition() {
     const image = this._canvas;
-
     this.position = { x: image.translateX, y: image.translateY };
   }
 
@@ -125,7 +113,6 @@ class SimplaImg {
       window.addEventListener('click', makeInactive, false);
     } else {
       window.removeEventListener('click', makeInactive, false);
-      this.popout = this.popout || !this._inViewport();
     }
   }
 
