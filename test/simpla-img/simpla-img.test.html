@@ -589,6 +589,62 @@
             });
           });
         });
+        describe('popout behaviour', function() {
+          it('should go popped on active when popout set', function() {
+            component.active = false;
+            component.popout = true;
+            expect(component.popped).to.be.false;
+            component.active = true;
+            expect(component.popped).to.be.true;
+          });
+
+          it('should not go popped on active if popout not set', function(){
+            component.active = false;
+            component.active = true;
+            expect(component.popped).to.be.false;
+          });
+
+          it('should go popped on active when image is outside viewport', function() {
+            component.active = false;
+            component.style.marginLeft = '-500px';
+            component.active = true;
+            expect(component.popped).to.be.true;
+          })
+
+          it('should leave popped on inactive', function(done) {
+            component.active = true;
+            component.popped = true;
+            component.active = false;
+
+            // Wait for closing animation
+            setTimeout(function() {
+              expect(component.popped).to.be.false;
+            }, 300);
+
+            done();
+          });
+
+          it('popped images should go inactive on scroll', function() {
+            component.popped = true;
+            window.dispatchEvent(new Event('scroll'));
+            expect(component.active).to.be.false;
+          });
+
+          it('should preserve img size and position after pop', function() {
+            var origRect = component.getBoundingClientRect(),
+                newRect;
+
+            component.popout = true;
+            component.active = true;
+            component.active = false;
+
+            newRect = component.getBoundingClientRect();
+
+            ['top', 'left', 'width', 'height'].forEach(function(prop) {
+              expect(newRect[prop]).to.equal(origRect[prop])
+            });
+          });
+        });
       });
     </script>
   </body>

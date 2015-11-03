@@ -8,6 +8,7 @@
 
     <sm-meta-placeholder id="placeholder" class="placeholder" show="[[usePlaceholder]]" on-tap="chooseFile"></sm-meta-placeholder>
 
+  <div class="editor" id="editor">
     <sm-img-canvas
       id="image"
       src="[[src]]"
@@ -26,6 +27,7 @@
       active="[[active]]"
       on-file-changed="_fileChanged">
     </sm-img-controls>
+  </div>
 
     <sm-connect-api id="api"
       key="[[uid]]"

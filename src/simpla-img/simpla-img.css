@@ -13,14 +13,25 @@
 :host {
   @apply(--typography);
   position: relative;
-  overflow: hidden;
   display: inline-block;
   height: auto;
   width: auto;
+  overflow: hidden;
 }
 
 :host([saving]) {
   pointer-events: none;
+}
+
+.editor {
+  width: inherit;
+  height: inherit;
+  overflow: hidden;
+}
+
+:host([popped]) .editor {
+  box-shadow: 0 2px 2px var(--light-black);
+  z-index: var(--on-top);
 }
 
 .placeholder {

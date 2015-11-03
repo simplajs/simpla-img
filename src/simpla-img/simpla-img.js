@@ -1,6 +1,7 @@
 import placeholder from './behaviors/placeholder';
 import customDefault from './behaviors/default';
 import persists from './behaviors/persists';
+import popout from './behaviors/popout';
 
 class SimplaImg {
   beforeRegister() {
@@ -21,7 +22,7 @@ class SimplaImg {
       },
       position: {
         type: Object,
-        value: { x: 0, y: 0},
+        value: { x: 0, y: 0 },
         observer: '_positionChanged'
       }
     };
@@ -37,7 +38,8 @@ class SimplaImg {
       simpla.behaviors.editable(),
       simpla.behaviors.active({
         observer: '_activeChanged'
-      })
+      }),
+      popout
     ]
     .concat(placeholder)
     .concat(customDefault)
@@ -64,7 +66,6 @@ class SimplaImg {
 
   updatePosition() {
     const image = this._canvas;
-
     this.position = { x: image.translateX, y: image.translateY };
   }
 
