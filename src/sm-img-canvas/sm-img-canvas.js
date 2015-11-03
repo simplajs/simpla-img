@@ -1,4 +1,4 @@
-import { fitInside } from './helpers/utils.js';
+import { fitInside, prefixStyle } from './helpers/utils.js';
 
 const DEFAULT_SCALE = 1,
       DEFAULT_TRANSLATE_X = 0,
@@ -48,8 +48,12 @@ class smImgCanvas {
     }
 
     this._tick = requestAnimationFrame(() => {
-      let  { scale, translateX, translateY } = this;
-      this.$.source.style.transform = `scale(${scale}) translateX(${translateX}px) translateY(${translateY}px)`;
+      let { scale, translateX, translateY } = this,
+          transform = `scale(${scale}) translateX(${translateX}px) translateY(${translateY}px)`;
+
+      prefixStyle('Transform').concat('transform').forEach(style => {
+        this.$.source.style[style] = transform;
+      });
     });
   }
 

@@ -8,4 +8,19 @@ export function fitInside(value, range) {
   }
 
   return value;
-}
+};
+
+export function prefixStyle(style, dashed = false) {
+  let prefixes = [
+    'webkit',
+    'moz',
+    'o',
+    'ms'
+  ];
+
+  if (dashed) {
+    prefixes = prefixes.map(prefix => `-${prefix}-`);
+  }
+
+  return prefixes.map(prefix => `${prefix}${style}`);
+};
