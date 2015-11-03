@@ -1,18 +1,3 @@
-/**
- * Config
- */
-:root {
-
-  --range-height: 4px;
-
-  --thumb-color: var(--blue);
-
-  --thumb-size: 18px;
-
-  --thumb-border: 3px solid white;
-
-}
-
 :host {
   overflow: visible;
   @apply(--typography);
@@ -98,6 +83,7 @@
 
 /**
  * Zoom slider
+ * Pseudo elements transpiled with postcss-input-style
  */
 .zoom {
   position: absolute;
@@ -127,7 +113,9 @@
   overflow: hidden;
 }
 
-/* Range input */
+/**
+ * Range input
+ */
 .zoom__slider__input {
   width: 100%;
 }
@@ -136,43 +124,80 @@
   display: flex;
   align-items: center;
   background: var(--med-black);
-  border-radius: 999px;
   width: 100%;
-  height: var(--range-height);
-  box-shadow: none;
+  height: 4px;
+  box-shadow: 0;
   cursor: pointer;
-  border: 0;
+  border-radius: 999px;
   z-index: 1;
 }
 
+/* IE specific hacks */
+.zoom__slider__input::-ms-track {
+  /* Hide the ticks */
+  color: transparent;
+
+  /* Fake a bigger track for overflowing thumb */
+  border: 8px solid transparent;
+  background: transparent;
+}
+
+/* Use fill-upper and lower to style our 'track' */
+.zoom__slider__input::-ms-fill-upper {
+  background: var(--med-black);
+  border-radius: 999px;
+}
+
+/* Hide the value callout */
+.zoom__slider__input::-ms-tooltip {
+  display: none;
+}
+
+/* Firefox specific hacks */
+/* Hide the dotted outline on focus */
 .zoom__slider__input::track:focus {
   outline: none;
 }
 
+/* Thumb */
 .zoom__slider__input::thumb {
+  box-sizing: border-box;
   border-radius: 999px;
-  background: var(--thumb-color);
+  background: var(--blue);
   box-shadow: none;
-  border: var(--thumb-border);
-  width: var(--thumb-size);
-  height: var(--thumb-size);
+  border: 3px solid white;
+  width: 18px;
+  height: 18px;
   position: relative;
   z-index: 1;
 }
 
-/* Connector */
+/* Range connectors */
+/* Webkit - no native fill, use pseudo element */
 .zoom__slider__input::thumb::before{
   content: '';
   display: block;
-  height: var(--range-height);
+  height: 4px;
   width: 10000px;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   right: 15px;
-  background: var(--thumb-color);
+  background: var(--blue);
   pointer-events: none;
   z-index: -1;
+}
+
+/* Firefox */
+.zoom__slider__input::-moz-range-progress {
+  background: var(--blue);
+  /* Hide the border */
+  box-shadow: 1.5px 0.5px var(--blue), 1.5px -0.5px var(--blue);
+}
+
+/* IE */
+.zoom__slider__input::-ms-fill-lower {
+  background: var(--blue);
 }
 
 /**
