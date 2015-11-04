@@ -4,13 +4,14 @@
     <meta charset="utf-8">
     <title>simpla-img</title>
     <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+
     <script>
       window.Polymer = window.Polymer || {};
       window.Polymer.dom = 'shadow';
     </script>
     <link rel="import" href="../simpla-img.html" />
 
-    <style media="screen">
+    <style>
       body {
         font-family: sans-serif;
       }
@@ -27,7 +28,7 @@
 
     <h1>Default Content</h1>
     <simpla-img  editable use-default default="http://placekitten.com/g/150/150"></simpla-img>
-    <simpla-img editable ><default-content><img src="http://placekitten.com/g/150/150" /></default-content></simpla-img>
+    <simpla-img editable use-default><default-content><img src="http://placekitten.com/g/150/150" /></default-content></simpla-img>
 
     <h1>Placeholders</h1>
     <simpla-img editable></simpla-img>
@@ -39,8 +40,12 @@
     <div style="border-radius: 999px; overflow: hidden; display: inline-block">
       <simpla-img popout editable use-default default="http://placekitten.com/g/250/250"></simpla-img>
     </div>
-    <simpla-img editable use-default style="display: block; margin-left: -100px" default="http://placekitten.com/g/250/250"></simpla-img>
-    <simpla-img editable use-default style="display: block; margin-left: 500px; width: 500px" default="http://placekitten.com/g/250/250"></simpla-img>
+    <simpla-img editable use-default style="display: block; margin-left: -100px; width: 400px;" default="http://placekitten.com/g/250/250"></simpla-img>
+
+    <h1>Void Content</h1>
+    <p>The following should not output any data</p>
+    <simpla-img editable src="http://placekitten.com/g/250/250"></simpla-img>
+    <simpla-img editable><img src="http://placekitten.com/g/250/250" /></simpla-img>
 
   </body>
 </html>
