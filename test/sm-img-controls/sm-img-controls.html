@@ -112,6 +112,32 @@
             expect(title.classList.contains('toolbox__title--expanded')).to.be.true;
           });
         });
+
+        describe('zoom', function() {
+          var range;
+
+          beforeEach(function() {
+            range = component.$$('[type="range"]');
+          });
+
+          it('should be updated on range input event', function() {
+            var newValue = '1.5';
+            range.value = newValue;
+            expect(component.zoom).to.not.equal(newValue);
+
+            component.fire('input', null, { node: range });
+            expect(component.zoom).to.equal(newValue);
+          });
+
+          it('should be updated on range change event', function() {
+            var newValue = '1.5';
+            range.value = newValue;
+            expect(component.zoom).to.not.equal(newValue);
+
+            component.fire('change', null, { node: range });
+            expect(component.zoom).to.equal(newValue);
+          });
+        });
       });
     </script>
   </body>

@@ -84,6 +84,15 @@ class SmImgControls {
     }
   }
 
+  /**
+   * Update this.zoom to the value of range this.$.zoom's value
+   *  NOTE: This function is only to account for change (rather than input)
+   *  event for IE
+   */
+  _updateZoom() {
+    this.zoom = this.$.zoom.value;
+  }
+
 }
 
 Polymer(SmImgControls);
