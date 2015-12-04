@@ -22,7 +22,7 @@
   "dependencies": {
     "webcomponentsjs": "^0.7.14",
     "polymer": "^1.1.4",
-    "simpla": "git@github.com:simplaio/simpla.git",
+    "simpla-core": "git@github.com:simplaio/simpla-core.git",
     "sm-helper-button": "git@github.com:simplaio/sm-helper-button.git",
     "sm-meta-placeholder": "git@github.com:simplaio/sm-meta-placeholder.git",
     "default-content": "git@github.com:simplaio/default-content.git",
@@ -36,7 +36,7 @@
   },
   "componentImports": [
     "polymer/polymer.html",
-    "simpla/simpla.html",
+    "simpla-core/simpla-core.html",
     "sm-helper-button/sm-helper-button.html",
     "sm-meta-placeholder/sm-meta-placeholder.html",
     "default-content/default-content.html",
