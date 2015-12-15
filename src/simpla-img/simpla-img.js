@@ -34,16 +34,17 @@ class SimplaImg {
   }
 
   get behaviors() {
-    return [
+    return [].concat(
       simpla.behaviors.editable(),
       simpla.behaviors.active({
         observer: '_activeChanged'
       }),
-      popout
-    ]
-    .concat(placeholder)
-    .concat(customDefault)
-    .concat(persists);
+      simpla.behaviors.metaData,
+      popout,
+      placeholder,
+      customDefault,
+      persists
+    );
   }
 
   get listeners() {

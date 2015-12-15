@@ -28,6 +28,7 @@
     "default-content": "git@github.com:simplaio/default-content.git",
     "sm-connect-api": "git@github.com:simplaio/sm-connect-api.git",
     "sm-helper-share": "git@github.com:simplaio/sm-helper-share.git",
+    "sm-meta-data": "git@github.com:simplaio/sm-meta-data.git",
     "iron-icon": "PolymerElements/iron-icon#~1.0.7"
   },
   "devDependencies": {
@@ -42,6 +43,7 @@
     "default-content/default-content.html",
     "sm-connect-api/sm-connect-api.html",
     "sm-helper-share/sm-helper-share.html",
+    "sm-meta-data/sm-meta-data.html",
     "iron-icon/iron-icon.html"
   ]
 }
