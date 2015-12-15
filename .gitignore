@@ -1,5 +1,13 @@
-.tmp
-node_modules
+# Deps
+node_modules/*
 bower_components
+
+# Keep rollup config for npm modules
+!node_modules/.babelrc
+
+# Build
+.tmp
+
+# Runtime
 .DS_Store
 *.log
