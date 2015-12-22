@@ -90,7 +90,7 @@ gulp.task('process', () => {
       html = filter((file) => /\.(html)$/.test(file.path), { restore: true }),
       img = filter((file) => /\.(jpe?g|png|svg|gif)$/.test(file.path), { restore: true });
 
-  return gulp.src(['src/**/*.{html,js,css}', 'src/*.{html,js,css}'])
+  return gulp.src(['src/*/*.{html,js,css}', 'src/*.{html,js,css}'])
           .pipe(errorNotifier())
 
             // JS

@@ -10,7 +10,7 @@ const DEFAULT_SCALE = 1,
  * 	Manipulable img canvas
  * 	emits 'pan-finished'
  */
-class smImgCanvas {
+class SmImgCanvas {
   beforeRegister() {
     this.is = 'sm-img-canvas';
 
@@ -195,4 +195,4 @@ class smImgCanvas {
   }
 }
 
-Polymer(smImgCanvas);
+Polymer(SmImgCanvas);

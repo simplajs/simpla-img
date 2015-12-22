@@ -4,9 +4,9 @@
 <dom-module id="simpla-img">
   <template>
     <style include="sm-css"></style>
-    <link rel="stylesheet" href="./simpla-img.css" inline />
+    <link rel="stylesheet" href="./simpla-img.css" inline>
 
-    <sm-meta-placeholder id="placeholder" class="placeholder" show="[[usePlaceholder]]" on-tap="chooseFile"></sm-meta-placeholder>
+    <sm-utility-placeholder id="placeholder" class="placeholder" show="[[usePlaceholder]]" on-tap="chooseFile"></sm-utility-placeholder>
 
   <div class="editor" id="editor">
     <sm-img-canvas
@@ -29,17 +29,17 @@
     </sm-img-controls>
   </div>
 
-    <sm-connect-api id="api"
+    <sm-utility-connect id="api"
       key="[[uid]]"
       saving="{{saving}}"
       loading="{{loading}}">
-    </sm-connect-api>
+    </sm-utility-connect>
 
-    <sm-helper-share
+    <sm-utility-share
       type="state"
       key="editable"
       value="{{editable}}">
-    </sm-helper-share>
+    </sm-utility-share>
 
   </template>
   <script src="./simpla-img.js"></script>

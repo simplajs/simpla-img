@@ -39,7 +39,7 @@ class SimplaImg {
       simpla.behaviors.active({
         observer: '_activeChanged'
       }),
-      simpla.behaviors.metaData,
+      simpla.behaviors.utilityAssign,
       popout,
       placeholder,
       customDefault,
