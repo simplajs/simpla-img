@@ -39,18 +39,21 @@ class smImgCanvas {
   /**
    * Updates UI with current scale / translateX / translateY
    * will not happen instantly, happens on next animationFrame
-   * @return {Integer} result of requestAnimationFrame
+   * @return undefined
    */
   _paint() {
+    // Cancel the last tick if there is one waiting
     if (this._tick) {
       cancelAnimationFrame(this._tick);
       this._tick = null;
     }
 
+    // The next tick is the requestAnimationFrame result, so it can be cancelled
     this._tick = requestAnimationFrame(() => {
       let { scale, translateX, translateY } = this,
           transform = `scale(${scale}) translateX(${translateX}px) translateY(${translateY}px)`;
 
+      // Update current transform style, along with prefixed versions
       prefixStyle('Transform').concat('transform').forEach(style => {
         this.$.source.style[style] = transform;
       });
@@ -80,9 +83,12 @@ class smImgCanvas {
       this._scale = parseFloat(value);
     }
 
+    // Trigger a change to translateX / translateY, incase they haven't been
+    //  set yet
     this.translateX += 0;
     this.translateY += 0;
 
+    // Trigger a paint
     this._paint();
   }
 
@@ -136,9 +142,17 @@ class smImgCanvas {
       return 1;
     }
 
+    // minScale is the smaller of scaleHeight and scaleWidth. Which are the
+    //  ratios between this height / width and the native img height / width,
+    //  respectively.
     return scaleHeight < scaleWidth ? scaleHeight : scaleWidth;
   }
 
+  /**
+   * The allowed bounds that the image can be transformed within, in both the
+   * x and y directions
+   * @type {Object}
+   */
   get _bounds() {
     if (!(this._imgWidth && this._width && this._imgHeight && this._height)) {
       return {
@@ -153,6 +167,10 @@ class smImgCanvas {
     };
   }
 
+  /**
+   * Reset the internal dimensions to the offsetWidth / offsetHeights of this and
+   * the internal img
+   */
   _resetDimensions() {
     this._width = this.offsetWidth;
     this._height = this.offsetHeight;
@@ -190,6 +208,10 @@ class smImgCanvas {
     event.preventDefault();
   }
 
+  /**
+   * Called whenever image is loaded, resets the dimensions
+   * @return undefined
+   */
   _imageLoaded() {
     this._resetDimensions();
   }
