@@ -8,18 +8,45 @@ class SimplaImg {
     this.is = 'simpla-img';
 
     this.properties = {
+      /**
+       * Src string to be used for image. Must be compatible with a native img
+       * 	element's src property.
+       * @type {String}
+       */
       src: {
         type: String,
         // Must have a value so that multi-param observers will get triggered
         //  straight away, see placeholder
         value: ''
       },
+
+      /**
+       * Set pixel width of image
+       * @type {Number}
+       */
       width: Number,
+
+      /**
+       * Set pixel height of image
+       * @type {Number}
+       */
       height: Number,
+
+      /**
+       * Set scale of image. Note that this doesn't make it larger than the width
+       *  or height, scales above the height / width will crop the image at the edges.
+       * @type {Number}
+       */
       scale: {
         type: Number,
         value: 1
       },
+
+      /**
+       * Position object. Has properties x and y, this is the internal offset
+       *  coordinates of the image. Defaults to x = 0, y = 0.
+       * @type {Object}
+       */
       position: {
         type: Object,
         value: { x: 0, y: 0 },
