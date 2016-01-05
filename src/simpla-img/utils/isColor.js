@@ -25,7 +25,7 @@ const validColor = (color) => {
 
 /**
  * Check if string is a valid CSS color property
- * @param  {String} color   Color string to test
+ * @param  {String} test    Color string to test
  * @return {Boolean}        True if is valid CSS color, false otherwise
  */
 export default function(test) {

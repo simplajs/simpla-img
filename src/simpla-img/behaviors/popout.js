@@ -67,7 +67,7 @@ export default {
    * @param  {Boolean} active Value of active property
    * @param  {Boolean} popout Value of popout property
    * @param  {Boolean} popped Value of popped property
-   * @return undefined
+   * @return {undefined}
    */
   _togglePopped(active, popout, popped) {
     if (active && (popout || !this._inViewport())) {
@@ -108,7 +108,7 @@ export default {
 
   /**
    * Popout the current image
-   * @return undefined
+   * @return {undefined}
    */
   _popOut() {
     let frames = this._poppedFrames,
@@ -133,7 +133,7 @@ export default {
 
   /**
    * Pop image back into place
-   * @return undefined
+   * @return {undefined}
    */
   _popBack() {
     let { inlineWidth, inlineHeight } = this._prePopped,

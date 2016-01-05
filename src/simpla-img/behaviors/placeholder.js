@@ -22,6 +22,7 @@ placeholder = {
   /**
    * Editable observer, sets usePlaceholder based on editable and src properties
    * @param {String} editable Value of editable
+   * @return {undefined}
    */
   _setPlaceholderFromEditable(editable) {
     this.usePlaceholder = editable && (!this.src || this.src === '');
@@ -29,7 +30,8 @@ placeholder = {
 
   /**
    * Src observer, sets usePlaceholder based on editable and src properties
-   * @param {[type]} src [description]
+   * @param {String} src The source string to check
+   * @return {undefined}
    */
   _setPlaceholderFromSrc(src) {
     this.usePlaceholder = this.editable && (!src || src === '');
@@ -39,7 +41,7 @@ placeholder = {
    * Setup the placeholder whenever usePlaceholder changes
    * 	hides / shows the canvas element if usePlaceholder is true / false respectively
    * @param  {Boolean} value Value of placeholder
-   * @return undefined
+   * @return {undefined}
    */
   _usePlaceholderChanged(value) {
     this._canvas.style.display = value ? 'none' : '';
@@ -48,7 +50,7 @@ placeholder = {
   /**
    * Placeholder observer, updates the current background based on the placeholder
    * @param  {String} value CSS background compatible string
-   * @return undefined
+   * @return {undefined}
    */
   _placeholderChanged(value) {
     this.customStyle[backgroundVar] = isColor(value) ? value : `url(${value})`;

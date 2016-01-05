@@ -57,7 +57,7 @@ class SmImgControls {
   /**
    * Toggle the title open or closed, adds the TITLE_OPEN_CLASS when open
    * Also makes title button active as per open
-   * @return undefined
+   * @return {undefined}
    */
   toggleTitle() {
     let title = this.$.title,
@@ -71,7 +71,7 @@ class SmImgControls {
   /**
    * Open the file picker prompt
    * @param  {HTMLEvent} event Stops propagation on given event
-   * @return undefined
+   * @return {undefined}
    */
   openFilePicker(event) {
     if (event) {
@@ -85,7 +85,7 @@ class SmImgControls {
    * Sets position (left/right) of main control toolbox based on position in
    * 	viewport; position is right if on the left hand side of the screen, and
    * 	left otherwise
-   * @return undefined
+   * @return {undefined}
    */
   _setPosition() {
     let windowCenter,
@@ -111,7 +111,7 @@ class SmImgControls {
    * Triggered whenever the file input changes,
    * 	updates this.file to the first file of the input's files
    * @param  {HTMLEvent} event File input event
-   * @return undefined
+   * @return {undefined}
    */
   _filesChanged(event) {
     let files = event.target.files;
@@ -125,6 +125,7 @@ class SmImgControls {
    * Update this.zoom to the value of range this.$.zoom's value
    *  NOTE: This function is only to account for change (rather than input)
    *  event for IE
+   *  @return {undefined}
    */
   _updateZoom() {
     this.zoom = this.$.zoom.value;

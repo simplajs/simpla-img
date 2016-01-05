@@ -62,7 +62,7 @@ customPersists = {
   /**
    * Setup self from given object
    * @param  {Object} value Value loaded from backend to setup all current img
-   * @return undefined
+   * @return {undefined}
    */
   _fromObject(value) {
     // If it doesn't have any information from the backend, use the default
@@ -109,7 +109,7 @@ customPersists = {
   /**
    * Sets up the current object from the given load event
    * @param  {CustomEvent} event Custom event with detail property
-   * @return undefined
+   * @return {undefined}
    */
   _updateFromLoad({ detail }) {
     this._fromObject(detail.value);
@@ -117,7 +117,7 @@ customPersists = {
 
   /**
    * uid observer, simply calls load() to reload data from server
-   * @return undefined
+   * @return {undefined}
    */
   _uidChanged() {
     this.load();
@@ -126,7 +126,7 @@ customPersists = {
   /**
    * saving observer, runs saving animation while saving is true
    * @param  {Boolean} saving Value of this.saving
-   * @return undefined
+   * @return {undefined}
    */
   _savingChanged(saving) {
     let animation = this._uploadingAnimation;

@@ -26,7 +26,7 @@ customDefault = {
    * 	Called everytime useDefault or _default changes
    * @param  {Boolean}  useDefault Whether or not to use default value
    * @param  {String}   _default   The default value to use
-   * @return undefined
+   * @return {undefined}
    */
   _updateDefault(useDefault, _default) {
     if (useDefault) {
@@ -37,7 +37,7 @@ customDefault = {
   /**
    * Observes useDefault, sets the src to default if both are truthy
    * @param  {Boolean} value Value of useDefault
-   * @return undefined
+   * @return {undefined}
    */
   _useDefaultChanged(value) {
     if (value && this._default) {
@@ -49,6 +49,7 @@ customDefault = {
    * Parse value of default attribute to default value
    *  Must be implemented to match the core behavior
    * @param {String} value Value of default attribute
+   * @return {undefined}
    */
   _setDefaultAttribute(value) {
     this._default = value;
@@ -58,6 +59,7 @@ customDefault = {
    * Take the default value from a default element, takes the src attribute of
    *  an img inside default-content and sets it on _default
    * @param {HTMLElement} element Custom element of type default-content
+   * @return {undefined}
    */
   _setDefaultElement(element) {
     let img = Polymer.dom(element).querySelector('img');

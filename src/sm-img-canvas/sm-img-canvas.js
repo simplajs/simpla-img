@@ -39,7 +39,7 @@ class smImgCanvas {
   /**
    * Updates UI with current scale / translateX / translateY
    * will not happen instantly, happens on next animationFrame
-   * @return undefined
+   * @return {undefined}
    */
   _paint() {
     // Cancel the last tick if there is one waiting
@@ -68,7 +68,9 @@ class smImgCanvas {
   }
 
   /**
+   * @param {Number} value to set scale
    * @type {Number}
+   * @return {undefined}
    */
   set scale(value) {
     if (!this.editable) {
@@ -100,7 +102,9 @@ class smImgCanvas {
   }
 
   /**
+   * @param {Number} value Value to set translateX
    * @type {Number}
+   * @return {undefined}
    */
   set translateX(value) {
     if (!this.editable) {
@@ -119,7 +123,9 @@ class smImgCanvas {
   }
 
   /**
+   * @param {Number} value Value to set translateY
    * @type {Number}
+   * @return {undefined}
    */
   set translateY(value) {
     if (!this.editable) {
@@ -170,6 +176,7 @@ class smImgCanvas {
   /**
    * Reset the internal dimensions to the offsetWidth / offsetHeights of this and
    * the internal img
+   * @return {undefined}
    */
   _resetDimensions() {
     this._width = this.offsetWidth;
@@ -182,6 +189,7 @@ class smImgCanvas {
   /**
    * Takes tracking event and updates coordinates.
    * @param {CustomEvent} event Tracking event as specified by polymer
+   * @return {undefined}
    */
   _dragImage(event) {
     let { dx, dy, ddx, ddy, state } = event.detail;
@@ -203,6 +211,7 @@ class smImgCanvas {
   /**
    * Stops any event given to it by calling event.preventDefault()
    * @param {Event} event Event to stop
+   * @return {undefined}
    */
   _stopEvent(event) {
     event.preventDefault();
@@ -210,7 +219,7 @@ class smImgCanvas {
 
   /**
    * Called whenever image is loaded, resets the dimensions
-   * @return undefined
+   * @return {undefined}
    */
   _imageLoaded() {
     this._resetDimensions();

@@ -58,7 +58,7 @@ class SimplaImg {
   /**
    * Position observer. Updates the position of the internal canvas
    * @param  {Object} position Position object
-   * @return undefined
+   * @return {undefined}
    */
   _positionChanged(position) {
     this._canvas.translateX = position.x;
@@ -105,7 +105,7 @@ class SimplaImg {
 
   /**
    * Update the this.position based on the current canvas translation
-   * @return undefined
+   * @return {undefined}
    */
   updatePosition() {
     const image = this._canvas;
@@ -128,7 +128,7 @@ class SimplaImg {
 
   /**
    * Current canvas element
-   * @return {SmImgCanvas}
+   * @type {SmImgCanvas}
    */
   get _canvas() {
     return this.$.image;
@@ -136,7 +136,7 @@ class SimplaImg {
 
   /**
    * Current controls element
-   * @return {SmImgControls}
+   * @type {SmImgControls}
    */
   get _controls() {
     return this.$.controls;
@@ -144,7 +144,7 @@ class SimplaImg {
 
   /**
    * Current placeholder element
-   * @return {SmUtilityPlaceholder}
+   * @type {SmUtilityPlaceholder}
    */
   get _placeholder() {
     return this.$.placeholder;

@@ -24,7 +24,7 @@ export default {
   /**
    * Toggle whether controls are showing or not
    * @param  {Boolean} active Whether to show controls or not
-   * @return undefined
+   * @return {undefined}
    */
   _toggleControls(active) {
     if (active){
@@ -59,7 +59,7 @@ export default {
 
   /**
    * Run animation to open controls, adds visible attribute before animating
-   * @return undefined
+   * @return {undefined}
    */
   _openControls(){
     this._controlAnimations.forEach(({ target, begin, end }) => {
@@ -70,7 +70,7 @@ export default {
 
   /**
    * Run animation to close controls, removes visible attribute on finish
-   * @return undefined
+   * @return {undefined}
    */
   _closeControls() {
     this._controlAnimations.forEach(({ target, begin, end, }) => {
