@@ -1,3 +1,6 @@
+/**
+ * Setup animation easings and options
+ */
 const easings = simpla.constants.easings,
       opts = {
         open: {
@@ -18,6 +21,11 @@ export default {
     '_toggleControls(active)'
   ],
 
+  /**
+   * Toggle whether controls are showing or not
+   * @param  {Boolean} active Whether to show controls or not
+   * @return {undefined}
+   */
   _toggleControls(active) {
     if (active){
       this._setPosition();
@@ -27,6 +35,10 @@ export default {
     }
   },
 
+  /**
+   * Animations for control elements
+   * @type {Array}
+   */
   get _controlAnimations() {
     let topControls = this.$['controls-top'],
         bottomControls = this.$['controls-bottom'];
@@ -45,6 +57,10 @@ export default {
     ]
   },
 
+  /**
+   * Run animation to open controls, adds visible attribute before animating
+   * @return {undefined}
+   */
   _openControls(){
     this._controlAnimations.forEach(({ target, begin, end }) => {
       this.toggleAttribute('visible', true, target);
@@ -52,6 +68,10 @@ export default {
     });
   },
 
+  /**
+   * Run animation to close controls, removes visible attribute on finish
+   * @return {undefined}
+   */
   _closeControls() {
     this._controlAnimations.forEach(({ target, begin, end, }) => {
       let animation = target.animate([end, begin], opts.close);

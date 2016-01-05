@@ -7,19 +7,37 @@ const ANIMATION_OPTS = {
       IMG_GUTTER = 12,
       THRESHOLD = 15;
 
+/**
+ * Popout behavior transforms image into the view of the image when editable
+ * 	using animation for transitions
+ */
 export default {
 
   properties: {
+    /**
+     * Whether to popout or not
+     * @type {Boolean}
+     */
     popout: {
       type: Boolean,
       reflectToAttribute: true,
       value: false
     },
+
+    /**
+     * Whether is popped out or not
+     * @type {Boolean}
+     */
     popped: {
       type: Boolean,
       value: false,
       reflectToAttribute: true
     },
+
+    /**
+     * Object to store information about image before popping out
+     * @type {Object}
+     */
     _prePopped: {
       type: Object,
       value: {
@@ -34,6 +52,7 @@ export default {
   ],
 
   ready() {
+    // On scolling, force img to become inactive and un-popped
     window.addEventListener('scroll', () => {
       if (this.popped) {
         this.active = this.popped = false;
@@ -41,6 +60,15 @@ export default {
     });
   },
 
+  /**
+   * Toggle whether popper or not based on given parameters.
+   *  Should popout if active and (it should popout or its outside the viewport),
+   *  otherwise pops back in
+   * @param  {Boolean} active Value of active property
+   * @param  {Boolean} popout Value of popout property
+   * @param  {Boolean} popped Value of popped property
+   * @return {undefined}
+   */
   _togglePopped(active, popout, popped) {
     if (active && (popout || !this._inViewport())) {
       this._popOut();
@@ -49,6 +77,10 @@ export default {
     }
   },
 
+  /**
+   * Getter for _poppedFrames
+   * @return {Array} Frames for popping out
+   */
   get _poppedFrames() {
     let img = this.getBoundingClientRect(),
         offset = {
@@ -74,6 +106,10 @@ export default {
     ];
   },
 
+  /**
+   * Popout the current image
+   * @return {undefined}
+   */
   _popOut() {
     let frames = this._poppedFrames,
         img = this.getBoundingClientRect(),
@@ -95,6 +131,10 @@ export default {
 
   },
 
+  /**
+   * Pop image back into place
+   * @return {undefined}
+   */
   _popBack() {
     let { inlineWidth, inlineHeight } = this._prePopped,
         frames = this._poppedFrames,

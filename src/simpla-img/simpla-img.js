@@ -8,18 +8,45 @@ class SimplaImg {
     this.is = 'simpla-img';
 
     this.properties = {
+      /**
+       * Src string to be used for image. Must be compatible with a native img
+       * 	element's src property.
+       * @type {String}
+       */
       src: {
         type: String,
         // Must have a value so that multi-param observers will get triggered
         //  straight away, see placeholder
         value: ''
       },
+
+      /**
+       * Set pixel width of image
+       * @type {Number}
+       */
       width: Number,
+
+      /**
+       * Set pixel height of image
+       * @type {Number}
+       */
       height: Number,
+
+      /**
+       * Set scale of image. Note that this doesn't make it larger than the width
+       *  or height, scales above the height / width will crop the image at the edges.
+       * @type {Number}
+       */
       scale: {
         type: Number,
         value: 1
       },
+
+      /**
+       * Position object. Has properties x and y, this is the internal offset
+       *  coordinates of the image. Defaults to x = 0, y = 0.
+       * @type {Object}
+       */
       position: {
         type: Object,
         value: { x: 0, y: 0 },
@@ -28,11 +55,22 @@ class SimplaImg {
     };
   }
 
+  /**
+   * Position observer. Updates the position of the internal canvas
+   * @param  {Object} position Position object
+   * @return {undefined}
+   */
   _positionChanged(position) {
     this._canvas.translateX = position.x;
     this._canvas.translateY = position.y;
   }
 
+  /**
+   * Get current behaviors
+   * See https://github.com/Polymer/polymer/issues/2451 as to why this isn't currently
+   * inside beforeRegister
+   * @return {Array} behaviors
+   */
   get behaviors() {
     return [].concat(
       simpla.behaviors.editable(),
@@ -47,6 +85,10 @@ class SimplaImg {
     );
   }
 
+  /**
+   * Get event listeners
+   * @return {Object} Keys are events, their values are listener functions on this
+   */
   get listeners() {
     return {
       'tap': '_handleTap'
@@ -59,17 +101,23 @@ class SimplaImg {
     window.addEventListener('resize', () => {
       this.debounce('syncImgSizing', this._syncImgSizing.bind(this));
     });
-
-    // TODO: Move this to controls
-    // Setup the minimum on the zoom
-    // this.$.zoom.min = this._canvas.minScale;
   }
 
+  /**
+   * Update the this.position based on the current canvas translation
+   * @return {undefined}
+   */
   updatePosition() {
     const image = this._canvas;
     this.position = { x: image.translateX, y: image.translateY };
   }
 
+  /**
+   * Open file picker dialog as per sm-img-controls' openFilePicker function
+   * 	Must be run inside a click event to conform to file input security
+   * @param  {CustomEvent?} event Optional event to be passed, will stop propagation
+   * @return {undefined}
+   */
   chooseFile(event) {
     if (event) {
       event.stopPropagation();
@@ -78,18 +126,37 @@ class SimplaImg {
     this._controls.openFilePicker();
   }
 
+  /**
+   * Current canvas element
+   * @type {SmImgCanvas}
+   */
   get _canvas() {
     return this.$.image;
   }
 
+  /**
+   * Current controls element
+   * @type {SmImgControls}
+   */
   get _controls() {
     return this.$.controls;
   }
 
+  /**
+   * Current placeholder element
+   * @type {SmUtilityPlaceholder}
+   */
   get _placeholder() {
     return this.$.placeholder;
   }
 
+  /**
+   * File change listener. Takes value of event, parses it as base64 and sets
+   * 	src to base64 encoded image. Also sets active to true, as any time the file
+   * 	changes via the input, this should be active
+   * @param  {Event} event File input changed event with new file value
+   * @return {undefined}
+   */
   _fileChanged(event) {
     let reader = new FileReader(),
         file = event.detail.value,
@@ -103,6 +170,13 @@ class SimplaImg {
     reader.readAsDataURL(file);
   }
 
+  /**
+   * Active property observer.
+   * 	When active, adds a listener to the window to close all non-img events,
+   * 	otherwise removes listener.
+   * @param  {Boolean} value Value of this.active
+   * @return {undefined}
+   */
   _activeChanged(value) {
     const makeInactive = (event) => {
       if (!event.__polymerGesturesHandled) {
@@ -117,9 +191,18 @@ class SimplaImg {
     }
   }
 
+  /**
+   * Tap event handler. If this is editable, does one of two things, opens the
+   * 	file picker if the placeholder is currently showing, otherwise just becomes
+   * 	active.
+   * @param  {CustomEvent} event Tap event
+   * @return {undefined}
+   */
   _handleTap(event) {
     const target = event.target;
 
+    // If editing is disable, don't do anything.
+    // If the target was the filepicker, let it deal with it itself
     if (!this.editable || target.type === 'file') {
       return;
     }
@@ -131,6 +214,15 @@ class SimplaImg {
     }
   }
 
+  /**
+   * Sync the sizing applied to this to the canvas to make sure this mimics sizing
+   * 	sizing behavior of native img.
+   * 	Native img will automatically adjust its height / width based on its other
+   * 	height / width to keep its aspect ratio. To replicate this, we need to switch
+   * 	between 100% / inherit on the below canvas depending on if there is an applied
+   * 	percentage to this width / height
+   * @return {undefined}
+   */
   _syncImgSizing() {
     let image = this.$.image,
         isPercentage = (dimension) => {
