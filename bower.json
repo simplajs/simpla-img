@@ -28,7 +28,6 @@
     "default-content": "https://github.com/simplaio/default-content.git",
     "sm-utility-connect": "https://github.com/simplaio/sm-utility-connect.git",
     "sm-utility-share": "https://github.com/simplaio/sm-utility-share.git",
-    "sm-utility-assign": "https://github.com/simplaio/sm-utility-assign.git",
     "iron-icon": "PolymerElements/iron-icon#~1.0.7"
   },
   "devDependencies": {
@@ -43,7 +42,6 @@
     "default-content/default-content.html",
     "sm-utility-connect/sm-utility-connect.html",
     "sm-utility-share/sm-utility-share.html",
-    "sm-utility-assign/sm-utility-assign.html",
     "iron-icon/iron-icon.html"
   ]
 }
