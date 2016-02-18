@@ -77,6 +77,7 @@ class SimplaImg {
       simpla.behaviors.active({
         observer: '_activeChanged'
       }),
+      simpla.behaviors.blockNamespaceChild,
       popout,
       placeholder,
       customDefault,
