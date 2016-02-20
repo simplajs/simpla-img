@@ -90,7 +90,7 @@ gulp.task('process', () => {
       html = filter((file) => /\.(html)$/.test(file.path), { restore: true }),
       img = filter((file) => /\.(jpe?g|png|svg|gif)$/.test(file.path), { restore: true });
 
-  return gulp.src(['src/*/*.{html,js,css}', 'src/*.{html,js,css}'])
+  return gulp.src(['src/*/*.{html,js,css}'])
           .pipe(errorNotifier())
 
             // JS
@@ -112,7 +112,7 @@ gulp.task('process', () => {
 });
 
 gulp.task('build', ['process'], () => {
-  return gulp.src([`.tmp/${ELEMENT_NAME}/${ELEMENT_NAME}.html`,`.tmp/${ELEMENT_NAME}.html`])
+  return gulp.src([`.tmp/${ELEMENT_NAME}/${ELEMENT_NAME}.html`])
           .pipe(errorNotifier())
           .pipe(vulcanize(OPTIONS.vulcanize))
           .pipe(gulpif(!argv.debug, minifyHTML(OPTIONS.HTMLmin)))
