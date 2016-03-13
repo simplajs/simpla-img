@@ -1,3 +1,6 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../simpla-core/simpla-core.html">
+
 <dom-module id="sm-img-canvas">
   <template>
 
@@ -7,5 +10,5 @@
     <img id="source" class="img" src$=[[src]] width$=[[width]] height$=[[height]] on-track="_dragImage" on-down="_stopEvent" on-load="_imageLoaded"/>
 
   </template>
-  <script src="./sm-img-canvas.js"></script>
+  <script src="./sm-img-canvas.js" inline></script>
 </dom-module>
