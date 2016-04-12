@@ -19,7 +19,7 @@
   <body>
     <test-fixture id="default">
       <template>
-        <simpla-img></simpla-img>
+        <simpla-img sid=""></simpla-img>
       </template>
     </test-fixture>
 
@@ -91,11 +91,6 @@
         describe('sid / uid', function() {
           it('should have an sid value', function() {
             expect(component.sid).to.not.be.undefined;
-          });
-
-          it('should update uid based on sid', function() {
-            component.sid = 'foo';
-            expect(component.uid).to.equal('foo');
           });
         });
 
