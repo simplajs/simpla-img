@@ -51,6 +51,29 @@ class SimplaImg {
         type: Object,
         value: { x: 0, y: 0 },
         observer: '_positionChanged'
+      },
+
+      /**
+       * Whether image is active or not. This means that the img controls are
+       * 	showing and it's being interacted with
+       * @type {Boolean}
+       */
+      active: {
+        type: Boolean,
+        notify: true,
+        value: false,
+        observer: '_activeChanged'
+      },
+
+      /**
+       * Whether it can be edited or not. This means it can be activated and
+       * 	interacted with
+       * @type {Boolean}
+       */
+      editable: {
+        type: Boolean,
+        notify: true,
+        value: false
       }
     };
   }
@@ -73,10 +96,6 @@ class SimplaImg {
    */
   get behaviors() {
     return [].concat(
-      simpla.behaviors.editable(),
-      simpla.behaviors.active({
-        observer: '_activeChanged'
-      }),
       simpla.behaviors.blockNamespaceChild,
       popout,
       placeholder,

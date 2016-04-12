@@ -103,6 +103,16 @@
           expect(sharedEditable.value).to.be.false;
         });
 
+        it('should notify when editable changes', function() {
+          var listener = sinon.spy();
+
+          component.addEventListener('editable-changed', listener);
+          component.editable = false;
+          component.editable = true;
+
+          expect(listener.called).to.be.true;
+        });
+
         describe('_fromObject', function() {
           it('should make canvas editable while loading from object', function() {
             component.editable = false;
