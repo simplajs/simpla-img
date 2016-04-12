@@ -20,20 +20,19 @@ class SmImgCanvas {
       src: String,
       scale: Number,
       translateX: Number,
-      translateY: Number
-    };
-  }
-
-  get behaviors() {
-    return [
-      simpla.behaviors.editable({
+      translateY: Number,
+      editable: {
+        type: Boolean,
         reflectToAttribute: true,
-        notify: false
-      }),
-      simpla.behaviors.active({
-        reflectToAttribute: true
-      })
-    ];
+        value: false
+      },
+      active: {
+        type: Boolean,
+        reflectToAttribute: true,
+        notify: true,
+        value: false
+      }
+    };
   }
 
   /**

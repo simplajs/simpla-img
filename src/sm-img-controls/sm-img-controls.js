@@ -43,14 +43,23 @@ class SmImgControls {
       zoom: {
         type: Number,
         notify: true
+      },
+
+      /**
+       * If currently active or not
+       * @type {Boolean}
+       */
+      active: {
+        type: Boolean,
+        notify: true,
+        value: false
       }
     };
   }
 
   get behaviors() {
     return [
-      animation,
-      simpla.behaviors.active()
+      animation
     ];
   }
 
