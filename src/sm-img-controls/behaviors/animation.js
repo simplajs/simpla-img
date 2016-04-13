@@ -1,7 +1,7 @@
 /**
  * Setup animation easings and options
  */
-const easings = simpla.constants.easings,
+const easings = simpla._constants.easings,
       opts = {
         open: {
           easing: easings.easeOutBack,

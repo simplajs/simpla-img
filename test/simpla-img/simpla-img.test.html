@@ -19,7 +19,7 @@
   <body>
     <test-fixture id="default">
       <template>
-        <simpla-img></simpla-img>
+        <simpla-img sid=""></simpla-img>
       </template>
     </test-fixture>
 
@@ -92,11 +92,6 @@
           it('should have an sid value', function() {
             expect(component.sid).to.not.be.undefined;
           });
-
-          it('should update uid based on sid', function() {
-            component.sid = 'foo';
-            expect(component.uid).to.equal('foo');
-          });
         });
 
         it('should bind its editable value to shared editable value', function() {
@@ -106,6 +101,16 @@
 
           component.editable = false;
           expect(sharedEditable.value).to.be.false;
+        });
+
+        it('should notify when editable changes', function() {
+          var listener = sinon.spy();
+
+          component.addEventListener('editable-changed', listener);
+          component.editable = false;
+          component.editable = true;
+
+          expect(listener.called).to.be.true;
         });
 
         describe('_fromObject', function() {
