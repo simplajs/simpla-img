@@ -1,5 +1,5 @@
 const ANIMATION_OPTS = {
-        easing: simpla.constants.easings.easeOutCubic,
+        easing: simpla._constants.easings.easeOutCubic,
         fill: 'both',
         duration: 150
       },
