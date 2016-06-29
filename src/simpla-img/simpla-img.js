@@ -72,8 +72,7 @@ class SimplaImg {
        */
       editable: {
         type: Boolean,
-        notify: true,
-        value: false
+        notify: true
       }
     };
   }
@@ -120,6 +119,11 @@ class SimplaImg {
     window.addEventListener('resize', () => {
       this.debounce('syncImgSizing', this._syncImgSizing.bind(this));
     });
+
+    // If editable hasn't been set by sm-utility-share, fallback to false
+    if (typeof this.editable === 'undefined') {
+      this.editable = false;
+    }
   }
 
   /**
