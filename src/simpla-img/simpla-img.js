@@ -67,12 +67,15 @@ class SimplaImg {
 
       /**
        * Whether it can be edited or not. This means it can be activated and
-       * 	interacted with
+       * 	interacted with.
+       * Note: It's initial value is a function, as it should check on each
+       *  creation of an instance, otherwise hard core it at element registration
        * @type {Boolean}
        */
       editable: {
         type: Boolean,
-        notify: true
+        notify: true,
+        value: () => Simpla.getState().editing
       }
     };
   }
@@ -120,10 +123,10 @@ class SimplaImg {
       this.debounce('syncImgSizing', this._syncImgSizing.bind(this));
     });
 
-    // If editable hasn't been set by sm-utility-share, fallback to false
-    if (typeof this.editable === 'undefined') {
-      this.editable = false;
-    }
+    // Bind editable to Simplas editing
+    Simpla.observe('editing', (editing) => {
+      this.editable = editing;
+    });
   }
 
   /**

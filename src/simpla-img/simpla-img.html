@@ -16,38 +16,32 @@
 
     <sm-utility-placeholder id="placeholder" class="placeholder" show="[[usePlaceholder]]" on-tap="chooseFile"></sm-utility-placeholder>
 
-  <div class="editor" id="editor">
-    <sm-img-canvas
-      id="image"
-      src="[[src]]"
-      width="[[width]]"
-      height="[[height]]"
-      scale="[[scale]]"
-      editable="[[editable]]"
-      active="[[active]]"
-      on-pan-finished="updatePosition">
-    </sm-img-canvas>
+    <div class="editor" id="editor">
+      <sm-img-canvas
+        id="image"
+        src="[[src]]"
+        width="[[width]]"
+        height="[[height]]"
+        scale="[[scale]]"
+        editable="[[editable]]"
+        active="[[active]]"
+        on-pan-finished="updatePosition">
+      </sm-img-canvas>
 
-    <sm-img-controls
-      id="controls"
-      zoom="{{scale}}"
-      title="{{title}}"
-      active="[[active]]"
-      on-file-changed="_fileChanged">
-    </sm-img-controls>
-  </div>
+      <sm-img-controls
+        id="controls"
+        zoom="{{scale}}"
+        title="{{title}}"
+        active="[[active]]"
+        on-file-changed="_fileChanged">
+      </sm-img-controls>
+    </div>
 
     <sm-utility-connect id="api"
       key="[[uid]]"
       saving="{{saving}}"
       loading="{{loading}}">
     </sm-utility-connect>
-
-    <sm-utility-share
-      type="state"
-      key="editable"
-      value="{{editable}}">
-    </sm-utility-share>
 
   </template>
   <script src="./simpla-img.js" inline></script>

@@ -6,6 +6,7 @@
     <script src="../../../webcomponentsjs/webcomponents.min.js"></script>
     <script src="../../../web-component-tester/browser.js"></script>
     <script src="../../../test-fixture/test-fixture-mocha.js"></script>
+    <script src="../../../simpla/simpla.js"></script>
     <link rel="import" href="../../../test-fixture/test-fixture.html">
 
     <script>
@@ -43,19 +44,19 @@
       </template>
     </test-fixture>
 
-    <test-fixture id="shared">
+    <test-fixture id="editable">
       <template>
-        <sm-utility-share type="state" key="editable"></sm-utility-share>
+        <simpla-img editable></simpla-img>
       </template>
     </test-fixture>
+
     <script>
       describe('<simpla-img>', function() {
 
         var component,
             componentFixtures,
             canvas,
-            controls,
-            sharedEditable;
+            controls;
 
         componentFixtures = window.fixtures['simpla-img'];
 
@@ -82,8 +83,6 @@
             canvas.$.source.onload = null;
           };
           component.src = 'https://www.placecage.com/g/100/200';
-
-          sharedEditable = fixture('shared');
         });
 
         it('is okay', function() {
@@ -96,23 +95,41 @@
           });
         });
 
-        it('should bind its editable value to shared editable value', function() {
-          component.editable = false;
-          sharedEditable.value = true;
-          expect(component.editable).to.be.true;
+        describe('editable', function() {
+          it('should get its editable from Simpla', function() {
+            var component;
 
-          component.editable = false;
-          expect(sharedEditable.value).to.be.false;
-        });
+            Simpla.toggleEditing(true);
+            component = fixture('default');
+            expect(component.editable).to.equal(Simpla.getState().editing);
 
-        it('should notify when editable changes', function() {
-          var listener = sinon.spy();
+            Simpla.toggleEditing(false);
+            component = fixture('default');
+            expect(component.editable).to.equal(Simpla.getState().editing);
+          });
 
-          component.addEventListener('editable-changed', listener);
-          component.editable = false;
-          component.editable = true;
+          it('should set editable from attribute over Simpla', function() {
+            var editableComponent = fixture('editable');
+            expect(editableComponent.editable).to.be.true;
+          });
 
-          expect(listener.called).to.be.true;
+          it('should bind editable to Simplas editing value', function() {
+            Simpla.toggleEditing(true);
+            expect(component.editable).to.be.true;
+
+            Simpla.toggleEditing(false);
+            expect(component.editable).to.be.false;
+          });
+
+          it('should notify when editable changes', function() {
+            var listener = sinon.spy();
+
+            component.addEventListener('editable-changed', listener);
+            component.editable = false;
+            component.editable = true;
+
+            expect(listener.called).to.be.true;
+          });
         });
 
         describe('_fromObject', function() {

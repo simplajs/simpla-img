@@ -32,6 +32,7 @@
   },
   "devDependencies": {
     "web-component-tester": "^3.3.22",
-    "test-fixture": "PolymerElements/test-fixture#~1.0.0"
+    "test-fixture": "PolymerElements/test-fixture#~1.0.0",
+    "simpla": "^1.0.0"
   }
 }
