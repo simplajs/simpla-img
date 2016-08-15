@@ -212,8 +212,8 @@ class SmImgCanvas {
    * @param {Event} event Event to stop
    * @return {undefined}
    */
-  _stopEvent(event) {
-    event.preventDefault();
+  _handleImgMouseDown(event) {
+    this.editable && event.preventDefault();
   }
 
   /**
