@@ -75,7 +75,8 @@ class SimplaImg {
       editable: {
         type: Boolean,
         notify: true,
-        value: () => Simpla.getState().editing
+        value: () => Simpla.getState().editing,
+        observer: '_editableChanged'
       }
     };
   }
@@ -214,6 +215,17 @@ class SimplaImg {
       window.addEventListener('click', makeInactive, false);
     } else {
       window.removeEventListener('click', makeInactive, false);
+    }
+  }
+
+  /**
+   * Editable observer. Updates active to false if editable is false
+   * @param  {Boolean} editable If editable or not
+   * @return {undefined}
+   */
+  _editableChanged(editable) {
+    if (!editable) {
+      this.active = false;
     }
   }
 

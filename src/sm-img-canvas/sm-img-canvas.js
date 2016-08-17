@@ -192,10 +192,6 @@ class SmImgCanvas {
    * @return {undefined}
    */
   _dragImage(event) {
-    if (!this.active) {
-      return;
-    }
-
     let { dx, dy, ddx, ddy, state } = event.detail;
 
     // Only set the bounds on start to reduce calls to getBoundingClientRect
@@ -217,8 +213,8 @@ class SmImgCanvas {
    * @param {Event} event Event to stop
    * @return {undefined}
    */
-  _handleImgMouseDown(event) {
-    this.active && event.preventDefault();
+  _handleImgTap(event) {
+    this.editable && event.preventDefault();
   }
 
   /**
