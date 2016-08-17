@@ -497,6 +497,7 @@
           });
 
           it('useDefault should be auto set when _fromObject is used with {}', function() {
+            component.useDefault = false;
             expect(component.useDefault).to.be.false;
             component._fromObject({});
             expect(component.useDefault).to.be.true;
