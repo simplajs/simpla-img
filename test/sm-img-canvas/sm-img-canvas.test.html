@@ -15,7 +15,7 @@
   <body>
     <test-fixture id="trivialElement">
       <template>
-        <sm-img-canvas editable></sm-img-canvas>
+        <sm-img-canvas editable active></sm-img-canvas>
       </template>
     </test-fixture>
     <script>
@@ -220,16 +220,16 @@
         });
 
         describe('editable', function() {
-          it('is readonly properties, when not editable', function() {
+          it('is readonly properties, when not active', function() {
             var firstAttempt = 1.5,
                 secondAttempt = 2;
 
-            component.editable = true;
+            component.active = true;
 
             component.scale = firstAttempt;
             expect(component.scale).to.equal(firstAttempt);
 
-            component.editable = false;
+            component.active = false;
 
             component.scale = secondAttempt;
             expect(component.scale).to.equal(firstAttempt);

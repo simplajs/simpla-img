@@ -29,6 +29,7 @@ class SmImgCanvas {
       active: {
         type: Boolean,
         reflectToAttribute: true,
+        observer: '_activeChanged',
         notify: true,
         value: false
       }
@@ -72,7 +73,7 @@ class SmImgCanvas {
    * @return {undefined}
    */
   set scale(value) {
-    if (!this.editable) {
+    if (!this.active) {
       return;
     }
 
@@ -106,7 +107,7 @@ class SmImgCanvas {
    * @return {undefined}
    */
   set translateX(value) {
-    if (!this.editable) {
+    if (!this.active) {
       return;
     }
 
@@ -127,7 +128,7 @@ class SmImgCanvas {
    * @return {undefined}
    */
   set translateY(value) {
-    if (!this.editable) {
+    if (!this.active) {
       return;
     }
 
@@ -212,7 +213,7 @@ class SmImgCanvas {
    * @param {Event} event Event to stop
    * @return {undefined}
    */
-  _handleImgMouseDown(event) {
+  _handleImgTap(event) {
     this.editable && event.preventDefault();
   }
 
@@ -222,6 +223,17 @@ class SmImgCanvas {
    */
   _imageLoaded() {
     this._resetDimensions();
+  }
+
+  /**
+   * Active observer. Called everytime active changes, currently just toggles
+   * 	setScrollDirection on source. 'all' if false, 'none' if true
+   * @param {Boolean} active Whether active or not
+   * @return {undefined}
+   */
+  _activeChanged(active) {
+    const direction = active ? 'none' : 'all';
+    this.setScrollDirection(direction, this.$.source);
   }
 }
 
