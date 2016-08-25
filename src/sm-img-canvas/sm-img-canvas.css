@@ -35,6 +35,11 @@
   display: none;
 }
 
+/* Disable img drag and drop in Chrome */
+:host([active]) .img {
+  -webkit-user-drag: none;
+}
+
 /* Actual image */
 .img {
   vertical-align: bottom;
