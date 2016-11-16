@@ -99,13 +99,13 @@
           it('should get its editable from Simpla', function() {
             var component;
 
-            Simpla.toggleEditing(true);
+            Simpla._v1.toggleEditing(true);
             component = fixture('default');
-            expect(component.editable).to.equal(Simpla.getState().editing);
+            expect(component.editable).to.equal(Simpla._v1.getState().editing);
 
-            Simpla.toggleEditing(false);
+            Simpla._v1.toggleEditing(false);
             component = fixture('default');
-            expect(component.editable).to.equal(Simpla.getState().editing);
+            expect(component.editable).to.equal(Simpla._v1.getState().editing);
           });
 
           it('should set editable from attribute over Simpla', function() {
@@ -114,10 +114,10 @@
           });
 
           it('should bind editable to Simplas editing value', function() {
-            Simpla.toggleEditing(true);
+            Simpla._v1.toggleEditing(true);
             expect(component.editable).to.be.true;
 
-            Simpla.toggleEditing(false);
+            Simpla._v1.toggleEditing(false);
             expect(component.editable).to.be.false;
           });
 
