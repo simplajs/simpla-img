@@ -75,7 +75,7 @@ class SimplaImg {
       editable: {
         type: Boolean,
         notify: true,
-        value: () => Simpla.getState().editing,
+        value: () => Simpla._v1.getState().editing,
         observer: '_editableChanged'
       }
     };
@@ -125,7 +125,7 @@ class SimplaImg {
     });
 
     // Bind editable to Simplas editing
-    Simpla.observe('editing', (editing) => {
+    Simpla._v1.observe('editing', (editing) => {
       this.editable = editing;
     });
   }
