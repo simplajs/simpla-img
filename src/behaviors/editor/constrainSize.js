@@ -19,9 +19,10 @@ export default {
     let { width, height, top, left } = bounds.value,
         { width: minWidth, height: minHeight } = MIN_SIZE,
         scale = (direction, value) => {
-          let changedValue = direction === 'width' ? width : height,
-              scaledBound = direction === 'width' ? 'height' : 'width',
-              scaledValue = direction === 'width' ? height : width;
+          let isWidth = direction === 'width',
+              changedValue = isWidth ? width : height,
+              scaledBound = isWidth ? 'height' : 'width',
+              scaledValue = isWidth ? height : width;
 
           this.set(`bounds.${direction}`, value);
           this.set(`bounds.${scaledBound}`, scaledValue * (value / changedValue));

@@ -242,7 +242,7 @@
     import Cropper from 'cropperjs';
 
     // Behaviors
-    import sizeConstraints from './behaviors/editor/sizeConstraints';
+    import constrainSize from './behaviors/editor/constrainSize';
     import popout from './behaviors/editor/popout';
 
     const MAX_ZOOM_FACTOR = 3,
@@ -391,7 +391,7 @@
       }
 
       get behaviors() {
-        return [ sizeConstraints, popout ];
+        return [ constrainSize, popout ];
       }
 
       /**
