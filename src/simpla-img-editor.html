@@ -552,9 +552,10 @@
             reader = new FileReader(),
             setFile = (e) => {
               this.src = e.target.result;
-              this._lockFocus = false;
               reader.removeEventListener('load', setFile);
             };
+
+        this._lockFocus = false;
 
         if (!files || !files[0]) {
           return;
