@@ -1,0 +1,668 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../simpla-styles/simpla-styles.html">
+<link rel="import" href="../iron-iconset-svg/iron-iconset-svg.html">
+<link rel="import" href="../iron-icon/iron-icon.html" async>
+<link rel="import" href="../paper-slider/paper-slider.html" async>
+
+<!-- Material icons cherry picked from iron-icons -->
+<iron-iconset-svg name="simpla-img">
+  <svg>
+    <defs>
+      <g id="camera-alt"><circle cx="12" cy="12" r="3.2"/><path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></g>
+      <g id="title"><path d="M5 4v3h5.5v12h3V7H19V4z"/></g>
+    </defs>
+  </svg>
+</iron-iconset-svg>
+
+<dom-module id="simpla-img-editor">
+  <template>
+    <style>
+      /* Vendor styles */
+      @import 'cropperjs/dist/cropper.css';
+
+      /**
+       * Basics
+       */
+      :host, *, *::before, *::after {
+        box-sizing: border-box;
+      }
+
+      :host {
+        display: block;
+        position: absolute;
+        outline: none;
+        transition: box-shadow 130ms var(--simpla-easing-standard),
+                    transform 200ms var(--simpla-easing-standard);
+        -moz-osx-font-smoothing: grayscale;
+         -webkit-font-smoothing: antialiased;
+                 font-smoothing: antialiased;
+      }
+
+      :host([hidden])) {
+        display: none;
+      }
+
+      :host([visible]) {
+        box-shadow: var(--simpla-elevation-1);
+      }
+
+      .editor {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      /**
+       * Image canvas
+       */
+      .canvas {
+        max-height: 100%;
+        overflow: hidden;
+        /* Checkered background */
+        background: linear-gradient(45deg, rgba(0,0,0,0.02) 25%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 75%, rgba(0,0,0,0.02) 75%, rgba(0,0,0,0.02) 0),
+                    linear-gradient(45deg, rgba(0,0,0,0.02) 25%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 75%, rgba(0,0,0,0.02) 75%, rgba(0,0,0,0.02) 0),
+                    rgba(255,255,255,0.02);
+        background-position: 0 0, 15px 15px;
+        background-size: 30px 30px;
+      }
+
+      .canvas__src {
+        visibility: hidden;
+        max-width: 100%;
+      }
+
+      /* Vendor overwrites */
+      .cropper-view-box {
+        outline: none;
+      }
+
+      .cropper-face {
+        opacity: 0;
+      }
+
+      .cropper-point,
+      .cropper-line {
+        display: none;
+      }
+
+      /**
+       * Editor controls
+       */
+      .tools,
+      .zoom {
+        position: absolute;
+        background: var(--simpla-bright-white);
+        z-index: 1;
+        height: 30px;
+        transition: transform 130ms var(--simpla-easing-decelerate);
+      }
+
+      .tools {
+        display: flex;
+        align-items: center;
+        top: 0;
+        right: 7px;
+        border-bottom-left-radius: var(--simpla-border-radius);
+        border-bottom-right-radius: var(--simpla-border-radius);
+        color: var(--simpla-grey-700);
+      }
+
+      .zoom {
+        bottom: 0;
+        width: 85%;
+        left: 0;
+        right: 0;
+        margin: auto;
+        border-top-left-radius: var(--simpla-border-radius);
+        border-top-right-radius: var(--simpla-border-radius);
+      }
+
+      :host(:not([visible])) .tools,
+      :host(:not([visible])) .zoom {
+        transition-duration: 60ms;
+        transition-timing-function: var(--simpla-easing-accelerate);
+      }
+
+      :host(:not([visible])) .zoom {
+        transform: translateY(100%);
+      }
+
+      :host(:not([visible])) .tools {
+        transform: translateY(-100%);
+      }
+
+      .zoom__slider {
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        --paper-slider-active-color: var(--simpla-primary-color);
+        --paper-slider-knob-color: var(--simpla-primary-color);
+        --paper-slider-container-color: var(--simpla-grey-500);
+        --paper-slider-knob-start-border-color: var(--simpla-grey-700);
+      }
+
+      .tools__tool {
+        display: inline-block;
+        padding: 5px 10px 7px;
+        cursor: pointer;
+      }
+
+      .tools__tool:hover,
+      .tools__tool[data-active] {
+        color: var(--simpla-primary-color);
+      }
+
+      .tools__tool__icon {
+        --iron-icon-width: 15px;
+        --iron-icon-height: 15px;
+      }
+
+      /* Title input */
+      .title-input {
+        background: transparent;
+        border: none;
+        width: 0;
+        padding: 0;
+        outline: none;
+        transition: width 150ms var(--simpla-easing-standard);
+      }
+
+      .title-input::placeholder {
+        color: var(--simpla-grey-700);
+      }
+
+      .title-input[data-expanded] {
+        width: 80px;
+        padding-left: 1em;
+      }
+
+      /* Patch hidden prop on IE*/
+      [hidden] {
+        display: none !important;
+      }
+    </style>
+
+    <div class="editor">
+
+      <div class="tools" on-transitionend="_hideIfInactive">
+        <input type="text"
+          id="title-input"
+          class="title-input"
+          placeholder="Enter a title"
+          value="{{alt::input}}"
+          data-expanded$="[[_titleOpen]]"
+          on-blur="_toggleTitle"
+        >
+        <a class="tools__tool" on-tap="_toggleTitle" data-active$="[[_titleOpen]]">
+          <iron-icon
+            class="tools__tool__icon"
+            icon="simpla-img:title">
+          </iron-icon>
+        </a>
+
+        <a class="tools__tool" on-tap="openFilePicker">
+          <iron-icon
+            class="tools__tool__icon"
+            icon="simpla-img:camera-alt">
+          </iron-icon>
+          <input type="file"
+            id="file-input"
+            on-change="_uploadImg"
+            hidden>
+        </a>
+      </div>
+
+      <!-- Cropper needs a parent in same DOM tree -->
+      <div class="canvas">
+        <!-- Load src into dummy img element -->
+        <img id="src"
+          class="canvas__src"
+          src$="[[src]]"
+          width$="[[bounds.width]]"
+          height$="[[bounds.height]]"
+        >
+      </div>
+
+      <div class="zoom" on-transitionend="_hideIfInactive">
+        <paper-slider
+          class="zoom__slider"
+          immediate-value="{{data._immediateZoomFactor}}"
+          value="[[data.zoomFactor]]"
+          step="0.01"
+          min="1"
+          max="3"
+          no-ink>
+        </paper-slider>
+      </div>
+    </div>
+  </template>
+  <script>
+    // Vendor
+    import Cropper from 'cropperjs';
+
+    // Behaviors
+    import sizeConstraints from './behaviors/editor/sizeConstraints';
+    import popout from './behaviors/editor/popout';
+
+    const MAX_ZOOM_FACTOR = 3,
+          CROPPER_OPTS = {
+            autoCrop: true,
+            autoCropArea: 1,
+            viewMode: 3,
+            dragMode: 'move',
+            cropBoxMovable: false,
+            cropBoxResisable: false,
+            toggleDragModeOnDblclick: false,
+            responsive: false,
+            restore: false,
+            modal: false,
+            guides: false,
+            center: false,
+            background: false,
+            checkCrossOrigin: false
+          },
+          DEFAULT_EDITOR_STATE = {
+            zoomFactor: 1,
+            canvas: {},
+            _immediateZoomFactor: 1
+          };
+
+    class SimplaImgEditor {
+      beforeRegister() {
+        this.is = 'simpla-img-editor';
+
+        this.properties = {
+
+          /**
+           * State of the editor
+           * @type {Boolean}
+           */
+          active: {
+            type: Boolean,
+            value: false,
+            notify: true
+          },
+
+          /**
+           * Whether editor is visible
+           * Used for CSS transitions
+           * @type {Boolean}
+           */
+          visible: {
+            type: Boolean,
+            reflectToAttribute: true,
+            readonly: true,
+            value: false
+          },
+
+          /**
+           * Whether editor is hidden
+           * Used for CSS transitions
+           * @type {Boolean}
+           */
+          hidden: {
+            type: Boolean,
+            reflectToAttribute: true,
+            readonly: true,
+            value: true
+          },
+
+          /**
+           * Image src
+           * @type {String}
+           */
+          src: {
+            type: String,
+            observer: '_loadImg',
+            notify: true
+          },
+
+          /**
+           * Alt title for the image
+           * @type {String}
+           */
+          alt: {
+            type: String,
+            notify: true,
+            value: ''
+          },
+
+          /**
+           * Bounding rect of the editor
+           * @type {Object}
+           */
+          bounds: Object,
+
+          /**
+           * Tabindex, used to give editor focus
+           * @type {Number}
+           */
+          tabindex: {
+            type: Number,
+            reflectToAttribute: true,
+            readonly: true,
+            value: 0
+          },
+
+          /**
+           * Editor state data
+           * @type {Object}
+           */
+          data: {
+            type: Object,
+            value: DEFAULT_EDITOR_STATE
+          },
+
+          /**
+           * Whether title input is expanded
+           * @type {Boolean}
+           */
+          _titleOpen: Boolean,
+
+          /**
+           * Stop editor exiting when focus lost
+           * @type {Boolean}
+           */
+          _lockFocus: Boolean,
+
+          /**
+           * Cropper.js instance
+           * @type {Object}
+           */
+          _cropper: Object
+
+        };
+
+        this.observers = [
+          '_setBounds(bounds)',
+          '_focusOnActive(active)',
+          '_exitOnResizeOrScroll(active)',
+          '_toggleVisibility(active)',
+          '_resetEditor(active)',
+          '_bindSliderToZoom(data._immediateZoomFactor)',
+          '_updateCanvas(data.canvas)'
+        ];
+
+        this.listeners = {
+          blur: '_closeOnBlur',
+          keydown: '_exitOnHotkeys'
+        };
+      }
+
+      get behaviors() {
+        return [ sizeConstraints, popout ];
+      }
+
+      /**
+       * Init Cropper.js
+       * Called by Polymer on attach
+       * @return {undefined}
+       */
+      attached() {
+        this._cropper = new Cropper(this.$.src,
+          Object.assign({}, CROPPER_OPTS, {
+            zoom: (e) => this._bindZoomToSlider(e),
+            crop: () => this.setData()
+          })
+        );
+      }
+
+      /**
+       * Clean up Cropper instance on detach
+       * @return {undefined}
+       */
+      detached() {
+        this._cropper && this._cropper.destroy();
+      }
+
+      /**
+       * Utility method to open file input
+       * @param  {Event} e Tap event from parent control
+       * @return {undefined}
+       */
+      openFilePicker(e) {
+        e && e.stopPropagation();
+        this._lockFocus = true;
+        this.$['file-input'].click();
+      }
+
+      /**
+       * Set data from editor back to simpla-img
+       * @return {undefined}
+       */
+      setData() {
+        let activeImg = Simpla.SimplaImg.activeInstance,
+            { naturalWidth, naturalHeight } = this._cropper.getImageData(),
+            cropped = this._cropper.getCroppedCanvas({
+              width: naturalWidth,
+              height: naturalHeight
+            });
+
+        activeImg.data = {
+          src: cropped.toDataURL(),
+          alt: this.alt,
+          editorCanvas: this._cropper.getCanvasData(),
+          editorZoomFactor: this.data.zoomFactor
+        }
+      }
+
+      /**
+       * Sets open true if active is true, for transitions
+       * @param  {Boolean} active Current value of the active prop
+       * @return {undefined}
+       */
+      _toggleVisibility(active) {
+        if (active) {
+          this.hidden = false;
+          Polymer.RenderStatus
+            .afterNextRender(this, () => this.visible = true);
+        } else {
+          this.visible = false;
+        }
+      }
+
+      /**
+       * Go inactive when the editor loses focus
+       * @param  {Event} e Blur event on host
+       * @return {undefined}
+       */
+      _closeOnBlur(e) {
+        if (!this._lockFocus) {
+          this.setData();
+          this.active = false;
+        }
+
+      }
+
+      /**
+       * Sets active false if open is false, for transitions
+       * @param {Event} e Transitionend event
+       * @return {undefined}
+       */
+      _hideIfInactive(e){
+        if (!this.active) {
+          this.hidden = true;
+
+          // Ensure visible false if active changed during transitions
+          this.visible = false;
+        }
+      }
+
+      /**
+       * Reset the editor to default state on inactive
+       * @param  {Boolean} active Value of the active property
+       * @return {undefined}
+       */
+      _resetEditor(active) {
+        if (!active) {
+          this.data = DEFAULT_EDITOR_STATE;
+        }
+      }
+
+      /**
+       * Sets bounding props to element styles
+       * @param {Object} bounds Current value of bounds prop
+       * @return {undefined}
+       */
+      _setBounds(bounds) {
+        Object.keys(bounds).forEach(prop => {
+          this.style[prop] = `${bounds[prop]}px`;
+        });
+      }
+
+      /**
+       * Loads a new image into Cropper
+       * @param  {String} src Image to load
+       * @return {undefined}
+       */
+      _loadImg(src) {
+        this._cropper.replace(src);
+      }
+
+      /**
+       * Autofocus the editor on active
+       * @param  {Boolean} active Current value of active prop
+       * @return {undefined}
+       */
+      _focusOnActive(active) {
+        if (active) {
+          this.async(() => this.focus(), 0);
+        }
+      }
+
+      /**
+       * Update the editor when canvas data updated
+       * @param  {Object} canvasData Value of the data.canvas property
+       * @return {undefined}
+       */
+      _updateCanvas(canvasData) {
+        if (this._cropper && Object.keys(canvasData).length) {
+          this._cropper.setCanvasData(canvasData);
+        }
+      }
+
+      /**
+       * Takes file from file input and sets it to src prop
+       * @param  {Event} e Change event from file input
+       * @return {undefined}
+       */
+      _uploadImg(e) {
+        let files = e.target.files,
+            reader = new FileReader(),
+            setFile = (e) => {
+              this.src = e.target.result;
+              this._lockFocus = false;
+              reader.removeEventListener('load', setFile);
+            };
+
+        if (!files || !files[0]) {
+          return;
+        }
+
+        reader.addEventListener('load', setFile);
+        reader.readAsDataURL(files[0]);
+      }
+
+      /**
+       * Utility method to toggle _titleOpen prop
+       * @return {undefined}
+       */
+      _toggleTitle() {
+        this._titleOpen = !this._titleOpen;
+      }
+
+      /**
+       * Converts between zoom value and factor
+       * @param  {Number} input Input number (factor or value)
+       * @param  {String} to    Conversion to perform ('value'|'factor')
+       * @return {Number}       Converted zoom
+       */
+      _translateZoom(input, to) {
+        let { naturalWidth } = this._cropper.getCanvasData(),
+            width = this.bounds.width,
+            ratio = width / naturalWidth;
+
+        return to === 'value' ? input * ratio : input / ratio;
+      }
+
+      /**
+       * Zooms cropper.js based on slider value
+       * @param  {Number} zoomFactor Value of the slider
+       * @return {undefined}
+       */
+      _bindSliderToZoom(zoomFactor) {
+        if (this.active) {
+          this._cropper.zoomTo(
+            this._translateZoom(zoomFactor, 'value')
+          );
+        }
+      }
+
+      /**
+       * Sets zoom factor back to slider, within max bounds
+       * @param {CustomEvent} e Zoom event from cropper.js
+       * @return {undefined}
+       */
+      _bindZoomToSlider(e) {
+        let zoom = e.detail.ratio,
+            zoomFactor = this._translateZoom(zoom, 'factor');
+
+        if (zoomFactor > MAX_ZOOM_FACTOR) {
+          e.preventDefault();
+        }
+
+        this.set('data.zoomFactor', zoomFactor);
+      }
+
+      /**
+       * Exit the editor on viewport resize
+       * (Since we're fixed width and abspos)
+       * @param  {Boolean} active Current value of the active property
+       * @return {undefined}
+       */
+      _exitOnResizeOrScroll(active) {
+        let exit = () => this.active = false;
+
+        if (active) {
+          window.addEventListener('resize', exit);
+          window.addEventListener('scroll', exit);
+        } else {
+          window.removeEventListener('resize', exit);
+          window.removeEventListener('scroll', exit);
+        }
+      }
+
+      /**
+       * Exit (and 'save') the editor on certain hotkeys
+       * @param  {Event} e Keydown event on host
+       * @return {undefined}
+       */
+      _exitOnHotkeys(e) {
+        let cmdEnter = e.keyCode === 13 && e.metaKey,
+            escape = e.keyCode === 27;
+
+        if (cmdEnter || escape) {
+          this.active = false;
+        }
+      }
+    };
+    Polymer(SimplaImgEditor);
+
+    /**
+     * Self attaches editor as a singleton
+     * @return {undefined}
+     */
+    (() => {
+      let editor = document.createElement('simpla-img-editor');
+
+      // This seems fragile
+      // If Simpla doesn't exist yet, will our singleton get overridden when it does?
+      window.Simpla = window.Simpla || {};
+
+      window.Simpla.SimplaImgEditor = {};
+      window.Simpla.SimplaImgEditor.singleton = editor;
+      document.body.appendChild(editor);
+    })();
+  </script>
+</dom-module>

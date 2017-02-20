@@ -1,13 +1,12 @@
 /*eslint one-var: 0 */
 
 // Core deps
-// Use require() because of rollup babel preset
+// Use require() because of rollup
 const gulp = require('gulp');
 const notify = require('gulp-notify');
 const gulpif = require('gulp-if');
 const size = require('gulp-size');
 const plumber = require('gulp-plumber');
-const rename = require('gulp-rename');
 const gulprun = require('run-sequence');
 const yargs = require('yargs');
 const browserSync = require('browser-sync');
@@ -24,12 +23,12 @@ const rollup = require('gulp-rollup-file');
 const resolve = require('rollup-plugin-node-resolve');
 const commonJs = require('rollup-plugin-commonjs');
 const babel = require('rollup-plugin-babel');
+const json = require('rollup-plugin-json');
 
 // CSS
 const postcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
-const inputStyle = require('postcss-input-style');
-const easings = require('postcss-easings');
+const cssImport = require('postcss-import');
 
 const bs = browserSync.create(),
       argv = yargs.boolean(['debug']).argv,
@@ -37,15 +36,17 @@ const bs = browserSync.create(),
       OPTIONS = {
         rollup: {
           plugins: [
-            resolve({ main: true }),
+            resolve({ main: true, browser: true }),
             commonJs(),
-            babel()
+            json(),
+            babel({
+              exclude: 'node_modules/**/*'
+            })
           ],
           format: 'iife'
         },
         postcss: [
-          inputStyle(),
-          easings(),
+          cssImport(),
           autoprefixer()
         ],
         inline: {
@@ -76,41 +77,42 @@ const bs = browserSync.create(),
         }
       };
 
-wct.gulp.init(gulp);
-
 gulp.task('build', () => {
-  return gulp.src(['src/**/*.html'])
+  let styles = processInline(),
+      scripts = processInline();
+
+  return gulp.src(['src/*.html'])
           .pipe(errorNotifier())
 
-            // Inline styles and scripts
-            .pipe(inline(OPTIONS.inline))
+          // Inline assets
+          .pipe(inline(OPTIONS.inline))
 
-            // Js
-            .pipe(processInline().extract('script'))
-              .pipe(eslint())
-              .pipe(eslint.format())
-              .pipe(gulpif(!argv.debug, eslint.failAfterError()))
-              .pipe(rollup(OPTIONS.rollup))
-            .pipe(processInline().restore())
+          // JS
+          .pipe(scripts.extract('script'))
+            .pipe(eslint())
+            .pipe(eslint.format())
+            .pipe(gulpif(!argv.debug, eslint.failAfterError()))
+            .pipe(rollup(OPTIONS.rollup))
+          .pipe(scripts.restore())
 
-            // CSS
-            .pipe(processInline().extract('style'))
-              .pipe(postcss(OPTIONS.postcss))
-            .pipe(processInline().restore())
+          // CSS
+          .pipe(styles.extract('style'))
+            .pipe(postcss(OPTIONS.postcss))
+          .pipe(styles.restore())
 
-            // Minify and pipe out
-            .pipe(gulpif(!argv.debug, minify(OPTIONS.HTMLmin)))
-            .pipe(rename({dirname: ''}))
-            .pipe(size({ gzip: true }))
-          .pipe(gulp.dest('.'));
+          .pipe(gulpif(!argv.debug, minify(OPTIONS.HTMLmin)))
+
+          .pipe(size({ gzip: true }))
+        .pipe(gulp.dest('.'))
 });
 
-gulp.task('demo', (callback) => bs.init(OPTIONS.browserSync));
+wct.gulp.init(gulp);
 
+gulp.task('serve', (callback) => bs.init(OPTIONS.browserSync));
 gulp.task('refresh', () => bs.reload());
 
 gulp.task('test', ['build', 'test:local']);
 
 gulp.task('watch', () => gulp.watch(['src/**/*'], () => gulprun('build', 'refresh')));
 
-gulp.task('default', ['build', 'demo', 'watch']);
+gulp.task('default', ['build', 'serve', 'watch']);
