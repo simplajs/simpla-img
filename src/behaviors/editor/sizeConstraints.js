@@ -8,6 +8,11 @@ export default {
     '_fitWithinConstraints(bounds.*)'
   ],
 
+  /**
+   * Ensure bounds fit within size constraints
+   * @param  {Object} bounds Value of bounds property
+   * @return {undefined}
+   */
   // TODO: Animate constraint change, to make
   // image appear to scale/pop out of old position
   _fitWithinConstraints(bounds) {

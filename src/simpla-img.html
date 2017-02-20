@@ -77,6 +77,11 @@
             value: false
           },
 
+          /**
+           * Unedited image in session
+           * For non-destructive edits
+           * @type {String}
+           */
           _currentImg: {
             type: String,
             value: ''
@@ -159,6 +164,7 @@
        * @param {Object} currentImg Value of the currentImg property
        * @return {undefined}
        */
+      // TODO: This obviously isn't good enough, need new pattern
       _setCurrentImg(src, currentImg) {
         if (src && !currentImg) {
           this._currentImg = src;

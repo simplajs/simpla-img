@@ -6,7 +6,7 @@ export default {
   ],
 
   /**
-   * Reset bounds if they are not within viewport
+   * Translate bounds back into viewport if any are outside it
    * @param  {Object} bounds   Value of the bounds property
    * @param  {Boolean} visible Value of the visible property
    * @return {undefined}
@@ -33,6 +33,7 @@ export default {
       translateY = -(top - (viewportHeight - height) + POPOUT_GUTTER);
     }
 
+    // Transform transitioned with CSS
     this.style.transform = visible ? `translate(${translateX}px, ${translateY}px)` : '';
   }
 
