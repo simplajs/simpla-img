@@ -552,6 +552,7 @@
             reader = new FileReader(),
             setFile = (e) => {
               this.src = e.target.result;
+              Simpla.SimplaImg.activeInstance._currentImg = e.target.result;
               reader.removeEventListener('load', setFile);
             };
 
