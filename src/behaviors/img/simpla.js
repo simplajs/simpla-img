@@ -15,7 +15,7 @@ export default {
      */
     _simplaObservers: {
       type: Object,
-      value: {}
+      value: () => ({})
     }
   },
 

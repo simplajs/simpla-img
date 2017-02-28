@@ -268,6 +268,8 @@
             _immediateZoomFactor: 1
           };
 
+    let getDefaultEditorState = () => Object.assign({}, DEFAULT_EDITOR_STATE);
+
     class SimplaImgEditor {
       beforeRegister() {
         this.is = 'simpla-img-editor';
@@ -351,7 +353,7 @@
            */
           data: {
             type: Object,
-            value: DEFAULT_EDITOR_STATE
+            value: getDefaultEditorState
           },
 
           /**
