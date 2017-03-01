@@ -243,8 +243,7 @@
     import Cropper from 'cropperjs';
 
     // Behaviors
-    import constrainSize from './behaviors/editor/constrainSize';
-    import popout from './behaviors/editor/popout';
+    import viewable from './behaviors/editor/viewable';
     import cropperBehavior from './behaviors/editor/cropper';
 
     class SimplaImgEditor {
@@ -326,6 +325,18 @@
             observer: '_observeHeight'
           },
 
+          top: {
+            type: Number,
+            observer: '_observeTop',
+            value: 0
+          },
+
+          left: {
+            type: Number,
+            observer: '_observeLeft',
+            value: 0
+          },
+
           output: {
             type: String,
             notify: true,
@@ -358,7 +369,7 @@
       }
 
       get behaviors() {
-        return [ constrainSize, popout, cropperBehavior ];
+        return [ viewable, cropperBehavior ];
       }
 
       _observeWidth(width) {
@@ -367,6 +378,14 @@
 
       _observeHeight(height) {
         this.style.height = `${height}px`;
+      }
+
+      _observeLeft(left) {
+        this.style.left = `${left}px`;
+      }
+
+      _observeTop(top) {
+        this.style.top = `${top}px`;
       }
 
       /**

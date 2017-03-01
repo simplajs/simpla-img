@@ -19,11 +19,8 @@ export function ensureEditorReady(editor, image) {
 }
 
 export function resizeToImage(editor, image) {
-  let { top, left, width, height } = image.getBoundingClientRect(),
-      { src } = image;
-
-  Object.assign(editor.style, { top: `${top}px`, left: `${left}px` });
-  Object.assign(editor, { width, height });
+  let { top, left, width, height } = image.getBoundingClientRect();
+  Object.assign(editor, { top, left, width, height });
 }
 
 export function passPropsToEditor(editor, image) {
