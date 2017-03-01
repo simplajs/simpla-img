@@ -20,7 +20,7 @@ export default {
   },
 
   observers: [
-    '_setData(data.*, uid)'
+    '_setData(src, alt, uid)'
   ],
 
    /**
@@ -75,9 +75,7 @@ export default {
    * @param {String} uid   Element UID
    * @return {Promise}
    */
-  _setData(data, uid) {
-    let { src, alt } = data.value;
-
+  _setData(src, alt, uid) {
     return Simpla.set(uid, {
       type: 'Image',
       data: {

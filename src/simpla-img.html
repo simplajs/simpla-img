@@ -3,24 +3,24 @@
 <dom-module id="simpla-img">
   <script>
     import simpla from './behaviors/img/simpla';
+    import editorMediator from './behaviors/mediator';
 
-    const EDITOR_COMPONENT = 'simpla-img-editor.html',
-          CONDITIONAL_STYLES = {
-            editable: {
-              cursor: 'pointer'
-            },
-            editing: {
-              visibility: 'hidden',
-              // Prevent flash while editor opening
-              transition: 'visibility',
-              transitionDelay: '50ms'
-            },
-            placeholder: {
-              background: '#b2bcc8',
-              width: '100px',
-              height: '100px'
-            }
-          };
+    const CONDITIONAL_STYLES = {
+      editable: {
+        cursor: 'pointer'
+      },
+      editing: {
+        visibility: 'hidden',
+        // Prevent flash while editor opening
+        transition: 'visibility',
+        transitionDelay: '50ms'
+      },
+      placeholder: {
+        background: '#b2bcc8',
+        width: '100px',
+        height: '100px'
+      }
+    };
 
     class SimplaImg {
       beforeRegister() {
@@ -48,12 +48,8 @@
           alt: {
             type: String,
             reflectToAttribute: true,
+            value: '',
             notify: true
-          },
-
-          data: {
-            type: Object,
-            value: () => ({})
           },
 
           /**
@@ -73,120 +69,20 @@
           editing: {
             type: Boolean,
             notify: true,
-            readonly: true,
             value: false
-          },
-
-          /**
-           * Unedited image in session
-           * For non-destructive edits
-           * @type {String}
-           */
-          _currentImg: {
-            type: String,
-            value: ''
           }
 
         };
 
         this.observers = [
-          '_importEditor(editable)',
           '_styleEditable(editable)',
           '_styleEditing(editing)',
           '_showPlaceholder(editable, editing, src)',
-          '_setCurrentImg(src, _currentImg)'
         ];
-
-        this.listeners = {
-          tap: 'edit'
-        }
       }
 
       get behaviors() {
-        return [ simpla ];
-      }
-
-      /**
-       * Open editor if image is editable
-       * @return {undefined}
-       */
-      edit() {
-        let editor,
-            { top, left, width, height } = this.getBoundingClientRect();
-
-        if (!this.editable) {
-          return;
-        }
-
-        editor = Simpla.SimplaImgEditor.singleton;
-
-        Simpla.SimplaImg = Simpla.SimplaImg || {};
-        Simpla.SimplaImg.activeInstance = this;
-
-        if (!this.src) {
-          editor.bounds = { top, left };
-          editor.openFilePicker();
-        } else {
-          editor.src = this._currentImg;
-          editor.set('data.canvas', this.data.editorCanvas || {});
-          editor.set('data.zoomFactor', this.data.editorZoomFactor || 1);
-          editor.bounds = { top, left, width, height };
-          editor.active = true;
-        }
-
-        this.editing = true;
-        this._stopEditingOnEditorClose();
-      }
-
-      /**
-       * Imports editor component when editable is true
-       * @param  {Boolean} editable Current value of the editable property
-       * @return {undefined}
-       */
-      _importEditor(editable) {
-        let editorUrl = this.resolveUrl(EDITOR_COMPONENT),
-            editorExists = Simpla && Simpla.SimplaImgEditor && Simpla.SimplaImgEditor.singleton,
-            link;
-
-        if (!editable || !!editorExists) {
-          return;
-        }
-
-        link =  document.createElement('link');
-        link.rel = 'import';
-        link.href = editorUrl;
-        document.head.appendChild(link);
-      }
-
-      /**
-       * Store unedtied src image for future crops in session
-       * @param {String} src        Value of the src property
-       * @param {Object} currentImg Value of the currentImg property
-       * @return {undefined}
-       */
-      // TODO: This obviously isn't good enough, need new pattern
-      _setCurrentImg(src, currentImg) {
-        if (src && !currentImg) {
-          this._currentImg = src;
-        }
-      }
-
-      /**
-       * Set _editing prop to false when editor for this image closed
-       * @return {undefined}
-       */
-      _stopEditingOnEditorClose() {
-        let editor = Simpla.SimplaImgEditor.singleton,
-            imgGlobal = Simpla.SimplaImg,
-            stopEditingIfInactive = (e) => {
-              if (!e.detail.value && imgGlobal.activeInstance === this) {
-                imgGlobal.activeInstance = null;
-                this.editing = false;
-              }
-              editor.removeEventListener('active-changed', stopEditingIfInactive);
-            };
-
-        editor.addEventListener('active-changed', stopEditingIfInactive);
+        return [ simpla, editorMediator ];
       }
 
       /**
@@ -232,6 +128,37 @@
         });
       }
 
+      /**
+       * Stop editing on viewport resize
+       * (Since we're fixed width and abspos)
+       * @param  {Boolean} editing Current value of the editing property
+       * @return {undefined}
+       */
+      _stopEditingOnResizeOrScroll(editing) {
+        let exit = this.__exitHandler = this.__exitHandler || (() => this.editing = false);
+
+        if (editing) {
+          window.addEventListener('resize', exit);
+          window.addEventListener('scroll', exit);
+        } else {
+          window.removeEventListener('resize', exit);
+          window.removeEventListener('scroll', exit);
+        }
+      }
+
+      /**
+       * Stop Editing on Hot Keys
+       * @param  {Event} e Keydown event on host
+       * @return {undefined}
+       */
+      _stopEditingOnHotkeys(e) {
+        let cmdEnter = e.keyCode === 13 && e.metaKey,
+            escape = e.keyCode === 27;
+
+        if (cmdEnter || escape) {
+          this.editing = false;
+        }
+      }
     };
     Polymer(SimplaImg);
   </script>
