@@ -21,6 +21,7 @@
 
     <!-- Import component -->
     <link rel="import" href="../simpla-img.html">
+    <link rel="import" href="../simpla-img-editor.html">
 
     <!-- Sane styles -->
     <style>
@@ -31,8 +32,14 @@
     </style>
   </head>
   <body unresolved>
+    <img is="simpla-img" uid="image-1" src="./demo/cage.jpg">
+    <img is="simpla-img" uid="image-1" src="./demo/cage.jpg">
 
-    <img is="simpla-img" uid="simpla-img" src="../test.jpg">
+    <img is="simpla-img" uid="image-2" src="./demo/murray.jpg">
+    <img is="simpla-img" uid="image-2" src="./demo/murray.jpg">
 
+    <script type="text/javascript">
+      Simpla.editable(true);
+    </script>
   </body>
 </html>
