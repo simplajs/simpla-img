@@ -315,28 +315,49 @@
             value: 1
           },
 
+          /**
+           * Width of editor in px
+           * @type {Number}
+           */
           width: {
             type: Number,
             observer: '_observeWidth'
           },
 
+          /**
+           * Height of editor in px
+           * @type {Number}
+           */
           height: {
             type: Number,
             observer: '_observeHeight'
           },
 
+          /**
+           * Top of editor in px
+           * @type {Number}
+           */
           top: {
             type: Number,
             observer: '_observeTop',
             value: 0
           },
 
+          /**
+           * Left of editor in px
+           * @type {Number}
+           */
           left: {
             type: Number,
             observer: '_observeLeft',
             value: 0
           },
 
+          /**
+           * Rendered image of editorin base64 encoding. Property is debounced
+           * for performance reasons so isn't a live representation of the canvas.
+           * @type {String}
+           */
           output: {
             type: String,
             notify: true,
@@ -365,6 +386,7 @@
 
         this.observers = [
           '_toggleVisibility(active)',
+          '_focusOnActive(active)'
         ];
       }
 
@@ -387,6 +409,7 @@
        */
       openFilePicker(e) {
         e && e.stopPropagation();
+        this.fire('opening-filepicker');
         this.$['file-input'].click();
       }
 
@@ -448,6 +471,7 @@
               reader.removeEventListener('load', setFile);
             };
 
+        this.fire('image-loaded');
         this.focus();
 
         if (!files || !files[0]) {

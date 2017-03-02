@@ -2,7 +2,8 @@ import { resizeToImage } from './utils';
 
 let bindings,
     tagEvent,
-    closeEditor;
+    closeEditor,
+    filePickerOrphan;
 
 /**
  * Attach listeners to sync data from editor to image
@@ -11,6 +12,16 @@ let bindings,
  * @return {undefined}
  */
 export function attachListeners(editor, image) {
+  let restoreOnceOffEditor = () => {
+    if (filePickerOrphan) {
+      image.editing = true;
+    }
+
+    editor.removeEventListener('image-loaded', restoreOnceOffEditor);
+  };
+
+  filePickerOrphan = null;
+
   bindings = {
     ['output-changed']: (e) => {
       image.src = e.detail.value;
@@ -34,22 +45,20 @@ export function attachListeners(editor, image) {
       if (cmdEnter || escape) {
         image.editing = false;
       }
+    },
+    ['blur']: () => {
+      editor.active = false;
+    },
+    ['opening-filepicker']: () => {
+      // Store the last known image to have had a filepicker pulled on it
+      filePickerOrphan = image;
+      editor.addEventListener('image-loaded', restoreOnceOffEditor);
     }
   };
 
   Object.keys(bindings).forEach(event => {
     editor.addEventListener(event, bindings[event]);
   });
-
-  closeEditor = (e) => {
-    if (e.path.indexOf(image) === -1 && e.path.indexOf(editor) === -1) {
-      editor.active = false;
-    }
-  };
-
-  window.addEventListener('tap', closeEditor);
-  window.addEventListener('mouseup', closeEditor);
-  window.addEventListener('touchend', closeEditor);
 }
 
 /**
@@ -61,8 +70,4 @@ export function detachListeners(editor) {
   Object.keys(bindings).forEach(event => {
     editor.removeEventListener(event, bindings[event]);
   });
-
-  window.removeEventListener('tap', closeEditor);
-  window.removeEventListener('mouseup', closeEditor);
-  window.removeEventListener('touchend', closeEditor);
 };
