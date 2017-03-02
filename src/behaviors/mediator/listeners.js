@@ -4,6 +4,12 @@ let bindings,
     tagEvent,
     closeEditor;
 
+/**
+ * Attach listeners to sync data from editor to image
+ * @param  {HTMLElement} editor Editor to listen to
+ * @param  {HTMLElement} image  Image to perform actions on
+ * @return {undefined}
+ */
 export function attachListeners(editor, image) {
   bindings = {
     ['output-changed']: (e) => {
@@ -44,9 +50,14 @@ export function attachListeners(editor, image) {
   window.addEventListener('tap', closeEditor);
   window.addEventListener('mouseup', closeEditor);
   window.addEventListener('touchend', closeEditor);
-};
+}
 
-export function detachListeners(editor, image) {
+/**
+ * Detach all previously attached listeners on the editor
+ * @param  {HTMLElement} editor Editor to remove listeners from
+ * @return {undefined}
+ */
+export function detachListeners(editor) {
   Object.keys(bindings).forEach(event => {
     editor.removeEventListener(event, bindings[event]);
   });

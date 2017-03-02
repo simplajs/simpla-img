@@ -372,6 +372,24 @@
         return [ viewable, cropperBehavior ];
       }
 
+      clear() {
+        Object.assign(this, {
+          src: '',
+          alt: '',
+          zoom: 1
+        });
+      }
+
+      /**
+       * Utility method to open file input
+       * @param  {Event} e Tap event from parent control
+       * @return {undefined}
+       */
+      openFilePicker(e) {
+        e && e.stopPropagation();
+        this.$['file-input'].click();
+      }
+
       _observeWidth(width) {
         this.style.width = `${width}px`;
       }
@@ -386,16 +404,6 @@
 
       _observeTop(top) {
         this.style.top = `${top}px`;
-      }
-
-      /**
-       * Utility method to open file input
-       * @param  {Event} e Tap event from parent control
-       * @return {undefined}
-       */
-      openFilePicker(e) {
-        e && e.stopPropagation();
-        this.$['file-input'].click();
       }
 
       /**

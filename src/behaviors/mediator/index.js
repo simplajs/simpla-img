@@ -1,6 +1,6 @@
 import { saveToCache, restoreFromCache } from './cache';
 import { attachListeners, detachListeners } from './listeners';
-import { ensureEditorReady, resizeToImage, resetEditor, passPropsToEditor } from './utils';
+import { ensureEditorReady, resizeToImage, passPropsToEditor } from './utils';
 
 const editor = document.createElement('simpla-img-editor');
 let activeImage;
@@ -44,8 +44,8 @@ export default {
 
       detachListeners(editor, activeImage);
       saveToCache(editor, activeImage);
-      resetEditor(editor);
 
+      editor.clear();
       activeImage = null;
     }
   },
