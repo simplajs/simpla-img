@@ -35,8 +35,13 @@ export function attachListeners(editor, image) {
       }
     },
     ['src-changed']: (e) => {
+      let updateEditorSize = () => {
+        resizeToImage(editor, image);
+        image.removeEventListener('load', updateEditorSize);
+      }
+
+      image.addEventListener('load', updateEditorSize);
       image.src = e.detail.value;
-      resizeToImage(editor, image);
     },
     ['keyup']: (e) => {
       let cmdEnter = e.keyCode === 13 && e.metaKey,
