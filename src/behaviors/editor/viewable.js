@@ -54,20 +54,27 @@ export default {
    * @return {undefined}
    */
   _popIfOutsideViewport(top, left, width, height, visible) {
-    let { innerWidth: viewportWidth, innerHeight: viewportHeight } = window,
+    let {
+          innerWidth: viewportWidth,
+          innerHeight: viewportHeight,
+          scrollY,
+          scrollX
+        } = window,
+        right = left + width,
+        bottom = top + height,
         translateX = 0,
         translateY = 0;
 
-    if (left < 0) {
+    if (left < scrollX) {
       translateX = Math.abs(left) + POPOUT_GUTTER;
-    } else if (left > viewportWidth - width) {
-      translateX = -(left - (viewportWidth - width) + POPOUT_GUTTER);
+    } else if (right > viewportWidth) {
+      translateX = viewportWidth - right - POPOUT_GUTTER;
     }
 
-    if (top < 0) {
-      translateY = Math.abs(top) + POPOUT_GUTTER;
-    } else if (top > viewportHeight - height) {
-      translateY = -(top - (viewportHeight - height) + POPOUT_GUTTER);
+    if (top < scrollY) {
+      translateY = scrollY + Math.abs(top) + POPOUT_GUTTER;
+    } else if (bottom > viewportHeight) {
+      translateY = viewportHeight - bottom - POPOUT_GUTTER;
     }
 
     // Transform transitioned with CSS

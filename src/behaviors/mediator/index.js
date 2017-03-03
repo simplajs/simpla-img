@@ -8,7 +8,6 @@ let activeImage;
 export default {
   observers: [
     '_toggleEditorBindings(editing)',
-    '_stopEditingOnResizeOrScroll(editing)',
     '_ensureEditorReady(editable)'
   ],
 
@@ -53,28 +52,6 @@ export default {
   _ensureEditorReady(editable) {
     if (editable) {
       ensureEditorReady(editor, this);
-    }
-  },
-
-  /**
-   * CONTROLS
-   */
-
-  /**
-   * Stop editing on viewport resize
-   * (Since we're fixed width and abspos)
-   * @param  {Boolean} editing Current value of the editing property
-   * @return {undefined}
-   */
-  _stopEditingOnResizeOrScroll(editing) {
-    let exit = this.__exitHandler = this.__exitHandler || (() => this.editing = false);
-
-    if (editing) {
-      window.addEventListener('resize', exit);
-      window.addEventListener('scroll', exit);
-    } else {
-      window.removeEventListener('resize', exit);
-      window.removeEventListener('scroll', exit);
     }
   }
 }

@@ -483,6 +483,16 @@
       }
 
       /**
+       * Override normal focus to stop scrolling on focus
+       * @return {undefined}
+       */
+      focus() {
+        let { scrollY, scrollX } = window;
+        HTMLElement.prototype.focus.call(this);
+        window.scrollTo(scrollX, scrollY);
+      }
+
+      /**
        * Utility method to toggle _titleOpen prop
        * @return {undefined}
        */
