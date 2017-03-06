@@ -118,32 +118,91 @@
       this.is = 'simpla-img-cropper';
 
       this.properties = {
+        /**
+         * Width of cropper
+         * @type {Number}
+         */
         width: Number,
+
+        /**
+         * Height of cropper
+         * @type {Number}
+         */
         height: Number,
+
+        /**
+         * Source image uri
+         * @type {String}
+         */
         src: String,
+
+        /**
+         * Scale level of image
+         * @type {Number}
+         */
         scale: Number,
+
+        /**
+         * X translation of image
+         * @type {Number}
+         */
         translateX: Number,
+
+        /**
+         * Y translation of image
+         * @type {Number}
+         */
         translateY: Number,
+
+        /**
+         * Whether cropper is active or not
+         * @type {Object}
+         */
         active: {
           type: Boolean,
           reflectToAttribute: true,
           value: false
         },
+
+        /**
+         * Rendered output img in base64 encoding
+         * @type {String}
+         */
         output: {
           type: String,
           readOnly: true,
           notify: true
         },
-        _transform: {
-          type: String,
-          value: ''
-        },
+
+        /**
+         * Position of image in x, y coordinates
+         * @type {Object}
+         */
         position: {
           type: Object,
           value: () => ({ x: 0, y: 0 }),
           observer: '_positionChanged',
           notify: true
-        }
+        },
+
+        /**
+         * Duration of render debouncing. Increase for better performance,
+         *  decrease for smoother syncing of image data
+         * @type {Object}
+         */
+        debounceDuration: {
+          type: Number,
+          value: 100
+        },
+
+        /**
+         * Current transform string being applied to image
+         * @type {Object}
+         */
+        _transform: {
+          type: String,
+          value: ''
+        },
       };
 
       this.observers = [
@@ -359,7 +418,7 @@
      * @return {undefined}
      */
     _debouncedRender() {
-      this.debounce('render', this._render);
+      this.debounce('render', this._render, this.debounceDuration);
     }
 
     /**
