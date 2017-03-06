@@ -3,6 +3,7 @@
 <link rel="import" href="../iron-iconset-svg/iron-iconset-svg.html">
 <link rel="import" href="../iron-icon/iron-icon.html" async>
 <link rel="import" href="../paper-slider/paper-slider.html" async>
+<link rel="import" href="./simpla-img-cropper.html">
 
 <!-- Material icons cherry picked from iron-icons -->
 <iron-iconset-svg name="simpla-img">
@@ -17,9 +18,6 @@
 <dom-module id="simpla-img-editor">
   <template>
     <style>
-      /* Vendor styles */
-      @import 'cropperjs/dist/cropper.css';
-
       /**
        * Basics
        */
@@ -51,25 +49,6 @@
         width: 100%;
         height: 100%;
         overflow: hidden;
-      }
-
-      /**
-       * Image canvas
-       */
-      .canvas {
-        max-height: 100%;
-        overflow: hidden;
-        /* Checkered background */
-        background: linear-gradient(45deg, rgba(0,0,0,0.02) 25%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 75%, rgba(0,0,0,0.02) 75%, rgba(0,0,0,0.02) 0),
-                    linear-gradient(45deg, rgba(0,0,0,0.02) 25%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 75%, rgba(0,0,0,0.02) 75%, rgba(0,0,0,0.02) 0),
-                    rgba(255,255,255,0.02);
-        background-position: 0 0, 15px 15px;
-        background-size: 30px 30px;
-      }
-
-      .canvas__src {
-        visibility: hidden;
-        max-width: 100%;
       }
 
       /* Vendor overwrites */
@@ -181,6 +160,12 @@
       [hidden] {
         display: none !important;
       }
+
+      /*.canvas-editor {
+        width: inherit;
+        height: inherit;
+        overflow: hidden;
+      }*/
     </style>
 
     <div class="editor">
@@ -213,16 +198,15 @@
         </a>
       </div>
 
-      <!-- Cropper needs a parent in same DOM tree -->
-      <div class="canvas">
-        <!-- Load src into dummy img element -->
-        <img id="src"
-          class="canvas__src"
-          src$="[[src]]"
-          width$="[[width]]"
-          height$="[[height]]"
+      <simpla-img-cropper
+        src="[[src]]"
+        width="[[width]]"
+        height="[[height]]"
+        scale="[[zoom]]"
+        active="[[active]]"
+        output="{{output}}"
         >
-      </div>
+      </simpla-img-cropper>
 
       <div class="zoom" on-transitionend="_hideIfInactive">
         <paper-slider
@@ -239,12 +223,8 @@
     </div>
   </template>
   <script>
-    // Vendor
-    import Cropper from 'cropperjs';
-
     // Behaviors
     import viewable from './behaviors/editor/viewable';
-    import cropperBehavior from './behaviors/editor/cropper';
 
     class SimplaImgEditor {
       beforeRegister() {
@@ -391,7 +371,7 @@
       }
 
       get behaviors() {
-        return [ viewable, cropperBehavior ];
+        return [ viewable ];
       }
 
       clear() {

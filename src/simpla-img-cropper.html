@@ -1,0 +1,323 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="simpla-img-cropper">
+  <template>
+    <style>
+      :host {
+        position: relative;
+        display: inline-block;
+        overflow: hidden;
+        width: inherit;
+        height: inherit;
+        vertical-align: bottom;
+
+        /* Checkered background for transprent PNGs */
+        background: linear-gradient(45deg, rgba(0,0,0,0.02) 25%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 75%, rgba(0,0,0,0.02) 75%, rgba(0,0,0,0.02) 0), linear-gradient(45deg, rgba(0,0,0,0.02) 25%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 75%, rgba(0,0,0,0.02) 75%, rgba(0,0,0,0.02) 0), rgba(255, 255, 255, 0.02);
+        background-position: 0 0, 15px 15px;
+        background-size: 30px 30px;
+      }
+
+      /* Hover highlight */
+      :host:hover::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: var(--light-white);
+        cursor: pointer;
+        z-index: 1;
+      }
+
+      :host([active]) {
+        cursor: move;
+      }
+
+      :host([active])::before {
+        display: none;
+      }
+
+      /* Disable img drag and drop in Chrome */
+      :host([active]) .img {
+        -webkit-user-drag: none;
+      }
+
+      /* Actual image */
+      .img {
+        vertical-align: bottom;
+        transform-origin: 0 0;
+        width: inherit;
+        height: inherit;
+      }
+    </style>
+
+    <img
+      id="source"
+      class="img"
+      crossorigin="anonymous"
+      src$=[[src]]
+      width$=[[width]]
+      height$=[[height]]
+      on-track="_dragImage"
+      on-tap="_handleImgTap"
+      on-load="_imageLoaded"
+    />
+
+  </template>
+  <script>
+  const DEFAULT_SCALE = 1,
+        DEFAULT_TRANSLATE_X = 0,
+        DEFAULT_TRANSLATE_Y = 0,
+        DEFAULT_SIZING = 'length',
+        RESET_CTX_TRANSFORM = [ 1, 0, 0, 1, 0, 0 ],
+        PAN_FINISHED = 'pan-finished';
+
+  let canvas = document.createElement('canvas'),
+      ctx = canvas.getContext('2d');
+
+  /**
+   * Fit a value inside a range
+   * @param  {Number} value Value to fit
+   * @param  {Object} range Range, has min and max properties
+   * @return {Number}       Value, or min if value is below min, or max if value is
+   *                          greater than max
+   */
+  function fitInside(value, range) {
+    if (value < range.min) {
+      return range.min;
+    }
+
+    if (value > range.max) {
+      return range.max;
+    }
+
+    return value;
+  };
+
+  /**
+   * 	Manipulable img canvas
+   * 	emits 'pan-finished'
+   */
+  class SimplaImgCropper {
+    beforeRegister() {
+      this.is = 'simpla-img-cropper';
+
+      this.properties = {
+        width: Number,
+        height: Number,
+        src: String,
+        scale: Number,
+        translateX: Number,
+        translateY: Number,
+        active: {
+          type: Boolean,
+          reflectToAttribute: true,
+          value: false
+        },
+        output: {
+          type: String,
+          readOnly: true,
+          notify: true
+        },
+        _transform: {
+          type: String,
+          value: ''
+        }
+      };
+
+      this.observers = [
+        '_updateStyles(_transform)',
+        '_debouncedRender(_transform)'
+      ];
+    }
+
+    attached() {
+      this.setScrollDirection('all', this.$.source);
+    }
+
+    _updateStyles(transform) {
+      this.$.source.style.transform = transform;
+    }
+
+    _debouncedRender() {
+      let { width, height, scale, translateX, translateY } = this;
+
+      canvas.width = width;
+      canvas.height = height;
+
+      ctx.setTransform(...RESET_CTX_TRANSFORM);
+      ctx.drawImage(this.$.source, translateX, translateY, width * scale, height * scale);
+
+      this._setOutput(canvas.toDataURL());
+    }
+
+    /**
+     * Updates UI with current scale / translateX / translateY
+     * will not happen instantly, happens on next animationFrame
+     * @return {undefined}
+     */
+    _paint() {
+      // Cancel the last tick if there is one waiting
+      if (this._tick) {
+        cancelAnimationFrame(this._tick);
+        this._tick = null;
+      }
+
+      // The next tick is the requestAnimationFrame result, so it can be cancelled
+      this._tick = requestAnimationFrame(() => {
+        let { scale, translateX, translateY } = this;
+
+        this._transform = `scale(${scale}) translateX(${translateX}px) translateY(${translateY}px)`;
+      });
+    }
+
+    /**
+     * @type {Number}
+     */
+    get scale() {
+      return this._scale || DEFAULT_SCALE;
+    }
+
+    /**
+     * @param {Number} value to set scale
+     * @type {Number}
+     * @return {undefined}
+     */
+    set scale(value) {
+      let min = this.minScale;
+
+      if (value < min) {
+        this._scale = parseFloat(min);
+      } else {
+        this._scale = parseFloat(value);
+      }
+
+      // Trigger a change to translateX / translateY, incase they haven't been
+      //  set yet
+      this.translateX += 0;
+      this.translateY += 0;
+
+      // Trigger a paint
+      this._paint();
+    }
+
+    /**
+     * @type {Number}
+     */
+    get translateX() {
+      return this._translateX || DEFAULT_TRANSLATE_X;
+    }
+
+    /**
+     * @param {Number} value Value to set translateX
+     * @type {Number}
+     * @return {undefined}
+     */
+    set translateX(value) {
+      this._translateX = fitInside(value, this._bounds.x);
+      this._paint();
+    }
+
+    /**
+     * @type {Number}
+     */
+    get translateY() {
+      return this._translateY || DEFAULT_TRANSLATE_Y;
+    }
+
+    /**
+     * @param {Number} value Value to set translateY
+     * @type {Number}
+     * @return {undefined}
+     */
+    set translateY(value) {
+      this._translateY = fitInside(value, this._bounds.y);
+      this._paint();
+    }
+
+    /**
+     * @type {Number}
+     */
+    get minScale() {
+      let scaleHeight = this.height / this.$.source.height,
+          scaleWidth = this.width / this.$.source.width;
+
+
+      if (isNaN(scaleHeight) || isNaN(scaleWidth)) {
+        return 1;
+      }
+
+      // minScale is the smaller of scaleHeight and scaleWidth. Which are the
+      //  ratios between this height / width and the native img height / width,
+      //  respectively.
+      return scaleHeight < scaleWidth ? scaleHeight : scaleWidth;
+    }
+
+    /**
+     * The allowed bounds that the image can be transformed within, in both the
+     * x and y directions
+     * @type {Object}
+     */
+    get _bounds() {
+      if (!(this._imgWidth && this._width && this._imgHeight && this._height)) {
+        return {
+          x: { min: Number.NEGATIVE_INFINITY, max: Number.POSITIVE_INFINITY },
+          y: { min: Number.NEGATIVE_INFINITY, max: Number.POSITIVE_INFINITY }
+        };
+      }
+
+      return {
+        x: { min: -(this._imgWidth * this.scale - this._width) / this.scale, max: 0 },
+        y: { min: -(this._imgHeight * this.scale - this._height) / this.scale, max: 0 }
+      };
+    }
+
+    /**
+     * Reset the internal dimensions to the offsetWidth / offsetHeights of this and
+     * the internal img
+     * @return {undefined}
+     */
+    _resetDimensions() {
+      this._width = this.offsetWidth;
+      this._height = this.offsetHeight;
+
+      this._imgWidth = this.$.source.offsetWidth;
+      this._imgHeight = this.$.source.offsetHeight;
+    }
+
+    /**
+     * Takes tracking event and updates coordinates.
+     * @param {CustomEvent} event Tracking event as specified by polymer
+     * @return {undefined}
+     */
+    _dragImage(event) {
+      let { dx, dy, ddx, ddy, state } = event.detail;
+
+      // Only set the bounds on start to reduce calls to getBoundingClientRect
+      if ( state === 'start' ) {
+        this._resetDimensions();
+      }
+
+      // At the start, we want dx incase it traveled. Just a precaution - probably unecessary.
+      this.translateX += (state === 'start' ? dx : ddx) / this.scale;
+      this.translateY += (state === 'start' ? dy : ddy) / this.scale;
+
+      if ( state === 'end' ) {
+        this.fire(PAN_FINISHED);
+      }
+    }
+
+    /**
+     * Called whenever image is loaded, resets the dimensions
+     * @return {undefined}
+     */
+    _imageLoaded() {
+      this._resetDimensions();
+    }
+  }
+
+  Polymer(SimplaImgCropper);
+
+  </script>
+</dom-module>
