@@ -38,11 +38,16 @@ export function attachListeners(editor, image) {
     },
 
     ['src-changed']: function srcChangedHandler(event) {
-      let updateEditorSize = () => {
-        resizeToImage(editor, image);
-        image.removeEventListener('load', updateEditorSize);
-      }
+      let originalSrc,
+          updateEditorSize;
 
+      updateEditorSize = () => {
+        resizeToImage(editor, image);
+        image.src = originalSrc;
+        image.removeEventListener('load', updateEditorSize);
+      };
+
+      originalSrc = image.src;
       image.addEventListener('load', updateEditorSize);
       image.src = event.detail.value;
     },
