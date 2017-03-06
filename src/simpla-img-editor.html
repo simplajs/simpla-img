@@ -204,6 +204,7 @@
         height="[[height]]"
         scale="[[zoom]]"
         active="[[active]]"
+        position="{{position}}"
         output="{{output}}"
         >
       </simpla-img-cropper>
@@ -293,6 +294,15 @@
             type: Number,
             notify: true,
             value: 1
+          },
+
+          /**
+           * Current position of editor image with x y coordinates
+           * @type {Object}
+           */
+          position: {
+            type: Object,
+            value: () => ({ x: 0, y: 0 })
           },
 
           /**

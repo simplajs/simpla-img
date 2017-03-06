@@ -8,7 +8,7 @@ let cache = {};
  * @return {undefined}
  */
 export function saveToCache(editor, image) {
-  cache[image.uid] = { src: editor.src, zoom: editor.zoom };
+  cache[image.uid] = { src: editor.src, zoom: editor.zoom, position: editor.position };
 };
 
 /**

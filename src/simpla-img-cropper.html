@@ -93,6 +93,20 @@
     }
 
     return value;
+  }
+
+  /**
+   * Round given number to given precision e.g. round(1.54, 1) === 1.5
+   * @param  {Number} number        Number to round
+   * @param  {Number} [precision=0] Decimal places to round to
+   * @return {Number}               Rounded number
+   */
+  function round(number, precision = 0) {
+    let factor = Math.pow(10, precision);
+
+    // Move decimal back precision places, round, then move decimal to original
+    //  position
+    return Math.round(number * factor) / factor;
   };
 
   /**
@@ -123,33 +137,24 @@
         _transform: {
           type: String,
           value: ''
+        },
+        position: {
+          type: Object,
+          value: () => ({ x: 0, y: 0 }),
+          observer: '_positionChanged',
+          notify: true
         }
       };
 
       this.observers = [
         '_updateStyles(_transform)',
-        '_debouncedRender(_transform)'
+        '_debouncedRender(_transform)',
+        '_updatePosition(_transform)'
       ];
     }
 
     attached() {
       this.setScrollDirection('all', this.$.source);
-    }
-
-    _updateStyles(transform) {
-      this.$.source.style.transform = transform;
-    }
-
-    _debouncedRender() {
-      let { width, height, scale, translateX, translateY } = this;
-
-      canvas.width = width;
-      canvas.height = height;
-
-      ctx.setTransform(...RESET_CTX_TRANSFORM);
-      ctx.drawImage(this.$.source, translateX, translateY, width * scale, height * scale);
-
-      this._setOutput(canvas.toDataURL());
     }
 
     /**
@@ -188,9 +193,9 @@
       let min = this.minScale;
 
       if (value < min) {
-        this._scale = parseFloat(min);
+        this._scale = round(parseFloat(min), 2);
       } else {
-        this._scale = parseFloat(value);
+        this._scale = round(parseFloat(value), 2);
       }
 
       // Trigger a change to translateX / translateY, incase they haven't been
@@ -215,7 +220,7 @@
      * @return {undefined}
      */
     set translateX(value) {
-      this._translateX = fitInside(value, this._bounds.x);
+      this._translateX = round(fitInside(value, this._bounds.x));
       this._paint();
     }
 
@@ -232,7 +237,7 @@
      * @return {undefined}
      */
     set translateY(value) {
-      this._translateY = fitInside(value, this._bounds.y);
+      this._translateY = round(fitInside(value, this._bounds.y));
       this._paint();
     }
 
@@ -314,6 +319,68 @@
      */
     _imageLoaded() {
       this._resetDimensions();
+    }
+
+    /**
+     * Update translateX and translateY values with position
+     * @param  {Object} position Position with x y coords
+     * @return {undefined}
+     */
+    _positionChanged(position) {
+      if (position) {
+        let { x, y } = position;
+        this.translateX = x;
+        this.translateY = y;
+      }
+    }
+
+    /**
+     * Update position with current translateX and translateY values
+     * @return {undefined}
+     */
+    _updatePosition() {
+      this.position = {
+        x: this.translateX,
+        y: this.translateY
+      };
+    }
+
+    /**
+     * Update the styles with new transform string
+     * @param {String} transform Transform CSS String
+     * @return {undefined}
+     */
+    _updateStyles(transform) {
+      this.$.source.style.transform = transform;
+    }
+
+    /**
+     * Debounces rendering
+     * @return {undefined}
+     */
+    _debouncedRender() {
+      this.debounce('render', this._render);
+    }
+
+    /**
+     * Render image to output
+     * @return {undefined}
+     */
+    _render() {
+      let { width, height, scale, translateX, translateY } = this,
+          { naturalWidth, naturalHeight } = this.$.source,
+          naturalScaleX = width / naturalWidth,
+          naturalScaleY = height / naturalHeight;
+
+      canvas.width = naturalWidth;
+      canvas.height = naturalHeight;
+
+      ctx.setTransform(...RESET_CTX_TRANSFORM);
+      ctx.scale(scale, scale);
+      ctx.translate(translateX / naturalScaleX, translateY / naturalScaleY);
+      ctx.drawImage(this.$.source, 0, 0);
+
+      this._setOutput(canvas.toDataURL());
     }
   }
 
