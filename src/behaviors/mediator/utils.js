@@ -28,12 +28,17 @@ export function ensureEditorReady(editor, image) {
 
 /**
  * Resize the given editor to the same dimensions and position as the given image
- * @param  {HTMLElement} editor The editor to be resized
- * @param  {HTMLElement} image  The image to resize the editor to
+ * @param  {HTMLElement}  editor The editor to be resized
+ * @param  {HTMLElement}  image  The image to resize the editor to
  * @return {undefined}
  */
 export function resizeToImage(editor, image) {
-  let { top, left, width, height } = image.getBoundingClientRect();
+  let { top, left, width, height } = image.getBoundingClientRect(),
+      { scrollX, scrollY } = window;
+
+  top += scrollY;
+  left += scrollX;
+
   Object.assign(editor, { top, left, width, height });
 }
 

@@ -88,8 +88,11 @@ export default {
    * @return {undefined}
    */
   _fitIntoVisibleWindow(top, left, width, height, visible) {
-    this.debounce('fit-to-window', () => {
+    if (!visible) {
+      this.style.transform = '';
+    }
 
+    this.debounce('fit-to-window', () => {
       let rect = { top, left, width, height },
           translateX,
           translateY;

@@ -23,43 +23,50 @@ export function attachListeners(editor, image) {
   filePickerOrphan = null;
 
   bindings = {
-    ['output-changed']: (e) => {
-      image.src = e.detail.value;
+    ['output-changed']: function outputChangedHandler(event) {
+      image.src = event.detail.value;
     },
-    ['alt-changed']: (e) => {
-      image.alt = e.detail.value;
+
+    ['alt-changed']: function altChangedHandler(event) {
+      image.alt = event.detail.value;
     },
-    ['active-changed']: (e) => {
-      if (!e.detail.value) {
+
+    ['active-changed']: function activeChangedHandler(event) {
+      if (!event.detail.value) {
         image.editing = false;
       }
     },
-    ['src-changed']: (e) => {
+
+    ['src-changed']: function srcChangedHandler(event) {
       let updateEditorSize = () => {
         resizeToImage(editor, image);
         image.removeEventListener('load', updateEditorSize);
       }
 
       image.addEventListener('load', updateEditorSize);
-      image.src = e.detail.value;
+      image.src = event.detail.value;
     },
-    ['keyup']: (e) => {
-      let cmdEnter = e.keyCode === 13 && e.metaKey,
-          escape = e.keyCode === 27;
+
+    ['keyup']: function keyupHandler(event) {
+      let cmdEnter = event.keyCode === 13 && event.metaKey,
+          escape = event.keyCode === 27;
 
       if (cmdEnter || escape) {
         image.editing = false;
       }
     },
-    ['blur']: () => {
+
+    ['blur']: function blurHandler(event) {
       editor.active = false;
     },
-    ['opening-filepicker']: () => {
+
+    ['opening-filepicker']: function openingFilePickerHandler(event) {
       // Store the last known image to have had a filepicker pulled on it
       filePickerOrphan = image;
       editor.addEventListener('image-loaded', restoreOnceOffEditor);
     }
   };
+
 
   Object.keys(bindings).forEach(event => {
     editor.addEventListener(event, bindings[event]);
