@@ -106,13 +106,45 @@ gulp.task('build', () => {
         .pipe(gulp.dest('.'))
 });
 
+gulp.task('build:tests:html', () => {
+  let scripts = processInline();
+
+  return gulp.src(['test/**/*.html'])
+          .pipe(errorNotifier())
+
+          // Inline assets
+          .pipe(inline(OPTIONS.inline))
+
+          // JS
+          .pipe(scripts.extract('script'))
+            .pipe(eslint())
+            .pipe(eslint.format())
+            .pipe(rollup(OPTIONS.rollup))
+          .pipe(scripts.restore())
+
+        .pipe(gulp.dest('./.test'));
+});
+
+gulp.task('build:tests:js', () => {
+  return gulp.src(['test/*.js'])
+          .pipe(errorNotifier())
+          .pipe(eslint())
+          .pipe(eslint.format())
+          .pipe(rollup(OPTIONS.rollup))
+          .pipe(gulp.dest('./.test'));
+});
+
 wct.gulp.init(gulp);
 
 gulp.task('serve', (callback) => bs.init(OPTIONS.browserSync));
 gulp.task('refresh', () => bs.reload());
 
-gulp.task('test', ['build', 'test:local']);
+gulp.task('build:tests', ['build:tests:html', 'build:tests:js']);
 
-gulp.task('watch', () => gulp.watch(['src/**/*'], () => gulprun('build', 'refresh')));
+gulp.task('test', ['build', 'build:tests', 'test:local']);
 
-gulp.task('default', ['build', 'serve', 'watch']);
+gulp.task('watch:src', () => gulp.watch(['src/**/*'], () => gulprun('build', 'refresh')));
+gulp.task('watch:tests', () => gulp.watch(['src/**/*', 'test/**/*'], () => gulprun('build:tests')))
+gulp.task('watch', ['watch:src', 'watch:tests']);
+
+gulp.task('default', ['build', 'build:tests', 'serve', 'watch']);

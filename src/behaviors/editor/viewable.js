@@ -1,83 +1,105 @@
-const POPOUT_GUTTER = 8;
-const MIN_SIZE = {
+export const POPOUT_GUTTER = 8;
+export const MIN_SIZE = {
   width: 180,
   height: 130
 };
 
+export function getConstraints(dimensions, maxSize, minSize) {
+  let { width, height } = dimensions,
+      scale;
+
+  scale = Math.min(1, Math.min(maxSize.width / width, maxSize.height / height));
+
+  if (scale * width < minSize.width || scale * height < minSize.height) {
+    scale = Math.max(minSize.width / width, minSize.height / height)
+  }
+
+  return { width: Math.round(width * scale), height: Math.round(height * scale) };
+}
+
+export function getTranslationForPopout(imageRect, window, gutter) {
+  let { top, left, width, height } = imageRect,
+      right = left + width,
+      bottom = top + height,
+      translateX = 0,
+      translateY = 0,
+      boundaries;
+
+  boundaries = {
+    left: window.scrollX + gutter,
+    top: window.scrollY + gutter,
+    right: window.scrollX + window.innerWidth - gutter,
+    bottom: window.scrollY + window.innerHeight - gutter
+  };
+
+  if (left < boundaries.left) {
+    translateX = boundaries.left - left;
+  } else if (right > boundaries.right) {
+    translateX = boundaries.right - right;
+  }
+
+  if (top < boundaries.top) {
+    translateY = boundaries.top - top;
+  } else if (bottom > boundaries.bottom) {
+    translateY = boundaries.bottom - bottom;
+  }
+
+  return { translateY, translateX };
+}
+
+export function getPositionAndScaleForWindow(imageRect, window, gutter = POPOUT_GUTTER, minSize = MIN_SIZE) {
+  let maxSize,
+      width,
+      height,
+      translateX,
+      translateY;
+
+  maxSize = {
+    width: window.innerWidth - gutter * 2,
+    height: window.innerHeight - gutter * 2
+  };
+
+  ({ width, height} = getConstraints(imageRect, maxSize, minSize));
+
+  ({ translateX, translateY } = getTranslationForPopout({
+    top: imageRect.top,
+    left: imageRect.left,
+    width,
+    height
+  }, window, gutter));
+
+  return { width, height, translateX, translateY };
+}
+
 export default {
   observers: [
-    '_fitWithinConstraints(width, height)',
-    '_popIfOutsideViewport(top, left, width, height, visible)'
+    '_fitIntoVisibleWindow(top, left, width, height, visible)'
   ],
 
   /**
-   * Ensure bounds fit within size constraints
-   * @param  {Number} width  Value of width
-   * @param  {Number} height Value of height
+   * Translates and scales dimensions to fit within the viewport. This means
+   *  translating bounds back into viewport and scaling to width and height
+   *  if required.
+   * @param  {Number} top       Distance from top of viewport in px
+   * @param  {Number} left      Distance from left side of viewport in px
+   * @param  {Number} width     Width of image in px
+   * @param  {Number} height    Height of image in px
+   * @param  {Boolean} visible  If image is visible or not
    * @return {undefined}
    */
-  // TODO: Animate constraint change, to make
-  // image appear to scale/pop out of old position
-  _fitWithinConstraints(width, height) {
-    let { width: minWidth, height: minHeight } = MIN_SIZE,
-        scale = (direction, value) => {
-          let isWidth = direction === 'width',
-              changedValue = isWidth ? width : height,
-              scaledBound = isWidth ? 'height' : 'width',
-              scaledValue = isWidth ? height : width;
+  _fitIntoVisibleWindow(top, left, width, height, visible) {
+    this.debounce('fit-to-window', () => {
 
-          this[direction] = value;
-          this[scaledBound] = scaledValue * (value / changedValue);
-        };
+      let rect = { top, left, width, height },
+          translateX,
+          translateY;
 
-    if (width < minWidth) {
-      scale('width', minWidth);
-    }
+      ({ width, height, translateX, translateY } = getPositionAndScaleForWindow(rect, window));
 
-    if (height < minHeight) {
-      scale('height', minHeight);
-    }
-
-    if (width > window.innerWidth) {
-      scale('width', window.innerWidth);
-    }
-
-    if (height > window.innerHeight) {
-      scale('height', window.innerHeight);
-    }
-  },
-
-  /**
-   * Translate bounds back into viewport if any are outside it
-   * @param  {Object} bounds   Value of the bounds property
-   * @param  {Boolean} visible Value of the visible property
-   * @return {undefined}
-   */
-  _popIfOutsideViewport(top, left, width, height, visible) {
-    let {
-          innerWidth: viewportWidth,
-          innerHeight: viewportHeight,
-          scrollY,
-          scrollX
-        } = window,
-        right = left + width,
-        bottom = top + height,
-        translateX = 0,
-        translateY = 0;
-
-    if (left < scrollX) {
-      translateX = Math.abs(left) + POPOUT_GUTTER;
-    } else if (right > viewportWidth) {
-      translateX = viewportWidth - right - POPOUT_GUTTER;
-    }
-
-    if (top < scrollY) {
-      translateY = scrollY + Math.abs(top) + POPOUT_GUTTER;
-    } else if (bottom > viewportHeight) {
-      translateY = viewportHeight - bottom - POPOUT_GUTTER;
-    }
-
-    // Transform transitioned with CSS
-    this.style.transform = visible ? `translate(${translateX}px, ${translateY}px)` : '';
+      // This nice little hack is to stop recursion
+      this.width = width;
+      this.height = height;
+      this.style.transform = `translate(${translateX}px, ${translateY}px)`;
+    });
   }
 }
