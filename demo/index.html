@@ -32,17 +32,18 @@
     </style>
   </head>
   <body unresolved>
-    <img is="simpla-img" uid="image-0" src="./demo/large.jpg">
-    <img is="simpla-img" uid="image-0" src="./demo/large.jpg">
+    <div><button id="edit">Edit</button></div>
 
     <img is="simpla-img" uid="image-1" src="./demo/cage.jpg">
     <img is="simpla-img" uid="image-1" src="./demo/cage.jpg">
-
-    <img is="simpla-img" uid="image-2" src="./demo/murray.jpg">
-    <img is="simpla-img" uid="image-2" src="./demo/murray.jpg">
 
     <script type="text/javascript">
-      Simpla.editable(true);
+      document.getElementById('edit')
+        .addEventListener('click', function(event) {
+          var editable = Simpla.getState('editable');
+          Simpla.editable(!editable);
+          event.target.innerHTML = editable ? 'Stop editing' : 'Edit';
+        });
     </script>
   </body>
 </html>
