@@ -77,7 +77,6 @@
         this.observers = [
           '_styleEditable(editable)',
           '_styleEditing(editing)',
-          '_stopEditingOnResizeOrScroll(editing)',
           '_showPlaceholder(editable, editing, src)',
         ];
       }
@@ -127,38 +126,6 @@
         Object.keys(styleObject).forEach(style => {
           this.style[style] = state ? styleObject[style] : '';
         });
-      }
-
-      /**
-       * Stop editing on viewport resize
-       * (Since we're fixed width and abspos)
-       * @param  {Boolean} editing Current value of the editing property
-       * @return {undefined}
-       */
-      _stopEditingOnResizeOrScroll(editing) {
-        let exit = this.__exitHandler = this.__exitHandler || (() => this.editing = false);
-
-        if (editing) {
-          window.addEventListener('resize', exit);
-          window.addEventListener('scroll', exit);
-        } else {
-          window.removeEventListener('resize', exit);
-          window.removeEventListener('scroll', exit);
-        }
-      }
-
-      /**
-       * Stop Editing on Hot Keys
-       * @param  {Event} e Keydown event on host
-       * @return {undefined}
-       */
-      _stopEditingOnHotkeys(e) {
-        let cmdEnter = e.keyCode === 13 && e.metaKey,
-            escape = e.keyCode === 27;
-
-        if (cmdEnter || escape) {
-          this.editing = false;
-        }
       }
     };
     Polymer(SimplaImg);
