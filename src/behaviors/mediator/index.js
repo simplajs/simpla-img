@@ -7,7 +7,7 @@ let activeImage;
 
 export default {
   observers: [
-    '_stopEditingOnResizeOrScroll(editing)',
+    '_stopEditingOnResizeOrScroll(editing, popped)',
     '_toggleEditorBindings(editing)',
     '_ensureEditorReady(editable)'
   ],
@@ -65,7 +65,7 @@ export default {
   _stopEditingOnResizeOrScroll(editing) {
     let exit = this.__exitHandler = this.__exitHandler || (() => this.editing = false);
 
-    if (editing) {
+    if (editing && popped) {
       window.addEventListener('resize', exit);
 
       // When the editor is focused (on activation), it will sometimes trigger a

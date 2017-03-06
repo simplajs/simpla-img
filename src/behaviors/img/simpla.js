@@ -60,20 +60,17 @@ export default {
    */
   _initUid(uid) {
     Simpla.get(uid)
-      .then(item => {
-        if (item && item.data) {
-          Object.assign(this.data, item.data);
-        }
-      });
+      .then(item => this._setPropsFromSimpla(item));
 
     this._observeBuffer(uid);
   },
 
   /**
    * Set internal value to Simpla on change
-   * @param {String} value Internal markdown source
-   * @param {String} uid   Element UID
-   * @return {Promise}
+   * @param {String} src    Internal img source
+   * @param {String} alt    Internal img alt
+   * @param {String} uid    Element UID
+   * @return {Promise}      Promise which resolves once successfully set to Simpla
    */
   _setData(src, alt, uid) {
     return Simpla.set(uid, {
@@ -91,12 +88,7 @@ export default {
    * @return {undefined}
    */
   _observeBuffer(uid) {
-    let observers = this._simplaObservers,
-        setProps = (item) => {
-          if (item && item.data) {
-            Object.assign(this, item.data);
-          }
-        };
+    let observers = this._simplaObservers;
 
     if (!uid) {
       return;
@@ -106,7 +98,18 @@ export default {
       observers.buffer.unobserve();
     }
 
-    observers.buffer = Simpla.observe(uid, setProps);
+    observers.buffer = Simpla.observe(uid, (item) => this._setPropsFromSimpla(item));
+  },
+
+  /**
+   * Set own properties from Simpla item
+   * @param  {Object} item Item from Simpla. Should have `data` prop
+   * @return {undefined}
+   */
+  _setPropsFromSimpla(item) {
+    if (item && item.data) {
+      Object.assign(this, item.data);
+    }
   },
 
   /**

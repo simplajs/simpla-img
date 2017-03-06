@@ -72,6 +72,17 @@ export function getPositionAndScaleForWindow(imageRect, window, gutter = POPOUT_
 }
 
 export default {
+  properties: {
+    /**
+     * Whether editor is popped out into the window or not
+     * @type {Boolean}
+     */
+    popped: {
+      type: Boolean,
+      value: false
+    }
+  },
+
   observers: [
     '_fitIntoVisibleWindow(top, left, width, height, visible)'
   ],
@@ -103,6 +114,8 @@ export default {
       this.width = width;
       this.height = height;
       this.style.transform = `translate(${translateX}px, ${translateY}px)`;
+
+      this.popped = translateX || translateY;
     });
   }
 }
