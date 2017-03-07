@@ -22,68 +22,71 @@
       }
     };
 
-    class SimplaImg {
-      beforeRegister() {
-        this.is = 'simpla-img';
+    /**
+     * Polymer SimplaImg element definition
+     *
+     * Note: We're using the object definition to properly extend an `img` element.
+     *  Using ES6 classes, Polymer won't properly setup the inheritance chain and
+     *  it won't extend the HTMLImageElement, even if specified using the definition:
+     *  `class SimplaImg extends HTMLImageElement { ... }`
+     */
+    const SimplaImg = {
+      is: 'simpla-img',
 
-        this.extends = 'img';
+      extends: 'img',
 
-        this.properties = {
+      properties: {
 
-          /**
-           * Image src
-           * @type {String}
-           */
-          src: {
-            type: String,
-            reflectToAttribute: true,
-            value: '',
-            notify: true
-          },
+        /**
+         * Image src
+         * @type {String}
+         */
+        src: {
+          type: String,
+          reflectToAttribute: true,
+          value: '',
+          notify: true
+        },
 
-          /**
-           * Image alt value
-           * @type {String}
-           */
-          alt: {
-            type: String,
-            reflectToAttribute: true,
-            value: '',
-            notify: true
-          },
+        /**
+         * Image alt value
+         * @type {String}
+         */
+        alt: {
+          type: String,
+          reflectToAttribute: true,
+          value: '',
+          notify: true
+        },
 
-          /**
-           * Whether image is editable
-           * @type {Boolean}
-           */
-          editable: {
-            type: Boolean,
-            notify: true,
-            value: false,
-          },
+        /**
+         * Whether image is editable
+         * @type {Boolean}
+         */
+        editable: {
+          type: Boolean,
+          notify: true,
+          value: false,
+        },
 
-          /**
-           * Whether image is currently being edited in editor
-           * @type {Boolean}
-           */
-          editing: {
-            type: Boolean,
-            notify: true,
-            value: false
-          }
+        /**
+         * Whether image is currently being edited in editor
+         * @type {Boolean}
+         */
+        editing: {
+          type: Boolean,
+          notify: true,
+          value: false
+        },
 
-        };
+      },
 
-        this.observers = [
-          '_styleEditable(editable)',
-          '_styleEditing(editing)',
-          '_showPlaceholder(editable, editing, src)',
-        ];
-      }
-
-      get behaviors() {
-        return [ simpla, editorMediator ];
-      }
+      observers: [
+        '_styleEditable(editable)',
+        '_styleEditing(editing)',
+        '_showPlaceholder(editable, editing, src)',
+      ],
+      behaviors: [ simpla, editorMediator ],
 
       /**
        * Set inline styles for editable state
@@ -92,7 +95,7 @@
        */
       _styleEditable(editable) {
         this._toggleStyles(CONDITIONAL_STYLES.editable, editable);
-      }
+      },
 
       /**
        * Set inline styles for editing state
@@ -101,7 +104,7 @@
        */
       _styleEditing(editing) {
         this._toggleStyles(CONDITIONAL_STYLES.editing, editing);
-      }
+      },
 
       /**
        * Fake a basic placeholder with inline styles
@@ -114,7 +117,7 @@
         let showPlaceholder = editable && !editing && !src;
 
         this._toggleStyles(CONDITIONAL_STYLES.placeholder, showPlaceholder);
-      }
+      },
 
       /**
        * Helper function to toggle inline styles on the element
