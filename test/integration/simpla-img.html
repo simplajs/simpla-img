@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>simpla-text</title>
+    <script src="../../../webcomponentsjs/webcomponents.min.js"></script>
+    <script src="../../../web-component-tester/browser.js"></script>
+
+    <!-- Test Helpers -->
+    <link rel="import" href="../helpers/test-setup.html">
+
+    <!-- Import the element to test -->
+    <link rel="import" href="../../simpla-img.html">
+
+  </head>
+  <body>
+    <test-fixture id="editable">
+      <template>
+        <img is="simpla-img" editable />
+      </template>
+    </test-fixture>
+    <script>
+      describe('simpla-img', () => {
+        describe('editable prop', () => {
+          it('should be editable if prop declaratively given', () => {
+            let image = fixture('editable');
+
+            expect(image.editable).to.be.true;
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

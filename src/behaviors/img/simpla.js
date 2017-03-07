@@ -38,6 +38,7 @@ export default {
    * @return {undefined}
    */
   attached() {
+    this.editable = this.editable || Simpla.getState('editable');
     this._observeEditable();
   },
 
@@ -118,8 +119,6 @@ export default {
    */
   _observeEditable() {
     let observers = this._simplaObservers;
-
-    this.editable = Simpla.getState('editable');
 
     if (observers.editable) {
       observers.editable.unobserve();
