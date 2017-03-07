@@ -32,23 +32,12 @@
     </style>
   </head>
   <body unresolved>
-    <div><button id="edit">Edit</button></div>
-
     <h3>With static content</h3>
-    <img is="simpla-img" uid="image-1" src="./demo/cage.jpg">
-    <img is="simpla-img" uid="image-1" src="./demo/cage.jpg">
+    <img editable is="simpla-img" uid="image-1" src="./demo/cage.jpg">
+    <img editable is="simpla-img" uid="image-1" src="./demo/cage.jpg">
 
     <h3>With no supplied content</h3>
-    <img is="simpla-img" uid="image-2">
-    <img is="simpla-img" uid="image-2">
-
-    <script type="text/javascript">
-      document.getElementById('edit')
-        .addEventListener('click', function(event) {
-          var editable = Simpla.getState('editable');
-          Simpla.editable(!editable);
-          event.target.innerHTML = editable ? 'Stop editing' : 'Edit';
-        });
-    </script>
+    <img editable is="simpla-img" uid="image-2">
+    <img editable is="simpla-img" uid="image-2">
   </body>
 </html>

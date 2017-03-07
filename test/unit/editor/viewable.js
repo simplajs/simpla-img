@@ -1,4 +1,4 @@
-import { getConstraints, getTranslationForPopout, getPositionAndScaleForWindow } from '../../src/behaviors/editor/viewable';
+import { getConstraints, getTranslationForPopout, getPositionAndScaleForWindow } from '../../../src/behaviors/editor/viewable';
 
 const TEST_MIN_SIZE = { width: 0, height: 0 };
 const TEST_GUTTER = 10;

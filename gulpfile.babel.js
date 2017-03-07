@@ -126,7 +126,7 @@ gulp.task('build:tests:html', () => {
 });
 
 gulp.task('build:tests:js', () => {
-  return gulp.src(['test/*.js'])
+  return gulp.src(['test/*/*.js'])
           .pipe(errorNotifier())
           .pipe(eslint())
           .pipe(eslint.format())
