@@ -3,7 +3,6 @@
 <link rel="import" href="../iron-iconset-svg/iron-iconset-svg.html">
 <link rel="import" href="../iron-icon/iron-icon.html" async>
 <link rel="import" href="../paper-slider/paper-slider.html" async>
-<link rel="import" href="./simpla-img-cropper.html">
 
 <!-- Material icons cherry picked from iron-icons -->
 <iron-iconset-svg name="simpla-img">
@@ -156,16 +155,20 @@
         padding-left: 1em;
       }
 
+      /* Editor Image */
+      .editor-img {
+        -webkit-user-drag: none;
+        vertical-align: bottom;
+        transform-origin: 0 0;
+        width: inherit;
+        height: inherit;
+        cursor: move;
+      }
+
       /* Patch hidden prop on IE*/
       [hidden] {
         display: none !important;
       }
-
-      /*.canvas-editor {
-        width: inherit;
-        height: inherit;
-        overflow: hidden;
-      }*/
     </style>
 
     <div class="editor">
@@ -198,16 +201,17 @@
         </a>
       </div>
 
-      <simpla-img-cropper
-        src="[[src]]"
-        width="[[width]]"
-        height="[[height]]"
-        scale="[[zoom]]"
-        active="[[active]]"
-        position="{{position}}"
-        output="{{output}}"
-        >
-      </simpla-img-cropper>
+      <img
+        id="source"
+        class="editor-img"
+        crossorigin="anonymous"
+        src$=[[src]]
+        width$=[[width]]
+        height$=[[height]]
+        on-track="_dragImage"
+        on-tap="_handleImgTap"
+        on-load="_imageLoaded"
+      />
 
       <div class="zoom" on-transitionend="_hideIfInactive">
         <paper-slider
@@ -226,6 +230,7 @@
   <script>
     // Behaviors
     import viewable from './behaviors/editor/viewable';
+    import cropper from './behaviors/editor/cropper';
 
     class SimplaImgEditor {
       beforeRegister() {
@@ -380,7 +385,7 @@
       }
 
       get behaviors() {
-        return [ viewable ];
+        return [ viewable, cropper ];
       }
 
       clear() {
