@@ -211,6 +211,10 @@ export default {
    * @type {Object}
    */
   get _bounds() {
+    let getMinAndMax = (overflow) => ({ min: - overflow / 2, max: overflow / 2 }),
+        overflowX,
+        overflowY;
+
     if (!(this._imgWidth && this._width && this._imgHeight && this._height)) {
       return {
         x: { min: Number.NEGATIVE_INFINITY, max: Number.POSITIVE_INFINITY },
@@ -218,9 +222,12 @@ export default {
       };
     }
 
+    overflowX = this._imgWidth - this._width / this.scale;
+    overflowY = this._imgHeight - this._height / this.scale;
+
     return {
-      x: { min: -(this._imgWidth * this.scale - this._width) / this.scale, max: 0 },
-      y: { min: -(this._imgHeight * this.scale - this._height) / this.scale, max: 0 }
+      x: getMinAndMax(overflowX),
+      y: getMinAndMax(overflowY)
     };
   },
 
@@ -315,8 +322,9 @@ export default {
   _render() {
     let { width, height, scale, translateX, translateY } = this,
         { naturalWidth, naturalHeight } = this.$.source,
-        naturalScaleX = width / naturalWidth,
-        naturalScaleY = height / naturalHeight,
+        naturalTranslateX = translateX / (width / naturalWidth),
+        naturalTranslateY = translateY / (height / naturalHeight),
+        getMidpointOf = (dimension) => dimension / scale * (1 - scale) / 2,
         output;
 
     canvas.width = naturalWidth;
@@ -324,8 +332,8 @@ export default {
 
     ctx.setTransform(...RESET_CTX_TRANSFORM);
     ctx.scale(scale, scale);
-    ctx.translate(translateX / naturalScaleX, translateY / naturalScaleY);
-    ctx.drawImage(this.$.source, 0, 0);
+    ctx.translate(naturalTranslateX, naturalTranslateY);
+    ctx.drawImage(this.$.source, getMidpointOf(naturalWidth), getMidpointOf(naturalHeight));
 
     output = canvas.toDataURL();
 
