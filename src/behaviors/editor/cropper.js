@@ -89,7 +89,7 @@ export default {
 
   observers: [
     '_updateStyles(_transform)',
-    '_debouncedRender(_transform)',
+    '_debouncedRender(_transform, src)',
     '_updatePosition(_transform)',
     '_updateScale(zoom)'
   ],
