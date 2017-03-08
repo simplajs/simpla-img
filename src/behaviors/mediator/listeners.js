@@ -1,5 +1,3 @@
-import { resizeToImage } from './utils';
-
 let bindings,
     tagEvent,
     closeEditor,
@@ -35,21 +33,6 @@ export function attachListeners(editor, image) {
       if (!event.detail.value) {
         image.editing = false;
       }
-    },
-
-    ['src-changed']: function srcChangedHandler(event) {
-      let originalSrc,
-          updateEditorSize;
-
-      updateEditorSize = () => {
-        resizeToImage(editor, image);
-        image.src = originalSrc;
-        image.removeEventListener('load', updateEditorSize);
-      };
-
-      originalSrc = image.src;
-      image.addEventListener('load', updateEditorSize);
-      image.src = event.detail.value;
     },
 
     ['keyup']: function keyupHandler(event) {
