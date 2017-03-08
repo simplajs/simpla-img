@@ -34,6 +34,12 @@ export default {
       restoreFromCache(editor, this);
 
       activeImage = this;
+
+      // If there's no image, it should go straight to picking a file
+      if (!editor.src) {
+        editor.openFilePicker();
+      }
+
       editor.active = true;
     } else {
       if (!activeImage) {
