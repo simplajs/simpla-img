@@ -52,6 +52,20 @@ export function attachListeners(editor, image) {
       // Store the last known image to have had a filepicker pulled on it
       filePickerOrphan = image;
       editor.addEventListener('image-loaded', restoreOnceOffEditor);
+    },
+
+    ['popped-out']: function addScrollListener(event) {
+      let exit = () => {
+        window.removeEventListener('scroll', exit);
+        this.active = false
+      };
+
+      // When the editor is focused (on activation), it will sometimes trigger a
+      //  'scroll' event as the browser will automatically try scroll to the
+      //  focused element. To stop that focus event from closing the editor
+      //  straight away, this listener is attached 100ms after the editor is
+      //  activated
+      this.async(() => window.addEventListener('scroll', exit), 100);
     }
   };
 

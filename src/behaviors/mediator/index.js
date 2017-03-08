@@ -7,7 +7,7 @@ let activeImage;
 
 export default {
   observers: [
-    '_stopEditingOnResizeOrScroll(editing, popped)',
+    '_stopEditingOnResize(editing)',
     '_toggleEditorBindings(editing)',
     '_ensureEditorReady(editable)'
   ],
@@ -68,21 +68,14 @@ export default {
    * @param  {Boolean} editing Current value of the editing property
    * @return {undefined}
    */
-  _stopEditingOnResizeOrScroll(editing) {
-    let exit = this.__exitHandler = this.__exitHandler || (() => this.editing = false);
-
-    if (editing && popped) {
-      window.addEventListener('resize', exit);
-
-      // When the editor is focused (on activation), it will sometimes trigger a
-      //  'scroll' event as the browser will automatically try scroll to the
-      //  focused element. To stop that focus event from closing the editor
-      //  straight away, this listener is attached 100ms after the editor is
-      //  activated
-      this.async(() => window.addEventListener('scroll', exit), 100);
-    } else {
+  _stopEditingOnResize(editing) {
+    let exit = () => {
       window.removeEventListener('resize', exit);
-      window.removeEventListener('scroll', exit);
+      this.editing = false;
+    }
+
+    if (editing) {
+      window.addEventListener('resize', exit);
     }
   }
 }

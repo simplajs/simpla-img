@@ -72,17 +72,6 @@ export function getPositionAndScaleForWindow(imageRect, window, gutter = POPOUT_
 }
 
 export default {
-  properties: {
-    /**
-     * Whether editor is popped out into the window or not
-     * @type {Boolean}
-     */
-    popped: {
-      type: Boolean,
-      value: false
-    }
-  },
-
   observers: [
     '_fitIntoVisibleWindow(top, left, width, height, visible)'
   ],
@@ -106,16 +95,21 @@ export default {
     this.debounce('fit-to-window', () => {
       let rect = { top, left, width, height },
           translateX,
-          translateY;
+          translateY,
+          popped;
 
       ({ width, height, translateX, translateY } = getPositionAndScaleForWindow(rect, window));
 
-      // This nice little hack is to stop recursion
       this.width = width;
       this.height = height;
       this.style.transform = `translate(${translateX}px, ${translateY}px)`;
 
-      this.popped = translateX || translateY;
+      // Popped essentially just means some position has changed
+      popped = !!(width !== rect.width || height !== rect.height || translateX || translateY);
+
+      if (popped) {
+        this.fire('popped-out');
+      }
     });
   }
 }
