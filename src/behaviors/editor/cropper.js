@@ -3,7 +3,8 @@ const DEFAULT_SCALE = 1,
       DEFAULT_TRANSLATE_Y = 0,
       DEFAULT_SIZING = 'length',
       RESET_CTX_TRANSFORM = [ 1, 0, 0, 1, 0, 0 ],
-      PAN_FINISHED = 'pan-finished';
+      PAN_FINISHED = 'pan-finished',
+      EMPTY_DATA_URL = 'data:,';
 
 let canvas = document.createElement('canvas'),
     ctx = canvas.getContext('2d');
@@ -315,7 +316,8 @@ export default {
     let { width, height, scale, translateX, translateY } = this,
         { naturalWidth, naturalHeight } = this.$.source,
         naturalScaleX = width / naturalWidth,
-        naturalScaleY = height / naturalHeight;
+        naturalScaleY = height / naturalHeight,
+        output;
 
     canvas.width = naturalWidth;
     canvas.height = naturalHeight;
@@ -325,6 +327,8 @@ export default {
     ctx.translate(translateX / naturalScaleX, translateY / naturalScaleY);
     ctx.drawImage(this.$.source, 0, 0);
 
-    this.output = canvas.toDataURL();
+    output = canvas.toDataURL();
+
+    this.output = output === EMPTY_DATA_URL ? '' : output;
   }
 }
