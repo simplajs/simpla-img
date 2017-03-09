@@ -108,8 +108,22 @@ export default {
       popped = !!(width !== rect.width || height !== rect.height || translateX || translateY);
 
       if (popped) {
-        this.fire('popped-out');
+        this._closeOnScroll();
       }
     });
+  },
+
+  _closeOnScroll() {
+    let exit = () => {
+      window.removeEventListener('scroll', exit);
+      this.active = false
+    };
+
+    // When the editor is focused (on activation), it will sometimes trigger a
+    //  'scroll' event as the browser will automatically try scroll to the
+    //  focused element. To stop that focus event from closing the editor
+    //  straight away, this listener is attached 100ms after the editor is
+    //  activated
+    this.async(() => window.addEventListener('scroll', exit), 100);
   }
 }

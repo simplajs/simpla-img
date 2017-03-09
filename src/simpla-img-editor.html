@@ -210,7 +210,6 @@
         width$=[[width]]
         height$=[[height]]
         on-track="_dragImage"
-        on-tap="_handleImgTap"
         on-load="_imageLoaded"
       />
 
@@ -232,6 +231,8 @@
     // Behaviors
     import viewable from './behaviors/editor/viewable';
     import cropper from './behaviors/editor/cropper';
+    import externalControls from './behaviors/editor/external-listeners';
+    import imageHandler from './behaviors/editor/image-handler';
 
     class SimplaImgEditor {
       beforeRegister() {
@@ -386,15 +387,7 @@
       }
 
       get behaviors() {
-        return [ viewable, cropper ];
-      }
-
-      clear() {
-        Object.assign(this, {
-          src: '',
-          alt: '',
-          zoom: 1
-        });
+        return [ viewable, cropper, externalControls, imageHandler ];
       }
 
       /**
@@ -463,10 +456,10 @@
             reader = new FileReader(),
             setFile = (e) => {
               this.src = e.target.result;
+              this.fire('image-uploaded', { value: e.target.result });
               reader.removeEventListener('load', setFile);
             };
 
-        this.fire('image-loaded');
         this.focus();
 
         if (!files || !files[0]) {

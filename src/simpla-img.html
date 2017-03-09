@@ -3,7 +3,7 @@
 <dom-module id="simpla-img">
   <script>
     import simpla from './behaviors/img/simpla';
-    import editorMediator from './behaviors/mediator';
+    import editor from './behaviors/img/editor';
 
     const CONDITIONAL_STYLES = {
       editable: {
@@ -86,7 +86,12 @@
         '_styleEditing(editing)',
         '_showPlaceholder(editable, editing, src)',
       ],
-      behaviors: [ simpla, editorMediator ],
+
+      listeners: {
+        'tap': '_tapHandler'
+      },
+
+      behaviors: [ simpla, editor ],
 
       /**
        * Set inline styles for editable state
@@ -129,6 +134,12 @@
         Object.keys(styleObject).forEach(style => {
           this.style[style] = state ? styleObject[style] : '';
         });
+      },
+
+      _tapHandler() {
+        if (this.editable) {
+          this.editing = true;
+        }
       }
     };
     Polymer(SimplaImg);
