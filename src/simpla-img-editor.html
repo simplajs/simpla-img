@@ -157,7 +157,6 @@
 
       /* Editor Image */
       .editor-img {
-        -webkit-user-drag: none;
         vertical-align: bottom;
         transform-origin: center;
         width: inherit;
@@ -211,6 +210,7 @@
         height$=[[height]]
         on-track="_dragImage"
         on-load="_imageLoaded"
+        draggable="false"
       />
 
       <div class="zoom" on-transitionend="_hideIfInactive">
