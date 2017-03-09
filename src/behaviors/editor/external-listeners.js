@@ -35,6 +35,33 @@ export default {
   },
 
   _blurHandler(event) {
-    this.active = false;
+    let handleBlurOnChild;
+
+    if (Polymer.Settings.useShadow) {
+      this.active = false;
+
+      // The rest of the function deals with a lovely bug that only happens in
+      //  ShadyDOM, so if we've got ShadowDOM, we return and skip the rest
+      return;
+    }
+
+    handleBlurOnChild = (event) => {
+      let previouslyFocusedNode = event.target,
+          newlyFocusedNode = event.relatedTarget,
+          thisContains = (node) => {
+            return this.compareDocumentPosition(node)
+              & Node.DOCUMENT_POSITION_CONTAINED_BY;
+          };
+
+      if (newlyFocusedNode && thisContains(newlyFocusedNode)) {
+        newlyFocusedNode.addEventListener('blur', handleBlurOnChild);
+      } else if (this !== newlyFocusedNode) {
+        this.active = false;
+      }
+
+      previouslyFocusedNode.removeEventListener('blur', handleBlurOnChild);
+    }
+
+    handleBlurOnChild(event);
   }
 }
