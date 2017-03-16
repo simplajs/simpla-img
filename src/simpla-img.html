@@ -16,9 +16,9 @@
         transitionDelay: '50ms'
       },
       placeholder: {
-        background: '#b2bcc8',
-        width: '180px',
-        height: '130px'
+        minHeight: '130px',
+        minWidth: '180px',
+        backgroundColor: '#b2bcc8'
       }
     };
 
@@ -126,13 +126,27 @@
 
       /**
        * Helper function to toggle inline styles on the element
-       * @param  {Object} styleObject Styles as a JS object
-       * @param  {Boolean} state       Whether to apply or remove styles
+       * @param  {Object}  styles     Styles as key value object - same format as
+       *                                HTMLElement.prototype.styles
+       * @param  {Boolean} apply      Whether to apply or remove styles
        * @return {undefined}
        */
-      _toggleStyles(styleObject, state) {
-        Object.keys(styleObject).forEach(style => {
-          this.style[style] = state ? styleObject[style] : '';
+      _toggleStyles(styles, apply) {
+        let cache = this.__styleCache = this.__styleCache || {},
+            getEntriesIn = (obj) => Object.keys(obj).map(key => [ key, obj[key] ]);
+
+        getEntriesIn(styles).forEach(([ property, value ]) => {
+          let cachedValue = cache[property],
+              currentValue = this.style[property];
+
+          if (apply) {
+            cache[property] = currentValue;
+          } else {
+            cache[property] = '';
+            value = cachedValue || '';
+          }
+
+          this.style[property] = value;
         });
       },
 
