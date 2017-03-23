@@ -14,6 +14,7 @@ export default {
   observers: [
     '_updateImageFromActive(active)',
     '_updateActiveFromImage(image)',
+    '_maybeAskForFilePicker(image)',
     '_updateImageData(output, alt)',
     '_updateCache(src, alt, position)',
     '_loadDataFromImage(active, image)',
@@ -64,7 +65,9 @@ export default {
         blurHandler;
 
     blurHandler = () => {
+      this.__restoringFocus = true;
       this._editImage(image);
+      this.__restoringFocus = false;
       this.removeEventListener('blur', blurHandler);
     };
 
@@ -96,6 +99,12 @@ export default {
     left += scrollX;
 
     return { top, left, width, height };
+  },
+
+  _maybeAskForFilePicker(image) {
+    if (image && !image.src && !this.__restoringFocus) {
+      this.openFilePicker();
+    }
   },
 
   _getImageData(image) {
