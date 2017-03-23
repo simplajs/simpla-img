@@ -1,6 +1,6 @@
 export default {
   observers: [
-    '_stopEditingOnResize(editing)'
+    '_stopEditingOnResize(active)'
   ],
 
   listeners: {
@@ -11,16 +11,16 @@ export default {
   /**
    * Stop editing on viewport resize
    * (Since we're fixed width and abspos)
-   * @param  {Boolean} editing Current value of the editing property
+   * @param  {Boolean} active Current value of the active property
    * @return {undefined}
    */
-  _stopEditingOnResize(editing) {
+  _stopEditingOnResize(active) {
     let exit = () => {
       window.removeEventListener('resize', exit);
       this.active = false;
     }
 
-    if (editing) {
+    if (active) {
       window.addEventListener('resize', exit);
     }
   },
