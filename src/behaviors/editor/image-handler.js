@@ -16,7 +16,7 @@ export default {
     '_updateActiveFromImage(image)',
     '_maybeAskForFilePicker(image)',
     '_updateImageData(output, alt)',
-    '_updateCache(src, alt, position)',
+    '_updateCache(src, alt, position, lockTransform)',
     '_loadDataFromImage(active, image)',
     '_resizeFromImage(image)'
   ],
@@ -34,7 +34,15 @@ export default {
 
   _loadDataFromImage(active, image) {
     if (active && image) {
-      Object.assign(this, this._getImageData(image), cache.get(this._getImageKey(image)));
+      let {
+        src,
+        alt,
+        position,
+        lockTransform = false
+      } = cache.get(this._getImageKey(image)) || {};
+
+      this._setLockTransform(lockTransform);
+      Object.assign(this, this._getImageData(image), { src, alt, position });
     }
   },
 
@@ -54,10 +62,10 @@ export default {
     }
   },
 
-  _updateCache(src, alt, position) {
+  _updateCache(src, alt, position, lockTransform) {
     let { image } = this;
 
-    image && cache.set(this._getImageKey(image), { src, alt, position });
+    image && cache.set(this._getImageKey(image), { src, alt, position, lockTransform });
   },
 
   _restoreImageFocus(event) {

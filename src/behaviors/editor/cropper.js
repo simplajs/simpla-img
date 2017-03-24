@@ -252,6 +252,10 @@ export default {
   _dragImage(event) {
     let { dx, dy, ddx, ddy, state } = event.detail;
 
+    if (this.lockTransform) {
+      return;
+    }
+
     // Only set the bounds on start to reduce calls to getBoundingClientRect
     if ( state === 'start' ) {
       this._resetDimensions();
@@ -312,6 +316,10 @@ export default {
    * @return {undefined}
    */
   _debouncedRender() {
+    if (this.lockTransform) {
+      return;
+    }
+    
     this.debounce('render', this._render, this.debounceDuration);
   },
 
