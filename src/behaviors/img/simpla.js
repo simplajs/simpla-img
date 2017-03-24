@@ -1,3 +1,4 @@
+window._counter = 0;
 export default {
   properties: {
     /**
@@ -74,11 +75,15 @@ export default {
    * @return {Promise}      Promise which resolves once successfully set to Simpla
    */
   _setData(src, alt, uid) {
+    if (this.__comingFromSimpla) {
+      return;
+    }
+
     return Simpla.set(uid, {
       type: 'Image',
       data: {
-        src: src,
-        alt: alt
+        src: this.src,
+        alt: this.alt
       }
     });
   },
@@ -109,7 +114,9 @@ export default {
    */
   _setPropsFromSimpla(item) {
     if (item && item.data) {
+      this.__comingFromSimpla = true;
       Object.assign(this, item.data);
+      this.__comingFromSimpla = false;
     }
   },
 
