@@ -121,6 +121,10 @@
         --paper-slider-knob-start-border-color: var(--simpla-grey-700);
       }
 
+      .zoom__slider[disabled] {
+        cursor: not-allowed;
+      }
+
       .tools__tool {
         display: inline-block;
         padding: 5px 10px 7px;
@@ -163,6 +167,10 @@
         width: inherit;
         height: inherit;
         cursor: move;
+      }
+
+      .editor-img[locked] {
+        cursor: not-allowed;
       }
 
       /* Patch hidden prop on IE*/
@@ -212,6 +220,7 @@
         on-track="_dragImage"
         on-load="_imageLoaded"
         draggable="false"
+        locked$="[[lockTransform]]"
       />
 
       <div class="zoom" on-transitionend="_hideIfInactive">
@@ -223,6 +232,7 @@
           step="0.01"
           min="1"
           max="2"
+          disabled$="[[lockTransform]]"
           no-ink>
         </paper-slider>
       </div>
@@ -361,6 +371,13 @@
             notify: true
           },
 
+          lockTransform: {
+            type: Boolean,
+            value: false,
+            readOnly: true,
+            reflectToAttribute: true
+          },
+
           /**
            * Whether title input is expanded
            * @type {Boolean}
@@ -456,6 +473,14 @@
         let files = e.target.files,
             reader = new FileReader(),
             setFile = (e) => {
+              if (files[0].type === 'image/gif') {
+                this.zoom = 0;
+                this.position = { x: 0, y: 0 };
+                this._setLockTransform(true);
+              } else {
+                this._setLockTransform(false);
+              }
+
               this.src = e.target.result;
               this.fire('image-uploaded', { value: e.target.result });
               reader.removeEventListener('load', setFile);
