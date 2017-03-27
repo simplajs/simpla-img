@@ -1,3 +1,5 @@
+import { DEFAULT_SRC } from '../constants';
+
 window._counter = 0;
 export default {
   properties: {
@@ -75,7 +77,7 @@ export default {
    * @return {Promise}      Promise which resolves once successfully set to Simpla
    */
   _setData(src, alt, uid) {
-    if (this.__comingFromSimpla) {
+    if (this.__comingFromSimpla || src === DEFAULT_SRC) {
       return;
     }
 
