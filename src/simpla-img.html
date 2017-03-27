@@ -4,7 +4,7 @@
   <script>
     import simpla from './behaviors/img/simpla';
     import editor from './behaviors/img/editor';
-    import { DEFAULT_SRC } from './behaviors/constants';
+    import { DEFAULT_SRC, MIN_SIZE } from './behaviors/constants';
 
     const IMG_STYLES = {
       editable: {
@@ -17,8 +17,8 @@
         transitionDelay: '50ms'
       },
       placeholder: {
-        minHeight: '130px',
-        minWidth: '180px'
+        minHeight: `${MIN_SIZE.height}px`,
+        minWidth: `${MIN_SIZE.width}px`
       }
     };
 

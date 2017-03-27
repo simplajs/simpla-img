@@ -137,18 +137,21 @@
       }
 
       .tools__tool__icon {
-        --iron-icon-width: 15px;
-        --iron-icon-height: 15px;
+        --iron-icon-width: var(--simpla-scale-0);
+        --iron-icon-height: var(--simpla-scale-0);
       }
 
       /* Title input */
       .title-input {
+        font-family: var(--simpla-font-family);
+        font-size: var(--simpla-scale-000);
         background: transparent;
         border: none;
         width: 0;
         padding: 0;
         outline: none;
-        transition: width 150ms var(--simpla-easing-standard);
+        transition: width 150ms var(--simpla-easing-standard),
+                    padding-left 150ms var(--simpla-easing-standard);
       }
 
       .title-input::placeholder {

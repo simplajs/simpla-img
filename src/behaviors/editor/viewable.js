@@ -1,8 +1,6 @@
+import { MIN_SIZE } from '../constants';
+
 export const POPOUT_GUTTER = 8;
-export const MIN_SIZE = {
-  width: 180,
-  height: 130
-};
 
 export function getConstraints(dimensions, maxSize, minSize) {
   let { width, height } = dimensions,

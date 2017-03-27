@@ -346,8 +346,6 @@ export default {
 
     output = canvas.toDataURL();
 
-    console.log(output)
-
     this.output = output === EMPTY_DATA_URL ? DEFAULT_SRC : output;
   }
 }
