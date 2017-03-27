@@ -3,8 +3,9 @@ const DEFAULT_SCALE = 1,
       DEFAULT_TRANSLATE_Y = 0,
       DEFAULT_SIZING = 'length',
       RESET_CTX_TRANSFORM = [ 1, 0, 0, 1, 0, 0 ],
-      PAN_FINISHED = 'pan-finished',
-      EMPTY_DATA_URL = 'data:,';
+      PAN_FINISHED = 'pan-finished';
+
+import { DEFAULT_SRC, EMPTY_DATA_URL } from '../constants';
 
 let canvas = document.createElement('canvas'),
     ctx = canvas.getContext('2d');
@@ -319,7 +320,7 @@ export default {
     if (this.lockTransform) {
       return;
     }
-    
+
     this.debounce('render', this._render, this.debounceDuration);
   },
 
@@ -345,6 +346,8 @@ export default {
 
     output = canvas.toDataURL();
 
-    this.output = output === EMPTY_DATA_URL ? '' : output;
+    console.log(output)
+
+    this.output = output === EMPTY_DATA_URL ? DEFAULT_SRC : output;
   }
 }

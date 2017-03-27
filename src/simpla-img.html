@@ -4,8 +4,9 @@
   <script>
     import simpla from './behaviors/img/simpla';
     import editor from './behaviors/img/editor';
+    import { DEFAULT_SRC } from './behaviors/constants';
 
-    const CONDITIONAL_STYLES = {
+    const IMG_STYLES = {
       editable: {
         cursor: 'pointer'
       },
@@ -23,8 +24,7 @@
 
     /**
      * Polymer SimplaImg element definition
-     *
-     * Note: We're using the object definition to properly extend an `img` element.
+     * We're using the object definition to properly extend an `img` element.
      * Using ES6 classes, Polymer won't properly setup the inheritance chain and
      * it won't extend the HTMLImageElement, even if specified using the definition:
      * `class SimplaImg extends HTMLImageElement { ... }`
@@ -43,7 +43,7 @@
         src: {
           type: String,
           reflectToAttribute: true,
-          value: '',
+          value: () => DEFAULT_SRC,
           notify: true
         },
 
@@ -58,6 +58,10 @@
           notify: true
         },
 
+        /**
+         * Background of image when editable and no src
+         * @type {Object}
+         */
         placeholder: {
           type: String,
           value: 'rgb(230,230,230)'
@@ -104,7 +108,7 @@
        * @return {undefined}
        */
       _styleEditable(editable) {
-        this._toggleStyles(CONDITIONAL_STYLES.editable, editable);
+        this._toggleStyles(IMG_STYLES.editable, editable);
       },
 
       /**
@@ -113,7 +117,7 @@
        * @return {undefined}
        */
       _styleEditing(active) {
-        this._toggleStyles(CONDITIONAL_STYLES.active, active);
+        this._toggleStyles(IMG_STYLES.active, active);
       },
 
       /**
@@ -124,8 +128,8 @@
        * @return {undefined}
        */
       _showPlaceholder(placeholder, editable, src) {
-        let showPlaceholder = editable && !src,
-            styles = Object.assign({ background: placeholder }, CONDITIONAL_STYLES.placeholder);
+        let showPlaceholder = editable && src === DEFAULT_SRC,
+            styles = Object.assign({ background: placeholder }, IMG_STYLES.placeholder);
 
         this._toggleStyles(styles, showPlaceholder);
       },
@@ -133,7 +137,7 @@
       /**
        * Helper function to toggle inline styles on the element
        * @param  {Object}  styles     Styles as key value object - same format as
-       *                                HTMLElement.prototype.styles
+       *                              HTMLElement.prototype.styles
        * @param  {Boolean} apply      Whether to apply or remove styles
        * @return {undefined}
        */
