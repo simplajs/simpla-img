@@ -138,10 +138,10 @@ wct.gulp.init(gulp);
 gulp.task('test', () => gulprun('build:tests', 'test:local'));
 
 gulp.task('watch:src', () => gulp.watch(['src/**/*'], () => gulprun('build', 'refresh')));
-gulp.task('watch:tests', () => gulp.watch(['test/**/*'], () => gulprun('build:tests')))
+gulp.task('watch:tests', () => gulp.watch(['src/**/*', 'test/**/*'], () => gulprun('build:tests')))
 gulp.task('watch', ['watch:src', 'watch:tests']);
 
-gulp.task('serve', (callback) => bs.init(OPTIONS.browserSync));
+gulp.task('serve', () => bs.init(OPTIONS.browserSync));
 gulp.task('refresh', () => bs.reload());
 
 gulp.task('default', ['build', 'serve', 'watch']);
