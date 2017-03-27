@@ -5,12 +5,12 @@ let editorAttached = false;
 
 export default {
   observers: [
-    '_updateEditorImage(editing)',
+    '_updateEditorImage(active)',
     '_ensureEditorReady(editable)'
   ],
 
-  _updateEditorImage(editing) {
-    editor.image = editing ? this : null;
+  _updateEditorImage(active) {
+    editor.image = active ? this : null;
   },
 
   _ensureEditorReady(editable) {

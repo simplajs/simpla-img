@@ -144,7 +144,7 @@ export default {
   },
 
   _closeImage(image) {
-    image.editing = false;
+    image.active = false;
   },
 
   _getImageKey(image) {
@@ -152,6 +152,6 @@ export default {
   },
 
   _editImage(image) {
-    image.editing = true;
+    image.active = true;
   }
 }

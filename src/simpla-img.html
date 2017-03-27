@@ -9,7 +9,7 @@
       editable: {
         cursor: 'pointer'
       },
-      editing: {
+      active: {
         visibility: 'hidden',
         // Prevent flash while editor opening
         transition: 'visibility',
@@ -17,8 +17,7 @@
       },
       placeholder: {
         minHeight: '130px',
-        minWidth: '180px',
-        backgroundColor: '#b2bcc8'
+        minWidth: '180px'
       }
     };
 
@@ -26,9 +25,9 @@
      * Polymer SimplaImg element definition
      *
      * Note: We're using the object definition to properly extend an `img` element.
-     *  Using ES6 classes, Polymer won't properly setup the inheritance chain and
-     *  it won't extend the HTMLImageElement, even if specified using the definition:
-     *  `class SimplaImg extends HTMLImageElement { ... }`
+     * Using ES6 classes, Polymer won't properly setup the inheritance chain and
+     * it won't extend the HTMLImageElement, even if specified using the definition:
+     * `class SimplaImg extends HTMLImageElement { ... }`
      */
     const SimplaImg = {
       is: 'simpla-img',
@@ -59,6 +58,11 @@
           notify: true
         },
 
+        placeholder: {
+          type: String,
+          value: 'rgb(230,230,230)'
+        },
+
         /**
          * Whether image is editable
          * @type {Boolean}
@@ -71,10 +75,10 @@
         },
 
         /**
-         * Whether image is currently being edited in editor
+         * Whether image is currently open in editor
          * @type {Boolean}
          */
-        editing: {
+        active: {
           type: Boolean,
           notify: true,
           value: false
@@ -84,8 +88,8 @@
 
       observers: [
         '_styleEditable(editable)',
-        '_styleEditing(editing)',
-        '_showPlaceholder(editable, editing, src)',
+        '_styleEditing(active)',
+        '_showPlaceholder(placeholder, editable, src)',
       ],
 
       listeners: {
@@ -104,25 +108,26 @@
       },
 
       /**
-       * Set inline styles for editing state
-       * @param  {Boolean} editing Value of the editing prop
+       * Set inline styles for active state
+       * @param  {Boolean} active Value of the active prop
        * @return {undefined}
        */
-      _styleEditing(editing) {
-        this._toggleStyles(CONDITIONAL_STYLES.editing, editing);
+      _styleEditing(active) {
+        this._toggleStyles(CONDITIONAL_STYLES.active, active);
       },
 
       /**
        * Fake a basic placeholder with inline styles
-       * @param  {Boolean} editable Value of the editable prop
-       * @param  {Boolean} editing Value of the editable prop
-       * @param  {String} src       Value of the src prop
+       * @param  {Boolean} placeholder String to apply to background
+       * @param  {Boolean} editable    Whether image is editable
+       * @param  {String} src          Img src
        * @return {undefined}
        */
-      _showPlaceholder(editable, editing, src) {
-        let showPlaceholder = editable && !editing && !src;
+      _showPlaceholder(placeholder, editable, src) {
+        let showPlaceholder = editable && !src,
+            styles = Object.assign({ background: placeholder }, CONDITIONAL_STYLES.placeholder);
 
-        this._toggleStyles(CONDITIONAL_STYLES.placeholder, showPlaceholder);
+        this._toggleStyles(styles, showPlaceholder);
       },
 
       /**
@@ -153,7 +158,7 @@
 
       _tapHandler() {
         if (this.editable) {
-          this.editing = true;
+          this.active = true;
         }
       }
     };

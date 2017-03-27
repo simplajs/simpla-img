@@ -9,7 +9,7 @@ export default {
   },
 
   /**
-   * Stop editing on viewport resize
+   * Go inactive on viewport resize
    * (Since we're fixed width and abspos)
    * @param  {Boolean} active Current value of the active property
    * @return {undefined}
