@@ -1,6 +1,5 @@
 import { DEFAULT_SRC } from '../constants';
 
-window._counter = 0;
 export default {
   properties: {
     /**
