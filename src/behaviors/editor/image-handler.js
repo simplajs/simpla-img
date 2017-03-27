@@ -1,6 +1,12 @@
 const cache = ((store) => ({
-  get: (key) => store[key],
-  set: (key, value) => store[key] = value
+  get: (key) => {
+    console.log('getting', key, store[key]);
+    return store[key]
+  },
+  set: (key, value) => {
+    store[key] = value
+    console.log('setting', key, store[key]);
+  }
 }))({});
 
 export default {
@@ -16,7 +22,7 @@ export default {
     '_updateActiveFromImage(image)',
     '_maybeAskForFilePicker(image)',
     '_updateImageData(output, alt)',
-    '_updateCache(src, alt, position, lockTransform)',
+    '_debouncedUpdateCache(src, alt, position, lockTransform, zoom)',
     '_loadDataFromImage(active, image)',
     '_resizeFromImage(image)'
   ],
@@ -36,13 +42,33 @@ export default {
     if (active && image) {
       let {
         src,
-        alt,
-        position,
+        alt = '',
+        position = { x: 0, y: 0},
+        zoom = 1,
         lockTransform = false
-      } = cache.get(this._getImageKey(image)) || {};
+      } = cache.get(this._getImageKey(image)) || {},
+          imageData = this._getImageData(image),
+          cachedData = { alt, position, zoom };
 
+      if (src) {
+        cachedData.src = src;
+      }
+
+      // lockTransform is readOnly, so can't use it in the assign
       this._setLockTransform(lockTransform);
-      Object.assign(this, this._getImageData(image), { src, alt, position });
+
+      Object.assign(this, imageData, cachedData);
+    }
+  },
+
+  _debouncedUpdateCache(src, alt, position, lockTransform, zoom) {
+    let { image } = this;
+
+    if (image) {
+      let key = this._getImageKey(image);
+      this.debounce(`set-cache-${key}`, () => {
+        cache.set(key, { src, alt, position, lockTransform, zoom });
+      });
     }
   },
 
@@ -60,12 +86,6 @@ export default {
     if (this.image) {
       this._setImageData(this.image, { output, alt });
     }
-  },
-
-  _updateCache(src, alt, position, lockTransform) {
-    let { image } = this;
-
-    image && cache.set(this._getImageKey(image), { src, alt, position, lockTransform });
   },
 
   _restoreImageFocus(event) {
