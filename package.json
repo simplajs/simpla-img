@@ -4,13 +4,18 @@
   "description": "Simpla element that makes any native HTML img seamlessly editable",
   "main": "simpla-img.html",
   "scripts": {
-    "test": "gulp test:local"
+    "test": "gulp test"
   },
-  "author": "Simpla &lt;admin@simpla.io&gt;",
+  "author": "Simpla <admin@simpla.io>",
   "license": "MIT",
   "keywords": [
     "web components",
-    "simpla-img"
+    "polymer",
+    "simpla",
+    "img",
+    "content management",
+    "cms",
+    "editable"
   ],
   "repository": {
     "type": "git",

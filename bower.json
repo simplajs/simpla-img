@@ -6,9 +6,13 @@
   ],
   "description": "Simpla element that makes any native HTML img seamlessly editable",
   "keywords": [
-    "web-component",
+    "web components",
     "polymer",
-    "simpla-img"
+    "simpla",
+    "img",
+    "content management",
+    "cms",
+    "editable"
   ],
   "main": "simpla-img.html",
   "license": "MIT",
