@@ -1,5 +1,4 @@
-import { EDITOR_COMPONENT } from '../constants';
-
+const EDITOR_COMPONENT = 'simpla-img-editor.html';
 const editor = document.createElement('simpla-img-editor');
 
 let editorAttached = false;

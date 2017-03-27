@@ -3,9 +3,10 @@ const DEFAULT_SCALE = 1,
       DEFAULT_TRANSLATE_Y = 0,
       DEFAULT_SIZING = 'length',
       RESET_CTX_TRANSFORM = [ 1, 0, 0, 1, 0, 0 ],
-      PAN_FINISHED = 'pan-finished';
+      PAN_FINISHED = 'pan-finished',
+      EMPTY_DATA_URL = 'data:,';
 
-import { DEFAULT_SRC, EMPTY_DATA_URL } from '../constants';
+import { DEFAULT_SRC } from '../constants';
 
 let canvas = document.createElement('canvas'),
     ctx = canvas.getContext('2d');
