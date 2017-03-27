@@ -21,7 +21,6 @@
 
     <!-- Import component -->
     <link rel="import" href="../simpla-img.html">
-    <link rel="import" href="../simpla-img-editor.html">
 
     <!-- Sane styles -->
     <style>
@@ -31,13 +30,15 @@
       }
     </style>
   </head>
-  <body unresolved>
-    <h3>With static content</h3>
-    <img editable cage is="simpla-img" uid="image-1" src="./demo/cage.jpg">
-    <img editable murray is="simpla-img" uid="image-1" src="./demo/murray.jpg">
+  <body>
+    <button id="edit">toggle edit mode</button>
 
-    <h3>With no supplied content</h3>
-    <!-- <img editable is="simpla-img" uid="image-2">
-    <img editable is="simpla-img" uid="image-2"> -->
+    <img is="simpla-img" uid="img">
+
+    <script>
+      document.querySelector('#edit').addEventListener('click', function() {
+        Simpla.editable(!Simpla.getState('editable'));
+      });
+    </script>
   </body>
 </html>
