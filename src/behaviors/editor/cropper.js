@@ -6,6 +6,8 @@ const DEFAULT_SCALE = 1,
       PAN_FINISHED = 'pan-finished',
       EMPTY_DATA_URL = 'data:,';
 
+import { DEFAULT_SRC } from '../constants';
+
 let canvas = document.createElement('canvas'),
     ctx = canvas.getContext('2d');
 
@@ -319,7 +321,7 @@ export default {
     if (this.lockTransform) {
       return;
     }
-    
+
     this.debounce('render', this._render, this.debounceDuration);
   },
 
@@ -345,6 +347,6 @@ export default {
 
     output = canvas.toDataURL();
 
-    this.output = output === EMPTY_DATA_URL ? '' : output;
+    this.output = output === EMPTY_DATA_URL ? DEFAULT_SRC : output;
   }
 }

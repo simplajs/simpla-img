@@ -1,11 +1,11 @@
+import { DEFAULT_SRC } from '../constants';
+
 const cache = ((store) => ({
   get: (key) => {
-    console.log('getting', key, store[key]);
     return store[key]
   },
   set: (key, value) => {
     store[key] = value
-    console.log('setting', key, store[key]);
   }
 }))({});
 
@@ -130,7 +130,7 @@ export default {
   },
 
   _maybeAskForFilePicker(image) {
-    if (image && !image.src && !this.__restoringFocus) {
+    if (image && image.src === DEFAULT_SRC && !this.__restoringFocus) {
       this.openFilePicker();
     }
   },
