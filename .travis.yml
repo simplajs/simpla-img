@@ -5,8 +5,12 @@ node_js:
 - '6'
 before_script:
 - npm install -g bower web-component-tester
+- npm install
 - bower install
-script: xvfb-run wct
+script: gulp test
+cache:
+ directories:
+ - node_modules
 addons:
   firefox: latest
   apt:
