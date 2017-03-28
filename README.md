@@ -36,7 +36,7 @@
 </script>
 ```
 
-### Installation and setup
+## Installation and setup
 
 Install simpla-img with Bower (Yarn support coming soon)
 
@@ -68,7 +68,7 @@ And create an editable image by extending `<img>` with the `is` attribute. You m
 
 Read more about paths and IDs in the [structuring data guide](https://www.simpla.io/docs/structuring-data).
 
-#### Polyfills for cross-browser support
+### Polyfills for cross-browser support
 
 `simpla-img` relies on emerging standards, for full cross-browser support make sure you include the [Web Components Lite](https://github.com/webcomponents/webcomponentsjs) polyfill in the `<head>` of your page.
 
@@ -76,7 +76,7 @@ Read more about paths and IDs in the [structuring data guide](https://www.simpla
 <script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/0.7.24/webcomponents-lite.min.js"></script>
 ```
 
-### Editing content
+## Editing content
 
 The easiest way to edit a `simpla-img` is by including [`simpla-admin`](http://webcomponents.org/element/SimplaElements/simpla-admin) on your site, and then just adding `#edit` to the URL.
 
@@ -94,7 +94,7 @@ Simpla.editable(true);
 
 Entering edit mode with Simpla is the recommended way to edit images. It ensures all elements on a page remain in sync and updates Simpla's public `'editable'` state, which other elements may rely on (eg: `simpla-admin`).
 
-### Saving content
+## Saving content
 
 The easiest way to save content is by including [`simpla-admin`](http://webcomponents.org/element/SimplaElements/simpla-admin) on your site, and then just pressing the 'save' button while in edit mode.
 
@@ -107,7 +107,7 @@ Simpla.save();
 
 Note you must be authenticated before saving content - either login with `simpla-admin` or the `Simpla.login()` method.
 
-### Initializing with static content
+## Initializing with static content
 
 You can set the `src` of simpla-img just like you would with a regular `<img>`. If content for the image's `path` exists on Simpla's API `src` will be overridden
 
@@ -119,7 +119,7 @@ Initializing with static content is useful for converting existing images to Sim
 
 **Note:** Since `src` is overwritten by remote data, you should not have `src` set in production, because if a newer image gets saved you could experience FOUC (Flash Of Unformatted Content) when the old one is overwritten
 
-### Custom placeholders
+## Custom placeholders
 
 You can set custom placeholders (displayed when simpla-img is editable and does not have content) the same way as native elements, with the `placeholder` attribute
 
@@ -130,9 +130,9 @@ You can set custom placeholders (displayed when simpla-img is editable and does 
 `placeholder` takes any valid CSS `background` value (colors, `url()`, etc). The placeholder does not impact the image's default size or aspect ratio.
 
 
-### API reference
+## API reference
 
-#### Properties
+### Properties
 
 Property      | Type    | Default           | Description                                                   
 ------------- | ------- | ----------------- | -----------                                                   
@@ -153,7 +153,7 @@ Properties can be set either directly with JavaScript or as attributes on the el
 </script>
 ```
 
-#### Events
+### Events
 
 Event              | Description                                    
 ------------------ | -----------                                    
@@ -162,7 +162,7 @@ Event              | Description
 `editable-changed` | Fired whenever the `editable` property changes 
 `active-changed`   | Fired whenever the `active` property changes   
 
-### Contributing
+## Contributing
 
 If you find any issues with simpla-img please report them! If you'd like to see a new feature in supported file an issue or let us know in Simpla's public [Slack group](https://slack.simpla.io). We also happily accept PRs. 
 
