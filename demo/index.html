@@ -56,10 +56,10 @@
   <body>
 
     <div class="demo">
-      <h1 class="demo__title">Demo of simpla-img</h1>
+      <h1 class="demo__title">Basic demo</h1>
       <demo-snippet class="demo__snippet">
         <template>
-          <img is="simpla-img" uid="img">
+          <img is="simpla-img" uid="basic">
 
           <script>
             Simpla.editable(true);
@@ -72,8 +72,22 @@
       <h1 class="demo__title">Custom placeholders</h1>
       <demo-snippet class="demo__snippet">
         <template>
-          <img is="simpla-img" uid="img" placeholder="url(https://placehold.it/200x200)">
-          <img is="simpla-img" uid="img" placeholder="#1bd4dc">
+          <img is="simpla-img" uid="placeholder-1" placeholder="url(https://placehold.it/200x200)">
+          <img is="simpla-img" uid="placeholder-2" placeholder="#1bd4dc">
+
+          <script>
+            Simpla.editable(true);
+          </script>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div class="demo">
+      <h1 class="demo__title">Synced data</h1>
+      <demo-snippet class="demo__snippet">
+        <template>
+          <img is="simpla-img" uid="synced">
+          <img is="simpla-img" uid="synced">
 
           <script>
             Simpla.editable(true);
