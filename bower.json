@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0",
-    "simpla": "v2.0.0-preview",
+    "simpla": "simplaio/simpla#2.0-preview",
     "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.2.5"
   }
 }
