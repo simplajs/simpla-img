@@ -2,9 +2,9 @@
   "name": "simpla-img",
   "version": "0.0.0",
   "authors": [
-    "Simpla &lt;admin@simpla.io&gt;"
+    "Simpla <friends@simpla.io>"
   ],
-  "description": "Simpla element that makes any native HTML img seamlessly editable",
+  "description": "An editable image for the Simpla content system",
   "keywords": [
     "web components",
     "polymer",
@@ -16,7 +16,7 @@
   ],
   "main": "simpla-img.html",
   "license": "MIT",
-  "homepage": "https://github.com/SimplaElements/simpla-img/",
+  "homepage": "https://wwww.simpla.io",
   "ignore": [
     "*",
     "!*.html",

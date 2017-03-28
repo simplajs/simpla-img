@@ -1,12 +1,12 @@
 {
   "name": "simpla-img",
   "version": "0.0.0",
-  "description": "Simpla element that makes any native HTML img seamlessly editable",
+  "description": "An editable image for the Simpla content system",
   "main": "simpla-img.html",
   "scripts": {
     "test": "gulp test"
   },
-  "author": "Simpla <admin@simpla.io>",
+  "author": "Simpla <friends@simpla.io>",
   "license": "MIT",
   "keywords": [
     "web components",
