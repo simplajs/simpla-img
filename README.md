@@ -1,7 +1,40 @@
 # Simpla IMG
-[![Build status][travis-badge]][travis-url] [![Bower dependencies][bowerdeps-badge]][bowerdeps-url] ![Version][bower-badge] ![Size][size-badge] [![Published][webcomponents-badge]][webcomponents-url] [![Simpla slack group][slack-badge]][slack-url]
+![Version][bower-badge] [![Build status][travis-badge]][travis-url] [![Bower dependencies][bowerdeps-badge]][bowerdeps-url] ![Size][size-badge] <br> 
+[![Published][webcomponents-badge]][webcomponents-url] [![Simpla slack group][slack-badge]][slack-url]
 
 `simpla-img` is an editable image built on the [Simpla](https://www.simpla.io) content system. It extends the native `<img>` element and can be edited seamlessly inline on your page.
+
+<!---
+```
+<custom-element-demo>
+  <template>
+    <script src="../webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="simpla-img.html">
+
+    <script src="https://unpkg.com/simpla@2.0.0-preview/simpla.js"></script>
+    <script>
+      Simpla.init('local');
+    </script>
+
+    <style>
+      img {
+        max-width: 100%;
+        max-height: 400px;
+        margin-right: 5px;
+      }
+    </style>
+    <next-code-block></next-code-block>
+  </template>
+</custom-element-demo>
+```
+-->
+```html
+<img is="simpla-img" path="/img">
+
+<script>
+  Simpla.editable(true);
+</script>
+```
 
 ### Installation and setup
 
