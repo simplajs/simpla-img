@@ -4,7 +4,7 @@
   <script>
     import simpla from './behaviors/img/simpla';
     import editor from './behaviors/img/editor';
-    import { DEFAULT_SRC, MIN_SIZE } from './behaviors/constants';
+    import { DEFAULT_SRC, MIN_SIZE, PLACEHOLDER } from './behaviors/constants';
 
     const IMG_STYLES = {
       editable: {
@@ -18,7 +18,10 @@
       },
       placeholder: {
         minHeight: `${MIN_SIZE.height}px`,
-        minWidth: `${MIN_SIZE.width}px`
+        minWidth: `${MIN_SIZE.width}px`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center center',
+        opacity: '0.75'
       }
     };
 
@@ -64,7 +67,7 @@
          */
         placeholder: {
           type: String,
-          value: 'rgb(230,230,230)'
+          value: `url(${PLACEHOLDER})`
         },
 
         /**
