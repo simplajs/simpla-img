@@ -16,7 +16,7 @@
   ],
   "main": "simpla-img.html",
   "license": "MIT",
-  "homepage": "https://wwww.simpla.io",
+  "homepage": "http://webcomponents.org/element/SimplaElements/simpla-img",
   "demos": {
     "Demo": "demo/index.html"
   },
