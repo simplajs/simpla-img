@@ -6,6 +6,7 @@
   ],
   "description": "An editable image for the Simpla content system",
   "keywords": [
+    "simpla-element",
     "web components",
     "polymer",
     "simpla",
