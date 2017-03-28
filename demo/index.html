@@ -5,13 +5,12 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <title>simpla-img Demo</title>
 
-    <!-- Import Web Components polyfill -->
-    <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
-
-    <!-- Use shadow DOM if available -->
+    <!-- Setup demo page -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/0.7.24/webcomponents-lite.min.js"></script>
     <script>
       window.Polymer = { dom: 'shadow' };
     </script>
+    <link rel="import" href="../iron-demo-helpers/demo-snippet.html">
 
     <!-- Init Simpla -->
     <script src="../../simpla/simpla.js"></script>
@@ -22,29 +21,66 @@
     <!-- Import component -->
     <link rel="import" href="../simpla-img.html">
 
-    <!-- Sane styles -->
+    <!-- Demo styles -->
     <style>
-      .edit {
-        margin-bottom: 16px;
+      /**
+       * Page styles
+       */
+      body {
+        font-family: sans-serif;
+        color: #303c46
       }
 
+      .demo {
+        width: 90%;
+        max-width: 38rem;
+        margin: 4rem auto;
+      }
+
+      .demo__title {
+        font-size: 1.4rem;
+        font-weight: 400;
+      }
+
+      /**
+       * Element styles
+       */
       img {
-        max-width: 400px;
+        max-width: 100%;
         max-height: 400px;
+        margin-right: 5px;
       }
     </style>
   </head>
+
   <body>
-    <div class="edit">
-      <button id="edit">toggle edit mode</button>
+
+    <div class="demo">
+      <h1 class="demo__title">Demo of simpla-img</h1>
+      <demo-snippet class="demo__snippet">
+        <template>
+          <img is="simpla-img" uid="img">
+
+          <script>
+            Simpla.editable(true);
+          </script>
+        </template>
+      </demo-snippet>
     </div>
 
-    <img is="simpla-img" uid="img">
+    <div class="demo">
+      <h1 class="demo__title">Custom placeholders</h1>
+      <demo-snippet class="demo__snippet">
+        <template>
+          <img is="simpla-img" uid="img" placeholder="url(https://placehold.it/200x200)">
+          <img is="simpla-img" uid="img" placeholder="#1bd4dc">
 
-    <script>
-      document.querySelector('#edit').addEventListener('click', function() {
-        Simpla.editable(!Simpla.getState('editable'));
-      });
-    </script>
+          <script>
+            Simpla.editable(true);
+          </script>
+        </template>
+      </demo-snippet>
+    </div>
+
   </body>
 </html>
