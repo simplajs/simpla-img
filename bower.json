@@ -17,6 +17,9 @@
   "main": "simpla-img.html",
   "license": "MIT",
   "homepage": "https://wwww.simpla.io",
+  "demos": {
+    "Demo": "demo/index.html"
+  },
   "ignore": [
     "*",
     "!*.html",
