@@ -2,16 +2,15 @@ sudo: true
 dist: trusty
 language: node_js
 node_js:
-- '6'
+  - '6'
 before_script:
-- npm install
-- npm install -g bower
-- bower install
-script: gulp test
+  - yarn
+  - npm install -g bower
+  - bower install
 cache:
  directories:
- - node_modules
- - bower_components
+   - node_modules
+   - bower_components
 addons:
   firefox: latest
   apt:
