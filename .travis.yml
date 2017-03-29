@@ -4,13 +4,12 @@ language: node_js
 node_js:
   - '6'
 before_script:
+  - npm install -g bower web-component-tester
   - yarn
-  - npm install -g bower
   - bower install
-cache:
- directories:
-   - node_modules
-   - bower_components
+  - gulp build:tests
+script: xvfb-run wct
+cache: yarn
 addons:
   firefox: latest
   apt:
