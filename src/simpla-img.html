@@ -7,23 +7,24 @@
     import { DEFAULT_SRC, MIN_SIZE } from './behaviors/constants';
 
     const IMG_STYLES = {
-      editable: {
-        cursor: 'pointer'
-      },
-      active: {
-        visibility: 'hidden',
-        // Prevent flash while editor opening
-        transition: 'visibility',
-        transitionDelay: '50ms'
-      },
-      placeholder: {
-        minHeight: `${MIN_SIZE.height}px`,
-        minWidth: `${MIN_SIZE.width}px`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center center',
-        opacity: '0.75'
-      }
-    };
+            editable: {
+              cursor: 'pointer'
+            },
+            active: {
+              visibility: 'hidden',
+              // Prevent flash while editor opening
+              transition: 'visibility',
+              transitionDelay: '50ms'
+            },
+            placeholder: {
+              minHeight: `${MIN_SIZE.height}px`,
+              minWidth: `${MIN_SIZE.width}px`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center center',
+              opacity: '0.75'
+            }
+          },
+          DEFAULT_PLACEHOLDER = 'placeholder.gif';
 
     /**
      * Polymer SimplaImg element definition
@@ -67,7 +68,7 @@
          */
         placeholder: {
           type: String,
-          value: 'url(placeholder.gif)'
+          value: ''
         },
 
         /**
@@ -132,7 +133,13 @@
        */
       _showPlaceholder(placeholder, editable, src) {
         let showPlaceholder = editable && src === DEFAULT_SRC,
-            styles = Object.assign({ background: placeholder }, IMG_STYLES.placeholder);
+            styles;
+
+        if (!placeholder) {
+          placeholder = `url(${this.resolveUrl(DEFAULT_PLACEHOLDER)})`;
+        }
+
+        styles = Object.assign({ background: placeholder }, IMG_STYLES.placeholder);
 
         this._toggleStyles(styles, showPlaceholder);
       },
