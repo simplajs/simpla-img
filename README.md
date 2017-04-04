@@ -1,5 +1,5 @@
 # Simpla IMG
-![Version][bower-badge] [![Build status][travis-badge]][travis-url] [![Bower dependencies][bowerdeps-badge]][bowerdeps-url] ![Size][size-badge] <br> 
+![Version][bower-badge] [![Build status][travis-badge]][travis-url] ![Size][size-badge] <br> 
 [![Published][webcomponents-badge]][webcomponents-url] [![Simpla slack group][slack-badge]][slack-url]
 
 `simpla-img` is an editable image built on the [Simpla](https://www.simpla.io) content system. It extends the native `<img>` element and can be edited seamlessly inline on your page.
