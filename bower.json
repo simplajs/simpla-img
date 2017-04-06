@@ -23,7 +23,9 @@
   },
   "ignore": [
     "*",
+    "!src",
     "!*.html",
+    "!placeholder.gif",
     "!LICENSE"
   ],
   "dependencies": {
