@@ -70,10 +70,10 @@ Read more about paths and IDs in the [structuring data guide](https://www.simpla
 
 ### Polyfills for cross-browser support
 
-`simpla-img` relies on emerging standards, for full cross-browser support make sure you include the [Web Components Lite](https://github.com/webcomponents/webcomponentsjs) polyfill in the `<head>` of your page.
+`simpla-img` relies on emerging standards, for full cross-browser support make sure you include the [Web Components Lite](https://github.com/webcomponents/webcomponentsjs) polyfill in your page.
 
 ```html
-<script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/0.7.24/webcomponents-lite.min.js"></script>
+<script src="https://unpkg.com/webcomponents.js@^0.7.24/webcomponents-lite.min.js"></script>
 ```
 
 ## Editing content
