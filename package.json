@@ -1,6 +1,6 @@
 {
   "name": "simpla-img",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "An editable image for the Simpla content system",
   "main": "simpla-img.html",
   "scripts": {
