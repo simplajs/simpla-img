@@ -473,7 +473,8 @@
        * @return {undefined}
        */
       _uploadImg(e) {
-        let files = e.target.files,
+        let fileInput = e.target,
+            files = fileInput.files,
             reader = new FileReader(),
             setFile = (e) => {
               if (files[0].type === 'image/gif') {
@@ -487,6 +488,10 @@
               this.src = e.target.result;
               this.fire('image-uploaded', { value: e.target.result });
               reader.removeEventListener('load', setFile);
+
+              // Removes file from file input so that uploading a new file later
+              //  with the same name as previous will trigger change
+              fileInput.value = null;
             };
 
         this.focus();
