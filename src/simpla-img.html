@@ -1,8 +1,8 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../simpla-element-behavior/simpla-element-behavior.html">
 
 <dom-module id="simpla-img">
   <script>
-    import simpla from './behaviors/img/simpla';
     import editor from './behaviors/img/editor';
     import { DEFAULT_SRC, MIN_SIZE } from './behaviors/constants';
 
@@ -104,7 +104,16 @@
         'tap': '_tapHandler'
       },
 
-      behaviors: [ simpla, editor ],
+      behaviors: [ SimplaBehaviors.Element, editor ],
+
+      created() {
+        this.setupSimpla({
+          type: 'Image',
+          dataProperties: [ 'src', 'alt' ],
+          getCallback: '_updateElement',
+          setCallback: '_updateSimpla'
+        });
+      },
 
       /**
        * Set inline styles for editable state
@@ -167,6 +176,35 @@
           }
 
           this.style[property] = value;
+        });
+      },
+
+      /**
+       * Update element data from Simpla
+       * @param  {Object} item Path object from Simpla
+       * @return {undefined}
+       */
+      _updateElement(item) {
+        this.__comingFromSimpla = true;
+        Object.assign(this, item.data);
+        this.__comingFromSimpla = false;
+      },
+
+      /**
+       * Update Simpla data from element
+       * @return {Promise}      Promise which resolves once successfully set to Simpla
+       */
+      _updateSimpla() {
+        if (!this.path || this.__comingFromSimpla || this.src === DEFAULT_SRC) {
+          return;
+        }
+
+        return Simpla.set(this.path, {
+          type: 'Image',
+          data: {
+            src: this.src,
+            alt: this.alt
+          }
         });
       },
 
