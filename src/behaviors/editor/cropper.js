@@ -314,11 +314,13 @@ export default {
   },
 
   /**
-   * Debounces rendering
+   * Debounces rendering iff the source image is ready to render
    * @return {undefined}
    */
   _debouncedRender() {
-    if (this.lockTransform) {
+    let sourceIsReady = this.$.source.complete && this.$.source.naturalHeight !== 0;
+
+    if (this.lockTransform || !sourceIsReady) {
       return;
     }
 
