@@ -98,7 +98,9 @@ export default {
   ],
 
   attached() {
-    this.setScrollDirection('all', this.$.source);
+    if (this._localDOMReady) {
+      this.setScrollDirection('all', this.$.source);
+    }
   },
 
   /**
