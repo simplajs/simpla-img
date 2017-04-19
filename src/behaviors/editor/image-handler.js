@@ -148,7 +148,7 @@ export default {
   },
 
   _getImageKey(image) {
-    return image.uid;
+    return image.path;
   },
 
   _editImage(image) {
