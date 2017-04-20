@@ -3,7 +3,6 @@
 
 <dom-module id="simpla-img">
   <script>
-    import editor from './behaviors/img/editor';
     import { DEFAULT_SRC, MIN_SIZE } from './behaviors/constants';
 
     const IMG_STYLES = {
@@ -24,7 +23,8 @@
               opacity: '0.75'
             }
           },
-          DEFAULT_PLACEHOLDER = 'placeholder.gif';
+          DEFAULT_PLACEHOLDER = 'placeholder.gif',
+          EDITOR_COMPONENT = 'simpla-img-editor';
 
     /**
      * Polymer SimplaImg element definition
@@ -95,16 +95,18 @@
       },
 
       observers: [
+        '_importEditor(editable)',
+        '_updateEditorImage(active)',
         '_styleEditable(editable)',
         '_styleEditing(active)',
-        '_showPlaceholder(placeholder, editable, src)',
+        '_showPlaceholder(placeholder, editable, src)'
       ],
 
       listeners: {
         'tap': '_tapHandler'
       },
 
-      behaviors: [ SimplaBehaviors.Element, editor ],
+      behaviors: [ SimplaBehaviors.Element ],
 
       created() {
         this.setupSimpla({
@@ -212,8 +214,28 @@
         if (this.editable) {
           this.active = true;
         }
+      },
+
+      _updateEditorImage(active) {
+        let editor = document.querySelector(EDITOR_COMPONENT);
+
+        if (editor) {
+          editor.image = active ? this : null;
+        }
+      },
+
+      _importEditor(editable) {
+        let editorAttached = !!document.querySelector(EDITOR_COMPONENT),
+            editor;
+
+        if (editable && !editorAttached) {
+          this.importHref(this.resolveUrl(`${EDITOR_COMPONENT}.html`))
+
+          editor = document.createElement(EDITOR_COMPONENT);
+          document.body.appendChild(editor);
+        }
       }
-    };
+    }
     Polymer(SimplaImg);
   </script>
 </dom-module>
