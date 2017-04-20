@@ -98,7 +98,17 @@ export default {
   ],
 
   attached() {
-    this.setScrollDirection('all', this.$.source);
+    if (this._localDOMReady) {
+      this.setScrollDirection('all', this.$.source);
+    }
+  },
+
+  /**
+   * True if local DOM has been prepped and is ready
+   * @type {Boolean}
+   */
+  get _localDOMReady() {
+    return !!this.$;
   },
 
   /**
@@ -193,6 +203,10 @@ export default {
    * @type {Number}
    */
   get minScale() {
+    if (!this._localDOMReady) {
+      return 1;
+    }
+
     let scaleHeight = this.height / this.$.source.height,
         scaleWidth = this.width / this.$.source.width;
 
@@ -239,6 +253,10 @@ export default {
    * @return {undefined}
    */
   _resetDimensions() {
+    if (!this._localDOMReady) {
+      return;
+    }
+
     this._width = this.offsetWidth;
     this._height = this.offsetHeight;
 
@@ -310,7 +328,9 @@ export default {
    * @return {undefined}
    */
   _updateStyles(transform) {
-    this.$.source.style.transform = transform;
+    if (this._localDOMReady) {
+      this.$.source.style.transform = transform;
+    }
   },
 
   /**
@@ -318,7 +338,7 @@ export default {
    * @return {undefined}
    */
   _debouncedRender() {
-    let sourceIsReady = this.$.source.complete && this.$.source.naturalHeight !== 0;
+    let sourceIsReady = this._localDOMReady && this.$.source.complete && this.$.source.naturalHeight !== 0;
 
     if (this.lockTransform || !sourceIsReady) {
       return;
@@ -332,6 +352,10 @@ export default {
    * @return {undefined}
    */
   _render() {
+    if (!this._localDOMReady) {
+      return;
+    }
+
     let { width, height, scale, translateX, translateY } = this,
         { naturalWidth, naturalHeight } = this.$.source,
         naturalTranslateX = translateX / (width / naturalWidth),
