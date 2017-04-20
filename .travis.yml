@@ -5,7 +5,6 @@ node_js:
   - '6'
 before_script:
   - npm install -g bower web-component-tester
-  - yarn
   - bower install
   - gulp build:tests
 script: xvfb-run wct
