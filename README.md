@@ -1,4 +1,4 @@
-# Simpla IMG
+# Simpla Image
 ![Version][bower-badge] [![Build status][travis-badge]][travis-url] ![Size][size-badge] <br> 
 [![Published][webcomponents-badge]][webcomponents-url] [![Simpla slack group][slack-badge]][slack-url]
 
