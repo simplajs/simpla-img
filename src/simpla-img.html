@@ -23,7 +23,7 @@
               opacity: '0.75'
             }
           },
-          DEFAULT_PLACEHOLDER = 'placeholder.gif',
+          DEFAULT_PLACEHOLDER = 'placeholder.svg',
           EDITOR_COMPONENT = 'simpla-img-editor';
 
     /**
@@ -115,6 +115,9 @@
           getCallback: '_updateElement',
           setCallback: '_updateSimpla'
         });
+
+        // Set default placeholder
+        this.placeholder = this.placeholder || `url(${this.resolveUrl(DEFAULT_PLACEHOLDER)})`;
       },
 
       /**
@@ -146,11 +149,7 @@
         let showPlaceholder = editable && src === DEFAULT_SRC,
             styles;
 
-        if (!placeholder) {
-          placeholder = `url(${this.resolveUrl(DEFAULT_PLACEHOLDER)})`;
-        }
-
-        styles = Object.assign({ background: placeholder }, IMG_STYLES.placeholder);
+        styles = Object.assign({ background: this.placeholder }, IMG_STYLES.placeholder);
 
         this._toggleStyles(styles, showPlaceholder);
       },
