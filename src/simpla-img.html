@@ -115,9 +115,6 @@
           getCallback: '_updateElement',
           setCallback: '_updateSimpla'
         });
-
-        // Set default placeholder
-        this.placeholder = this.placeholder || `url(${this.resolveUrl(DEFAULT_PLACEHOLDER)})`;
       },
 
       /**
@@ -148,6 +145,8 @@
       _showPlaceholder(placeholder, editable, src) {
         let showPlaceholder = editable && src === DEFAULT_SRC,
             styles;
+
+        this.placeholder = this.placeholder || `url(${this.resolveUrl(DEFAULT_PLACEHOLDER)})`;
 
         styles = Object.assign({ background: this.placeholder }, IMG_STYLES.placeholder);
 
