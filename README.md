@@ -1,6 +1,5 @@
 # Simpla Image
-![Version][bower-badge] [![Build status][travis-badge]][travis-url] ![Size][size-badge] <br> 
-[![Published][webcomponents-badge]][webcomponents-url] [![Simpla slack group][slack-badge]][slack-url]
+![Version][bower-badge] [![Build status][travis-badge]][travis-url] ![Size][size-badge] [![Published][webcomponents-badge]][webcomponents-url] [![Simpla slack group][slack-badge]][slack-url]
 
 `simpla-img` is an editable image built on the [Simpla](https://www.simpla.io) content system. It extends the `<img>` element and can be edited seamlessly inline on your page.
 
@@ -11,7 +10,7 @@
     <script src="../webcomponentsjs/webcomponents-lite.js"></script>
     <link rel="import" href="simpla-img.html">
 
-    <script src="https://unpkg.com/simpla@2.0.0-preview/simpla.js"></script>
+    <script src="https://unpkg.com/simpla@2.0.0"></script>
     <script>
       Simpla.init('local');
     </script>
@@ -60,13 +59,11 @@ Import simpla-img into the `<head>` of your document
 <link rel="import" href="/bower_components/simpla-img/simpla-img.html" async>
 ```
 
-And create an editable image by extending `<img>` with the `is` attribute. You must also specify a content path (where the image's data will be stored on Simpla's API) in a `path` attribute, or with an `sid` if you have included the [simpla-paths](https://github.com/SimplaElements/simpla-paths) component.
+And create an editable image by extending `<img>` with the `is` attribute. You must also specify a content path (where the image's data will be stored on Simpla's API) in a `path` attribute.
 
 ```html
 <img is="simpla-img" path="/img">
 ```
-
-> Read more about [structuring data with paths and IDs](https://www.simpla.io/docs/guides/structuring-data)
 
 ### Polyfills for cross-browser support
 
@@ -87,7 +84,7 @@ Simpla.editable(true);
 
 ```html
 <!-- Make only this image editable -->
-<img is="simpla-img" path="/my-img" editable>
+<img is="simpla-img" path="/img" editable>
 ```
 
 Entering edit mode with Simpla is the recommended way to edit images. It ensures all elements on a page remain in sync and updates Simpla's public `'editable'` state, which other elements may rely on.
