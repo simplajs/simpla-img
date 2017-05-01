@@ -24,7 +24,7 @@
     "*",
     "!src",
     "!*.html",
-    "!placeholder.gif",
+    "!placeholder.svg",
     "!LICENSE"
   ],
   "dependencies": {
