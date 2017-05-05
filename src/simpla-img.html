@@ -4,6 +4,7 @@
 <dom-module id="simpla-img">
   <script>
     import { DEFAULT_SRC, MIN_SIZE } from './behaviors/constants';
+    import StaticConverter from './behaviors/static-converter';
 
     const IMG_STYLES = {
             editable: {
@@ -111,7 +112,7 @@
         'tap': '_tapHandler'
       },
 
-      behaviors: [ SimplaBehaviors.Element(SIMPLA_CONFIG) ],
+      behaviors: [ SimplaBehaviors.Element(SIMPLA_CONFIG), StaticConverter ],
 
       /**
        * Set inline styles for editable state
