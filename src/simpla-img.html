@@ -23,6 +23,11 @@
               opacity: '0.75'
             }
           },
+          SIMPLA_CONFIG = {
+            type: 'Image',
+            dataProperties: [ 'src', 'alt' ],
+            set: '_updateSimpla'
+          },
           DEFAULT_PLACEHOLDER = 'placeholder.svg',
           EDITOR_COMPONENT = 'simpla-img-editor';
 
@@ -106,16 +111,7 @@
         'tap': '_tapHandler'
       },
 
-      behaviors: [ SimplaBehaviors.Element ],
-
-      created() {
-        this.setupSimpla({
-          type: 'Image',
-          dataProperties: [ 'src', 'alt' ],
-          getCallback: '_updateElement',
-          setCallback: '_updateSimpla'
-        });
-      },
+      behaviors: [ SimplaBehaviors.Element(SIMPLA_CONFIG) ],
 
       /**
        * Set inline styles for editable state
@@ -180,32 +176,15 @@
       },
 
       /**
-       * Update element data from Simpla
-       * @param  {Object} item Path object from Simpla
-       * @return {undefined}
-       */
-      _updateElement(item) {
-        this.__comingFromSimpla = true;
-        Object.assign(this, item.data);
-        this.__comingFromSimpla = false;
-      },
-
-      /**
        * Update Simpla data from element
        * @return {Promise}      Promise which resolves once successfully set to Simpla
        */
       _updateSimpla() {
-        if (!this.path || this.__comingFromSimpla || this.src === DEFAULT_SRC) {
+        if (this.src === DEFAULT_SRC) {
           return;
         }
 
-        return Simpla.set(this.path, {
-          type: 'Image',
-          data: {
-            src: this.src,
-            alt: this.alt
-          }
-        });
+        return { src: this.src, alt: this.alt };
       },
 
       _tapHandler() {
