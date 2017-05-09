@@ -5,7 +5,13 @@
   <script>
     import { DEFAULT_SRC, MIN_SIZE } from './behaviors/constants';
 
-    const IMG_STYLES = {
+    const SIMPLA_CONFIG = {
+            type: 'Image',
+            dataProperties: [ 'src', 'alt' ],
+            getCallback: '_updateElement',
+            setCallback: '_updateSimpla'
+          },
+          IMG_STYLES = {
             editable: {
               cursor: 'pointer'
             },
@@ -106,16 +112,7 @@
         'tap': '_tapHandler'
       },
 
-      behaviors: [ SimplaBehaviors.Element ],
-
-      created() {
-        this.setupSimpla({
-          type: 'Image',
-          dataProperties: [ 'src', 'alt' ],
-          getCallback: '_updateElement',
-          setCallback: '_updateSimpla'
-        });
-      },
+      behaviors: [ SimplaBehaviors.Element(SIMPLA_CONFIG) ],
 
       /**
        * Set inline styles for editable state
@@ -192,20 +189,17 @@
 
       /**
        * Update Simpla data from element
-       * @return {Promise}      Promise which resolves once successfully set to Simpla
+       * @return {Object} Data to set to Simpla
        */
       _updateSimpla() {
         if (!this.path || this.__comingFromSimpla || this.src === DEFAULT_SRC) {
-          return;
+          return null;
         }
 
-        return Simpla.set(this.path, {
-          type: 'Image',
-          data: {
-            src: this.src,
-            alt: this.alt
-          }
-        });
+        return {
+          src: this.src,
+          alt: this.alt
+        }
       },
 
       _tapHandler() {
