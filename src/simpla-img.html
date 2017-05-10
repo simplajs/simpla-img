@@ -4,11 +4,11 @@
 <dom-module id="simpla-img">
   <script>
     import { DEFAULT_SRC, MIN_SIZE } from './behaviors/constants';
+    import StaticConverter from './behaviors/static-converter';
 
     const SIMPLA_CONFIG = {
             type: 'Image',
             dataProperties: [ 'src', 'alt' ],
-            getCallback: '_updateElement',
             setCallback: '_updateSimpla'
           },
           IMG_STYLES = {
@@ -112,7 +112,7 @@
         'tap': '_tapHandler'
       },
 
-      behaviors: [ SimplaBehaviors.Element(SIMPLA_CONFIG) ],
+      behaviors: [ SimplaBehaviors.Element(SIMPLA_CONFIG), StaticConverter ],
 
       /**
        * Set inline styles for editable state
@@ -177,29 +177,15 @@
       },
 
       /**
-       * Update element data from Simpla
-       * @param  {Object} item Path object from Simpla
-       * @return {undefined}
-       */
-      _updateElement(item) {
-        this.__comingFromSimpla = true;
-        Object.assign(this, item.data);
-        this.__comingFromSimpla = false;
-      },
-
-      /**
        * Update Simpla data from element
        * @return {Object} Data to set to Simpla
        */
       _updateSimpla() {
-        if (!this.path || this.__comingFromSimpla || this.src === DEFAULT_SRC) {
+        if (this.src === DEFAULT_SRC) {
           return null;
         }
 
-        return {
-          src: this.src,
-          alt: this.alt
-        }
+        return { src: this.src, alt: this.alt };
       },
 
       _tapHandler() {
