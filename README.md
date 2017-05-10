@@ -1,7 +1,7 @@
 # Simpla Image
 ![Version][bower-badge] [![Build status][travis-badge]][travis-url] ![Size][size-badge] [![Published][webcomponents-badge]][webcomponents-url] [![Simpla slack group][slack-badge]][slack-url]
 
-`simpla-img` is an editable image built on the [Simpla](https://www.simpla.io) content system. It extends the `<img>` element and can be edited seamlessly inline on your page.
+Simpla-img is an editable image built on the [Simpla](https://www.simpla.io) content system. It extends the `<img>` element and can be edited seamlessly inline on your page.
 
 <!---
 ```
@@ -46,7 +46,7 @@ $ bower install simpla-img --save
 Then include the Simpla library and setup a project (read more about [setting up Simpla](https://www.simpla.io/docs/guides/get-started))
 
 ```html
-<script src="https://unpkg.com/simpla@^2.0.0/simpla.min.js"></script>
+<script src="https://unpkg.com/simpla@^2.0.0"></script>
 <script>
   // TODO: replace 'project-id' with your project ID
   Simpla.init('project-id')
@@ -56,7 +56,7 @@ Then include the Simpla library and setup a project (read more about [setting up
 Import simpla-img into the `<head>` of your document
 
 ```html
-<link rel="import" href="/bower_components/simpla-img/simpla-img.html" async>
+<link rel="import" href="/bower_components/simpla-img/simpla-img.html">
 ```
 
 And create an editable image by extending `<img>` with the `is` attribute. You must also specify a content path (where the image's data will be stored on Simpla's API) in a `path` attribute.
@@ -136,7 +136,7 @@ Property      | Type    | Default           | Description
 `src`         | String  | data URI          | Src of the image (defaults to transparent pixel)                                             
 `alt`         | String  | `undefined`       | Alt text for the image                                        
 `path`        | String  | `undefined`       | Path to the content for this image on Simpla's API            
-`placeholder` | String  | `placeholder.gif` | Placeholder to show when image is editable and has no content 
+`placeholder` | String  | `'placeholder.svg'` | Placeholder to show when image is editable and has no content 
 `editable`    | Boolean | `false`           | Whether the image is editable                                 
 `active`      | Boolean | `false`           | Whether the image is currently being edited                   
 
@@ -163,17 +163,14 @@ Event              | Description
 
 If you find any issues with simpla-img please report them! If you'd like to see a new feature in supported file an issue or let us know in Simpla's public [Slack group](https://slack.simpla.io). We also happily accept PRs. 
 
----
+***
 
-MIT © Simpla <friends@simpla.io>
+MIT © Simpla
 
 [bower-badge]: https://img.shields.io/bower/v/simpla-img.svg
-[bowerlicense-badge]: https://img.shields.io/bower/l/simpla-img.svg
 [travis-badge]: https://img.shields.io/travis/SimplaElements/simpla-img.svg
 [travis-url]: https://travis-ci.org/SimplaElements/simpla-img
-[bowerdeps-badge]: https://img.shields.io/gemnasium/SimplaElements/simpla-img.svg
-[bowerdeps-url]: https://gemnasium.com/bower/simpla-img
-[size-badge]: https://badges.herokuapp.com/size/github/SimplaElements/simpla-img/master/simpla-img.html?gzip=true&color=blue
+[size-badge]: https://badges.herokuapp.com/size/github/SimplaElements/simpla-img/master/simpla-img.html?gzip=true
 [webcomponents-badge]: https://img.shields.io/badge/webcomponents.org-published-blue.svg
 [webcomponents-url]: https://www.webcomponents.org/element/SimplaElements/simpla-img
 [slack-badge]: http://slack.simpla.io/badge.svg
