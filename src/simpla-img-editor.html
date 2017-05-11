@@ -123,8 +123,13 @@
         --paper-slider-knob-start-border-color: var(--simpla-grey-700);
       }
 
-      .zoom__slider[disabled] {
-        cursor: not-allowed;
+      .zoom__disabled {
+        display: block;
+        text-align: center;
+        font-size: var(--simpla-scale-000);
+        color: var(--simpla-grey-700);
+        padding: 0.5em 0;
+        pointer-events: none;
       }
 
       .tools__tool {
@@ -175,7 +180,7 @@
       }
 
       .editor-img[locked] {
-        cursor: not-allowed;
+        cursor: default;
       }
 
       /* Patch hidden prop on IE*/
@@ -237,9 +242,13 @@
           step="0.01"
           min="1"
           max="2"
-          disabled$="[[lockTransform]]"
+          hidden$="[[lockTransform]]"
           no-ink>
         </paper-slider>
+        <span class="zoom__disabled"
+          hidden$="[[!lockTransform]]">
+          GIFs cannot be zoomed
+        </span>
       </div>
     </div>
   </template>
