@@ -191,6 +191,7 @@
       _tapHandler() {
         if (this.editable) {
           this.active = true;
+          this.async(() => this.fire('focusin'), 0);
         }
       },
 
