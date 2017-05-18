@@ -13,7 +13,8 @@
           },
           IMG_STYLES = {
             editable: {
-              cursor: 'pointer'
+              cursor: 'pointer',
+              outline: 'none'
             },
             active: {
               visibility: 'hidden',
@@ -96,7 +97,7 @@
           type: Boolean,
           notify: true,
           value: false
-        },
+        }
 
       },
 
@@ -105,11 +106,14 @@
         '_updateEditorImage(active)',
         '_styleEditable(editable)',
         '_styleEditing(active)',
+        '_blurOnInactive(active)',
         '_showPlaceholder(placeholder, editable, src)'
       ],
 
       listeners: {
-        'tap': '_tapHandler'
+        'tap': '_goActiveIfEditable',
+        'focusout': '_maintainFocusWhenActive',
+        'blur': '_maintainFocusWhenActive'
       },
 
       behaviors: [ SimplaBehaviors.Element(SIMPLA_CONFIG), StaticConverter ],
@@ -121,6 +125,13 @@
        */
       _styleEditable(editable) {
         this._toggleStyles(IMG_STYLES.editable, editable);
+
+        // Make focuseable when editable
+        if (editable) {
+          this.setAttribute('tabindex', 0)
+        } else {
+          this.removeAttribute('tabindex');
+        }
       },
 
       /**
@@ -188,13 +199,48 @@
         return { src: this.src, alt: this.alt };
       },
 
-      _tapHandler() {
+      /**
+       * Opens editor on tap if image is editable
+       * @return {undefined}
+       */
+      _goActiveIfEditable() {
         if (this.editable) {
           this.active = true;
-          this.async(() => this.fire('focusin'), 0);
         }
       },
 
+      /**
+       * Stops blur events on image when opening editor,
+       * to maintain illusion that image itself is editable
+       * @param  {Event} event Blur and Focusout events
+       * @return {undefined}
+       */
+      _maintainFocusWhenActive(event) {
+        let editor = document.querySelector(EDITOR_COMPONENT);
+
+        if (event.relatedTarget === editor) {
+          event.stopImmediatePropagation();
+        }
+      },
+
+      /**
+       * Blurs the image when editor closes,
+       * to maintain illusion that image itself is editable
+       * @param  {Boolean} active Whether editor is open
+       * @return {undefined}
+       */
+      _blurOnInactive(active) {
+        if (!active) {
+          this.fire('focusout');
+          this.fire('blur');
+        }
+      },
+
+      /**
+       * Updates the editor singleton based on active
+       * @param  {Boolean} active Whether this image is active
+       * @return {undefined}
+       */
       _updateEditorImage(active) {
         let editor = document.querySelector(EDITOR_COMPONENT);
 
@@ -203,6 +249,11 @@
         }
       },
 
+      /**
+       * Imports and attaches the editor on editable
+       * @param  {Boolean} editable Whether image is editable
+       * @return {undefined}
+       */
       _importEditor(editable) {
         let editorAttached = !!document.querySelector(EDITOR_COMPONENT),
             editor;
