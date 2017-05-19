@@ -231,7 +231,7 @@
       _blurOnInactive(active) {
         if (!active) {
           this.fire('focusout');
-          this.fire('blur');
+          this.fire('blur', {}, { bubbles: false });
         }
       },
 
