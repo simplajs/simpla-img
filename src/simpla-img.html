@@ -104,8 +104,8 @@
       observers: [
         '_importEditor(editable)',
         '_updateEditorImage(active)',
-        '_styleEditable(editable)',
-        '_styleEditing(active)',
+        '_updateEditableUi(editable)',
+        '_updateEditingUi(active)',
         '_blurOnInactive(active)',
         '_showPlaceholder(placeholder, editable, src)'
       ],
@@ -119,14 +119,13 @@
       behaviors: [ SimplaBehaviors.Element(SIMPLA_CONFIG), StaticConverter ],
 
       /**
-       * Set inline styles for editable state
+       * Set styles for editable state and make focuseable
        * @param  {Boolean} editable Value of the editable prop
        * @return {undefined}
        */
-      _styleEditable(editable) {
+      _updateEditableUi(editable) {
         this._toggleStyles(IMG_STYLES.editable, editable);
 
-        // Make focuseable when editable
         if (editable) {
           this.setAttribute('tabindex', 0)
         } else {
@@ -139,7 +138,7 @@
        * @param  {Boolean} active Value of the active prop
        * @return {undefined}
        */
-      _styleEditing(active) {
+      _updateEditingUi(active) {
         this._toggleStyles(IMG_STYLES.active, active);
       },
 
