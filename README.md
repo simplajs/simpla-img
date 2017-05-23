@@ -1,5 +1,5 @@
 # Simpla Image
-![Version][bower-badge] [![Build status][travis-badge]][travis-url] ![Size][size-badge] [![Published][webcomponents-badge]][webcomponents-url] [![Simpla slack group][slack-badge]][slack-url]
+[![Build status][travis-badge]][travis-url] ![Size][size-badge] ![Version][bower-badge] [![Published][webcomponents-badge]][webcomponents-url] [![Simpla slack group][slack-badge]][slack-url]
 
 Simpla-img is an editable image built on the [Simpla](https://www.simpla.io) content system. It extends the `<img>` element and can be edited seamlessly inline on your page.
 
@@ -38,7 +38,7 @@ Simpla-img is an editable image built on the [Simpla](https://www.simpla.io) con
 Install simpla-img with Bower (Yarn support coming soon)
 
 ```sh
-$ bower install simpla-img --save
+$ bower i simpla-img --save
 ```
 
 Then include the Simpla library and setup a project (read more about [setting up Simpla](https://www.simpla.io/docs/guides/get-started))
@@ -141,10 +141,10 @@ Property      | Type    | Default           | Description
 Properties can be set either directly with JavaScript or as attributes on the element
 
 ```html
-<img is="simpla-img" id="img" path="/img" placeholder="pink">
+<img is="simpla-img" path="/img" placeholder="pink">
 
 <script>
-  document.querySelector('#img').editable = true;
+  document.querySelector('simpla-img').editable = true;
 </script>
 ```
 
