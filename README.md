@@ -144,7 +144,7 @@ Properties can be set either directly with JavaScript or as attributes on the el
 <img is="simpla-img" path="/img" placeholder="pink">
 
 <script>
-  document.querySelector('simpla-img').editable = true;
+  document.querySelector('img[is="simpla-"]').editable = true;
 </script>
 ```
 
