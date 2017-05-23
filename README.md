@@ -13,6 +13,7 @@ Simpla-img is an editable image built on the [Simpla](https://www.simpla.io) con
     <script src="https://unpkg.com/simpla@2.0.0"></script>
     <script>
       Simpla.init('local');
+      Simpla.editable(true);
     </script>
 
     <style>
@@ -27,12 +28,9 @@ Simpla-img is an editable image built on the [Simpla](https://www.simpla.io) con
 </custom-element-demo>
 ```
 -->
+
 ```html
 <img is="simpla-img" path="/img">
-
-<script>
-  Simpla.editable(true);
-</script>
 ```
 
 ## Installation and setup
