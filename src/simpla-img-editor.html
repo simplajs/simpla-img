@@ -81,6 +81,7 @@
         align-items: center;
         top: 0;
         right: 7px;
+        max-width: 90%;
         border-bottom-left-radius: var(--simpla-border-radius);
         border-bottom-right-radius: var(--simpla-border-radius);
         color: var(--simpla-grey-700);
@@ -164,7 +165,7 @@
       }
 
       .title-input[data-expanded] {
-        width: 80px;
+        width: 18em;
         padding-left: 1em;
       }
 
@@ -185,6 +186,11 @@
       [hidden] {
         display: none !important;
       }
+
+      /* Disable taps on icons */
+      iron-icon {
+        pointer-events: none;
+      }
     </style>
 
     <div class="editor">
@@ -195,10 +201,13 @@
           class="title-input"
           placeholder="Enter a title"
           value="{{alt::input}}"
+          on-keydown="_closeTitleOnHotkeys"
           data-expanded$="[[_titleOpen]]"
-          on-blur="_toggleTitle"
         >
-        <a class="tools__tool" on-tap="_toggleTitle" data-active$="[[_titleOpen]]">
+        <a class="tools__tool"
+          on-tap="_toggleTitle"
+          data-active$="[[_titleOpen]]"
+        >
           <iron-icon
             class="tools__tool__icon"
             icon="simpla-img:title">
@@ -251,11 +260,9 @@
     </div>
   </template>
   <script>
-    // Behaviors
-    import viewable from './behaviors/editor/viewable';
-    import cropper from './behaviors/editor/cropper';
-    import externalControls from './behaviors/editor/external-listeners';
-    import imageHandler from './behaviors/editor/image-handler';
+    import { Cropper, ExternalListeners, ImageHandler, Viewable } from './behaviors/editor';
+
+    const TITLE_EXIT_KEYS = [ 13, 27 ];
 
     class SimplaImgEditor {
       beforeRegister() {
@@ -421,7 +428,7 @@
       }
 
       get behaviors() {
-        return [ viewable, cropper, externalControls, imageHandler ];
+        return [ Cropper, ExternalListeners, ImageHandler, Viewable ];
       }
 
       /**
@@ -545,6 +552,18 @@
           this.async(() => this.focus(), 0);
         }
       }
+
+      /**
+       * Close title input if it receives special keys
+       * @param  {Event} e Keyup event from link input
+       * @return {undefined}
+       */
+      _closeTitleOnHotkeys(e) {
+        if (TITLE_EXIT_KEYS.indexOf(e.keyCode) !== -1) {
+          this._titleOpen = false;
+        }
+      }
+
     };
 
     Polymer(SimplaImgEditor);
