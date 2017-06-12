@@ -71,7 +71,7 @@ Entering edit mode with Simpla is the recommended way to edit images. It ensures
 
 ## Saving content
 
-Save a `simpla-img` by calling Simpla's `save` method, which will save all modified content on the page. It returns a promise.
+Save a simpla-img by calling Simpla's `save` method, which will save all modified content on the page. It returns a promise.
 
 ```js
 // Save all modified Simpla content
