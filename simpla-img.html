@@ -1,1 +1,456 @@
-<link rel="import" href="../polymer/polymer.html"> <link rel="import" href="../simpla-element-behavior/simpla-element-behavior.html"> <dom-module id="simpla-img"> <script>!function(){"use strict";var t="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAACCAQAAAA3fa6RAAAADklEQVR42mNkAANGCAUAACMAA2w/AMgAAAAASUVORK5CYII=",e={width:180,height:130},i=function(t){return t&&0===t.indexOf("data:image")},r=function(t){return!/^https:\/\/storage.googleapis.*simpla/.test(t)},n=function(t){var e=new Image,i=document.createElement("canvas"),r=i.getContext("2d");return e.setAttribute("crossOrigin","anonymous"),new Promise(function(n,a){e.onload=function(){i.width=e.width,i.height=e.height,r.drawImage(e,0,0),n(i.toDataURL("image/png"))},e.onerror=a,e.src=t})},a={observers:["_ensureIsBase64(src)"],_ensureIsBase64:function(t){var e=this;!i(t)&&r(t)&&n(t).then(function(i){t===e.src&&(e.src=i)})}},o=Object.assign||function(t){for(var e=1;e<arguments.length;e++){var i=arguments[e];for(var r in i)Object.prototype.hasOwnProperty.call(i,r)&&(t[r]=i[r])}return t},l=function(){function t(t,e){var i=[],r=!0,n=!1,a=void 0;try{for(var o,l=t[Symbol.iterator]();!(r=(o=l.next()).done)&&(i.push(o.value),!e||i.length!==e);r=!0);}catch(t){n=!0,a=t}finally{try{!r&&l.return&&l.return()}finally{if(n)throw a}}return i}return function(e,i){if(Array.isArray(e))return e;if(Symbol.iterator in Object(e))return t(e,i);throw new TypeError("Invalid attempt to destructure non-iterable instance")}}(),s={type:"Image",dataProperties:["src","alt"],setCallback:"_updateSimpla"},c={editable:{cursor:"pointer",outline:"none"},active:{visibility:"hidden",transition:"visibility",transitionDelay:"50ms"},placeholder:{minHeight:e.height+"px",minWidth:e.width+"px",backgroundSize:"cover",backgroundPosition:"center center",opacity:"0.75"}},u={is:"simpla-img",extends:"img",properties:{src:{type:String,reflectToAttribute:!0,value:function(){return t},notify:!0},alt:{type:String,reflectToAttribute:!0,value:"",notify:!0},placeholder:{type:String,value:""},editable:{type:Boolean,reflectToAttribute:!0,notify:!0,value:!1},active:{type:Boolean,notify:!0,value:!1}},observers:["_importEditor(editable)","_updateEditorImage(active)","_updateEditableUi(editable)","_updateEditingUi(active)","_blurOnInactive(active)","_showPlaceholder(placeholder, editable, src)"],listeners:{tap:"_goActiveIfEditable",focusout:"_maintainFocusWhenActive",blur:"_maintainFocusWhenActive"},behaviors:[SimplaBehaviors.Element(s),a],_updateEditableUi:function(t){this._toggleStyles(c.editable,t),t?this.setAttribute("tabindex",0):this.removeAttribute("tabindex")},_updateEditingUi:function(t){this._toggleStyles(c.active,t)},_showPlaceholder:function(e,i,r){var n=i&&r===t,a=void 0;this.placeholder=this.placeholder||"url("+this.resolveUrl("placeholder.svg")+")",a=o({background:this.placeholder},c.placeholder),this._toggleStyles(a,n)},_toggleStyles:function(t,e){var i=this,r=this.__styleCache=this.__styleCache||{};(function(t){return Object.keys(t).map(function(e){return[e,t[e]]})})(t).forEach(function(t){var n=l(t,2),a=n[0],o=n[1],s=r[a],c=i.style[a];e?r[a]=c:(r[a]="",o=s||""),i.style[a]=o})},_updateSimpla:function(){return this.src===t?null:{src:this.src,alt:this.alt}},_goActiveIfEditable:function(){this.editable&&(this.active=!0)},_maintainFocusWhenActive:function(t){var e=document.querySelector("simpla-img-editor");t.relatedTarget===e&&t.stopImmediatePropagation()},_blurOnInactive:function(t){t||(this.fire("focusout"),this.fire("blur",{},{bubbles:!1}))},_updateEditorImage:function(t){var e=document.querySelector("simpla-img-editor");e&&(e.image=t?this:null)},_importEditor:function(t){var e=!!document.querySelector("simpla-img-editor"),i=void 0;t&&!e&&(this.importHref(this.resolveUrl("simpla-img-editor.html")),i=document.createElement("simpla-img-editor"),document.body.appendChild(i))}};Polymer(u)}()</script> </dom-module> 
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../simpla-element-behavior/simpla-element-behavior.html">
+
+<dom-module id="simpla-img">
+  <script>(function () {
+'use strict';
+
+var DEFAULT_SRC = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAACCAQAAAA3fa6RAAAADklEQVR42mNkAANGCAUAACMAA2w/AMgAAAAASUVORK5CYII=';
+
+var MIN_SIZE = {
+  width: 180,
+  height: 130
+};
+
+var isBase64 = function isBase64(subject) {
+  return subject && subject.indexOf('data:image') === 0;
+};
+
+var isNotSimpla = function isNotSimpla(url) {
+  return !/^https:\/\/storage.googleapis.*simpla/.test(url);
+};
+
+var convertToBase64 = function convertToBase64(url) {
+  var img = new Image(),
+      canvas = document.createElement('canvas'),
+      ctx = canvas.getContext('2d');
+
+  img.setAttribute('crossOrigin', 'anonymous');
+
+  return new Promise(function (resolve, reject) {
+    img.onload = function () {
+      var dataUrl = void 0;
+
+      canvas.width = img.width;
+      canvas.height = img.height;
+
+      ctx.drawImage(img, 0, 0);
+
+      resolve(canvas.toDataURL('image/png'));
+    };
+
+    img.onerror = reject;
+
+    img.src = url;
+  });
+};
+
+var StaticConverter = {
+  observers: ['_ensureIsBase64(src)'],
+
+  _ensureIsBase64: function _ensureIsBase64(src) {
+    var _this = this;
+
+    if (!isBase64(src) && isNotSimpla(src)) {
+      convertToBase64(src).then(function (asDataUrl) {
+        if (src === _this.src) {
+          _this.src = asDataUrl;
+        }
+      });
+    }
+  }
+};
+
+var _extends = Object.assign || function (target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i];
+
+    for (var key in source) {
+      if (Object.prototype.hasOwnProperty.call(source, key)) {
+        target[key] = source[key];
+      }
+    }
+  }
+
+  return target;
+};
+
+var get = function get(object, property, receiver) {
+  if (object === null) object = Function.prototype;
+  var desc = Object.getOwnPropertyDescriptor(object, property);
+
+  if (desc === undefined) {
+    var parent = Object.getPrototypeOf(object);
+
+    if (parent === null) {
+      return undefined;
+    } else {
+      return get(parent, property, receiver);
+    }
+  } else if ("value" in desc) {
+    return desc.value;
+  } else {
+    var getter = desc.get;
+
+    if (getter === undefined) {
+      return undefined;
+    }
+
+    return getter.call(receiver);
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var set = function set(object, property, value, receiver) {
+  var desc = Object.getOwnPropertyDescriptor(object, property);
+
+  if (desc === undefined) {
+    var parent = Object.getPrototypeOf(object);
+
+    if (parent !== null) {
+      set(parent, property, value, receiver);
+    }
+  } else if ("value" in desc && desc.writable) {
+    desc.value = value;
+  } else {
+    var setter = desc.set;
+
+    if (setter !== undefined) {
+      setter.call(receiver, value);
+    }
+  }
+
+  return value;
+};
+
+var slicedToArray = function () {
+  function sliceIterator(arr, i) {
+    var _arr = [];
+    var _n = true;
+    var _d = false;
+    var _e = undefined;
+
+    try {
+      for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+        _arr.push(_s.value);
+
+        if (i && _arr.length === i) break;
+      }
+    } catch (err) {
+      _d = true;
+      _e = err;
+    } finally {
+      try {
+        if (!_n && _i["return"]) _i["return"]();
+      } finally {
+        if (_d) throw _e;
+      }
+    }
+
+    return _arr;
+  }
+
+  return function (arr, i) {
+    if (Array.isArray(arr)) {
+      return arr;
+    } else if (Symbol.iterator in Object(arr)) {
+      return sliceIterator(arr, i);
+    } else {
+      throw new TypeError("Invalid attempt to destructure non-iterable instance");
+    }
+  };
+}();
+
+var SIMPLA_CONFIG = {
+  type: 'Image',
+  dataProperties: ['src', 'alt'],
+  setCallback: '_updateSimpla'
+};
+var IMG_STYLES = {
+  editable: {
+    cursor: 'pointer',
+    outline: 'none'
+  },
+  active: {
+    visibility: 'hidden',
+    // Prevent flash while editor opening
+    transition: 'visibility',
+    transitionDelay: '50ms'
+  },
+  placeholder: {
+    minHeight: MIN_SIZE.height + 'px',
+    minWidth: MIN_SIZE.width + 'px',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center center',
+    opacity: '0.75'
+  }
+};
+var DEFAULT_PLACEHOLDER = 'placeholder.svg';
+var EDITOR_COMPONENT = 'simpla-img-editor';
+
+/**
+ * Polymer SimplaImg element definition
+ * We're using the object definition to properly extend an `img` element.
+ * Using ES6 classes, Polymer won't properly setup the inheritance chain and
+ * it won't extend the HTMLImageElement, even if specified using the definition:
+ * `class SimplaImg extends HTMLImageElement { ... }`
+ */
+var SimplaImg = {
+  is: 'simpla-img',
+
+  extends: 'img',
+
+  properties: {
+
+    /**
+     * Image src
+     * @type {String}
+     */
+    src: {
+      type: String,
+      reflectToAttribute: true,
+      value: function value() {
+        return DEFAULT_SRC;
+      },
+      notify: true
+    },
+
+    /**
+     * Image alt value
+     * @type {String}
+     */
+    alt: {
+      type: String,
+      reflectToAttribute: true,
+      value: '',
+      notify: true
+    },
+
+    /**
+     * Background of image when editable and no src
+     * @type {Object}
+     */
+    placeholder: {
+      type: String,
+      value: ''
+    },
+
+    /**
+     * Whether image is editable
+     * @type {Boolean}
+     */
+    editable: {
+      type: Boolean,
+      reflectToAttribute: true,
+      notify: true,
+      value: false
+    },
+
+    /**
+     * Whether image is currently open in editor
+     * @type {Boolean}
+     */
+    active: {
+      type: Boolean,
+      notify: true,
+      value: false
+    }
+
+  },
+
+  observers: ['_importEditor(editable)', '_updateEditorImage(active)', '_updateEditableUi(editable)', '_updateEditingUi(active)', '_blurOnInactive(active)', '_showPlaceholder(placeholder, editable, src)'],
+
+  listeners: {
+    'tap': '_goActiveIfEditable',
+    'focusout': '_maintainFocusWhenActive',
+    'blur': '_maintainFocusWhenActive'
+  },
+
+  behaviors: [SimplaBehaviors.Element(SIMPLA_CONFIG), StaticConverter],
+
+  /**
+   * Set styles for editable state and make focuseable
+   * @param  {Boolean} editable Value of the editable prop
+   * @return {undefined}
+   */
+  _updateEditableUi: function _updateEditableUi(editable) {
+    this._toggleStyles(IMG_STYLES.editable, editable);
+
+    if (editable) {
+      this.setAttribute('tabindex', 0);
+    } else {
+      this.removeAttribute('tabindex');
+    }
+  },
+
+
+  /**
+   * Set inline styles for active state
+   * @param  {Boolean} active Value of the active prop
+   * @return {undefined}
+   */
+  _updateEditingUi: function _updateEditingUi(active) {
+    this._toggleStyles(IMG_STYLES.active, active);
+  },
+
+
+  /**
+   * Fake a basic placeholder with inline styles
+   * @param  {Boolean} placeholder String to apply to background
+   * @param  {Boolean} editable    Whether image is editable
+   * @param  {String} src          Img src
+   * @return {undefined}
+   */
+  _showPlaceholder: function _showPlaceholder(placeholder, editable, src) {
+    var showPlaceholder = editable && src === DEFAULT_SRC,
+        styles = void 0;
+
+    this.placeholder = this.placeholder || 'url(' + this.resolveUrl(DEFAULT_PLACEHOLDER) + ')';
+
+    styles = _extends({ background: this.placeholder }, IMG_STYLES.placeholder);
+
+    this._toggleStyles(styles, showPlaceholder);
+  },
+
+
+  /**
+   * Helper function to toggle inline styles on the element
+   * @param  {Object}  styles     Styles as key value object - same format as
+   *                              HTMLElement.prototype.styles
+   * @param  {Boolean} apply      Whether to apply or remove styles
+   * @return {undefined}
+   */
+  _toggleStyles: function _toggleStyles(styles, apply) {
+    var _this = this;
+
+    var cache = this.__styleCache = this.__styleCache || {},
+        getEntriesIn = function getEntriesIn(obj) {
+      return Object.keys(obj).map(function (key) {
+        return [key, obj[key]];
+      });
+    };
+
+    getEntriesIn(styles).forEach(function (_ref) {
+      var _ref2 = slicedToArray(_ref, 2),
+          property = _ref2[0],
+          value = _ref2[1];
+
+      var cachedValue = cache[property],
+          currentValue = _this.style[property];
+
+      if (apply) {
+        cache[property] = currentValue;
+      } else {
+        cache[property] = '';
+        value = cachedValue || '';
+      }
+
+      _this.style[property] = value;
+    });
+  },
+
+
+  /**
+   * Update Simpla data from element
+   * @return {Object} Data to set to Simpla
+   */
+  _updateSimpla: function _updateSimpla() {
+    if (this.src === DEFAULT_SRC) {
+      return null;
+    }
+
+    return { src: this.src, alt: this.alt };
+  },
+
+
+  /**
+   * Opens editor on tap if image is editable
+   * @return {undefined}
+   */
+  _goActiveIfEditable: function _goActiveIfEditable() {
+    if (this.editable) {
+      this.active = true;
+    }
+  },
+
+
+  /**
+   * Stops blur events on image when opening editor,
+   * to maintain illusion that image itself is editable
+   * @param  {Event} event Blur and Focusout events
+   * @return {undefined}
+   */
+  _maintainFocusWhenActive: function _maintainFocusWhenActive(event) {
+    var editor = document.querySelector(EDITOR_COMPONENT);
+
+    if (event.relatedTarget === editor) {
+      event.stopImmediatePropagation();
+    }
+  },
+
+
+  /**
+   * Blurs the image when editor closes,
+   * to maintain illusion that image itself is editable
+   * @param  {Boolean} active Whether editor is open
+   * @return {undefined}
+   */
+  _blurOnInactive: function _blurOnInactive(active) {
+    if (!active) {
+      this.fire('focusout');
+      this.fire('blur', {}, { bubbles: false });
+    }
+  },
+
+
+  /**
+   * Updates the editor singleton based on active
+   * @param  {Boolean} active Whether this image is active
+   * @return {undefined}
+   */
+  _updateEditorImage: function _updateEditorImage(active) {
+    var editor = document.querySelector(EDITOR_COMPONENT);
+
+    if (editor) {
+      editor.image = active ? this : null;
+    }
+  },
+
+
+  /**
+   * Imports and attaches the editor on editable
+   * @param  {Boolean} editable Whether image is editable
+   * @return {undefined}
+   */
+  _importEditor: function _importEditor(editable) {
+    var editorAttached = !!document.querySelector(EDITOR_COMPONENT),
+        editor = void 0;
+
+    if (editable && !editorAttached) {
+      this.importHref(this.resolveUrl(EDITOR_COMPONENT + '.html'));
+
+      editor = document.createElement(EDITOR_COMPONENT);
+      document.body.appendChild(editor);
+    }
+  }
+};
+Polymer(SimplaImg);
+
+}());
+</script>
+</dom-module>

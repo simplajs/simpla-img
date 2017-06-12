@@ -4,12 +4,11 @@
   "authors": [
     "Simpla <friends@simpla.io>"
   ],
-  "description": "An editable image for the Simpla content system",
+  "description": "An editable image element for the Simpla content system",
   "keywords": [
-    "simpla-element",
-    "web components",
-    "polymer",
     "simpla",
+    "web-components",
+    "custom-element",
     "img",
     "content management",
     "editable"

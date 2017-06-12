@@ -1,7 +1,7 @@
 {
   "name": "simpla-img",
   "version": "1.2.5",
-  "description": "An editable image for the Simpla content system",
+  "description": "An editable image element for the Simpla content system",
   "main": "simpla-img.html",
   "scripts": {
     "test": "gulp test"
@@ -29,35 +29,35 @@
     "not ExplorerMobile < 11"
   ],
   "devDependencies": {
-    "autoprefixer": "^6.0.0",
+    "autoprefixer": "^7.1.1",
     "babel-core": "^6.2.1",
     "babel-eslint": "^7.1.1",
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-plugin-transform-object-assign": "^6.22.0",
     "babel-preset-env": "^1.4.0",
     "browser-sync": "^2.9.0",
-    "cropperjs": "^1.0.0-beta.1",
-    "eslint": "^3.14.1",
+    "cropperjs": "^1.0.0-rc.2",
+    "eslint": "^4.0.0",
     "gulp": "^3.9.0",
-    "gulp-eslint": "^3.0.0",
+    "gulp-eslint": "^4.0.0",
     "gulp-filter": "^5.0.0",
     "gulp-htmlmin": "^3.0.0",
     "gulp-if": "^2.0.0",
     "gulp-inline-source": "^3.0.0",
     "gulp-notify": "^3.0.0",
     "gulp-plumber": "^1.0.0",
-    "gulp-postcss": "^6.1.0",
+    "gulp-postcss": "^7.0.0",
     "gulp-process-inline": "^0.1.1",
     "gulp-rollup-file": "^0.1.0",
     "gulp-size": "^2.0.0",
     "lazypipe": "^1.0.1",
-    "postcss-import": "^9.1.0",
+    "postcss-import": "^10.0.0",
     "rollup-plugin-babel": "^2.6.0",
-    "rollup-plugin-commonjs": "^7.0.0",
+    "rollup-plugin-commonjs": "^8.0.2",
     "rollup-plugin-json": "^2.1.0",
-    "rollup-plugin-node-resolve": "^2.0.0",
+    "rollup-plugin-node-resolve": "^3.0.0",
     "run-sequence": "^1.1.5",
-    "web-component-tester": "^5.0.0",
-    "yargs": "^6.6.0"
+    "web-component-tester": "^6.0.0",
+    "yargs": "^8.0.1"
   }
 }
