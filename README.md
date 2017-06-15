@@ -33,6 +33,21 @@ Simpla-img is an editable image that can updated seamlessly inline on your page.
 <img is="simpla-img" path="/img">
 ```
 
+### Contents
+
+- [Installation and setup](#installation-and-setup)
+- [Editing content](#editing-content)
+- [Saving content](#saving-content)
+- [Initializing with static content](#initializing-with-static-content)
+- [Custom placeholders](#custom-placeholders)
+- [Contributing](#contributing)
+
+### Resources
+
+- [API reference][api]
+- [Demo][demo]
+- [License][license]
+
 ## Installation and setup
 
 Install simpla-img with Bower (Yarn support coming soon)
@@ -41,7 +56,7 @@ Install simpla-img with Bower (Yarn support coming soon)
 $ bower i simpla-img --save
 ```
 
-[Setup Simpla][setup-simpla] on your page, then import simpla-img into your `<head>`
+[Setup Simpla][simpla-setup] on your page, then import simpla-img into your `<head>`
 
 ```html
 <link rel="import" href="/bower_components/simpla-img/simpla-img.html">
@@ -102,50 +117,21 @@ You can set custom placeholders (displayed when simpla-img is editable and doesn
 
 `placeholder` takes any valid CSS `background` value (colors, `url()`, etc). The placeholder does not impact the image's default size or aspect ratio.
 
-## API reference
-
-### Properties
-
-Property      | Type    | Default           | Description                                                   
-------------- | ------- | ----------------- | -----------                                                   
-`path`        | String  | `undefined`       | Path to the content for this image on Simpla's API            
-`src`         | String  | data URI          | Src of the image (defaults to transparent pixel)                                             
-`alt`         | String  | `undefined`       | Alt text for the image                                        
-`placeholder` | String  | `'placeholder.svg'` | Placeholder to show when image is editable and has no content 
-`editable`    | Boolean | `false`           | Whether the image is editable                                 
-`active`      | Boolean | `false`           | Whether the image is currently being edited                   
-`loaded`      | Boolean | `false`           | Whether the image src has been loaded
-
-Properties can be set either directly with JavaScript or as attributes on the element
-
-```html
-<img is="simpla-img" path="/img" placeholder="pink">
-
-<script>
-  document.querySelector('img[is="simpla-img"]').editable = true;
-</script>
-```
-
-### Events
-
-Event              | Description                                    
------------------- | -----------                                    
-`src-changed`      | Fired whenever the `src` property changes      
-`alt-changed`      | Fired whenever the `alt` property changes      
-`editable-changed` | Fired whenever the `editable` property changes 
-`active-changed`   | Fired whenever the `active` property changes   
-`loaded-changed`   | Fired whenever the `loaded` property changes   
-
 ## Contributing
 
-If you find any issues with simpla-img please report them! If you'd like to see a new feature in supported file an issue or let us know in Simpla's public [Slack group](https://slack.simpla.io). We also happily accept PRs. 
+If you find any issues with simpla-img please report them! If you'd like to see a new feature in supported file an issue or let us know in Simpla's public [Slack group][slack-url]. We also happily accept PRs. 
 
 ***
 
 MIT © [Simpla][simpla]
 
 [simpla]: https://www.simpla.io
-[setup-simpla]: https://www.simpla.io/docs/guides/get-started
+[simpla-setup]: https://www.simpla.io/docs/guides/get-started
+
+[api]: https://www.webcomponents.org/element/SimplaElements/simpla-img/page/API.md
+[demo]: https://www.webcomponents.org/element/SimplaElements/simpla-img/demo/demo/index.html
+[license]: https://github.com/SimplaElements/simpla-img/blob/master/LICENSE
+
 [bower-badge]: https://img.shields.io/bower/v/simpla-img.svg
 [travis-badge]: https://img.shields.io/travis/SimplaElements/simpla-img.svg
 [travis-url]: https://travis-ci.org/SimplaElements/simpla-img
