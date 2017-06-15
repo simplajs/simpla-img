@@ -48,7 +48,7 @@ Data  | Type      | Description
 
 Event              | Properties       | Description                                    
 ------------------ | ---------------- | -----------                                    
-`src-changed`      | `value{Array}`   | Fired when `src` property changes      
+`src-changed`      | `value{String}`  | Fired when `src` property changes      
 `alt-changed`      | `value{String}`  | Fired when `alt` property changes      
 `editable-changed` | `value{Boolean}` | Fired when `editable` property changes 
 `active-changed`   | `value{Boolean}` | Fired when `active` property changes   
