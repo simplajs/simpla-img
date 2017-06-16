@@ -40,6 +40,7 @@ Simpla-img is an editable image that can updated seamlessly inline on your page.
 - [Saving content](#saving-content)
 - [Initializing with static content](#initializing-with-static-content)
 - [Custom placeholders](#custom-placeholders)
+- [Readonly](#readonly)
 - [Contributing](#contributing)
 
 ### Resources
@@ -116,6 +117,14 @@ You can set custom placeholders (displayed when simpla-img is editable and doesn
 ```
 
 `placeholder` takes any valid CSS `background` value (colors, `url()`, etc). The placeholder does not impact the image's default size or aspect ratio.
+
+## Readonly
+
+Simpla-img has a `readonly` property that stops it from becoming editable, even if Simpla is in edit mode or you try to set `editable` on the element directly. This is useful for using simpla-img to purely consume and display content from Simpla's API.
+
+```html
+<img is="simpla-img" path="/img" readonly>
+```
 
 ## Contributing
 

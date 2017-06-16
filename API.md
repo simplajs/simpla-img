@@ -9,6 +9,7 @@ Property      | Type      | Default             | Description
 `alt`         | `String`  | `undefined`         | Alt text for the image                                        
 `placeholder` | `String`  | `'placeholder.svg'` | Placeholder to show when image is editable and has no content 
 `editable`    | `Boolean` | `false`             | Whether the image is editable                                 
+`readonly`    | `Boolean` | `false`             | Whether the image is able to become editable                                 
 `active`      | `Boolean` | `false`             | Whether the image is currently being edited                   
 `loaded`      | `Boolean` | `false`             | Whether the image src has been loaded
 

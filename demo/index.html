@@ -72,8 +72,14 @@
         <h1 class="demo__title">Custom placeholders</h1>
         <demo-snippet class="demo__snippet">
           <template>
-            <img is="simpla-img" path="/placeholder-1" placeholder="url(https://placehold.it/200x200)">
-            <img is="simpla-img" path="/placeholder-2" placeholder="#1bd4dc">
+            <img is="simpla-img"
+              path="/placeholder-1"
+              placeholder="url(https://placehold.it/200x200)"
+            >
+            <img is="simpla-img"
+              path="/placeholder-2"
+              placeholder="#1bd4dc"
+            >
           </template>
         </demo-snippet>
       </div>
@@ -82,7 +88,23 @@
         <h1 class="demo__title">Static content</h1>
         <demo-snippet class="demo__snippet">
           <template>
-            <img is="simpla-img" src="https://unsplash.it/600/400" path="/static">
+            <img is="simpla-img"
+              path="/static"
+              src="https://unsplash.it/600/400"
+            >
+          </template>
+        </demo-snippet>
+      </div>
+
+      <div class="demo">
+        <h1 class="demo__title">Readonly</h1>
+        <demo-snippet class="demo__snippet">
+          <template>
+            <img is="simpla-img"
+              path="/readonly"
+              src="https://unsplash.it/600/400"
+              readonly
+            >
           </template>
         </demo-snippet>
       </div>
