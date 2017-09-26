@@ -1,6 +1,5 @@
-const isBase64 = (subject) => subject && subject.indexOf('data:image') === 0;
-
-const isNotSimpla = (url) => !/^https:\/\/storage.googleapis.*simpla/.test(url);
+const isBase64 = (subject) => subject && subject.indexOf('data:image') === 0,
+      isNotSimpla = (url) => !/^https:\/\/storage.googleapis.*simpla/.test(url);
 
 const convertToBase64 = (url) => {
   let img = new Image(),
@@ -32,14 +31,19 @@ export default {
     '_ensureIsBase64(src)'
   ],
 
+  created() {
+    this.__staticSrc = this.getAttribute('src');
+  },
+
   _ensureIsBase64(src) {
-    if (!isBase64(src) && isNotSimpla(src)) {
-      convertToBase64(src)
-        .then(asDataUrl => {
-          if (src === this.src) {
-            this.src = asDataUrl;
-          }
-        });
+    let isStatic = this.__staticSrc && this.__staticSrc === src;
+
+    if (isStatic && !isBase64(src) && isNotSimpla(src)) {
+      convertToBase64(src).then(asDataUrl => {
+        if (src === this.src) {
+          this.src = asDataUrl;
+        }
+      });
     }
   }
 }

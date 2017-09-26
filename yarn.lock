@@ -546,13 +546,13 @@ async@1.5.2, async@^1.5.0:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/async/-/async-1.5.2.tgz#ec6a61ae56480c0c3cb241c95618e20892f9672a"
 
-async@2.0.1, async@^2.0.1:
+async@2.0.1, async@^2.0.0, async@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/async/-/async-2.0.1.tgz#b709cc0280a9c36f09f4536be823c838a9049e25"
   dependencies:
     lodash "^4.8.0"
 
-async@^2.0.0, async@^2.1.2:
+async@^2.1.2:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/async/-/async-2.4.1.tgz#62a56b279c98a11d0987096a01cc3eeb8eb7bbd7"
   dependencies:
@@ -5206,7 +5206,7 @@ replace-ext@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/replace-ext/-/replace-ext-0.0.1.tgz#29bbd92078a739f0bcce2b4ee41e837953522924"
 
-request@2.78.0, request@^2.53.0:
+request@2.78.0:
   version "2.78.0"
   resolved "https://registry.yarnpkg.com/request/-/request-2.78.0.tgz#e1c8dec346e1c81923b24acdb337f11decabe9cc"
   dependencies:
@@ -5231,7 +5231,7 @@ request@2.78.0, request@^2.53.0:
     tough-cookie "~2.3.0"
     tunnel-agent "~0.4.1"
 
-request@2.79.0, request@^2.55.0:
+request@2.79.0, request@^2.53.0, request@^2.55.0:
   version "2.79.0"
   resolved "https://registry.yarnpkg.com/request/-/request-2.79.0.tgz#4dfe5bf6be8b8cdc37fcf93e04b65577722710de"
   dependencies:
@@ -6055,9 +6055,9 @@ ternary-stream@^2.0.1:
     merge-stream "^1.0.0"
     through2 "^2.0.1"
 
-"test-fixture@github:polymerelements/test-fixture":
+test-fixture@PolymerElements/test-fixture:
   version "3.0.0-rc.1"
-  resolved "https://codeload.github.com/polymerelements/test-fixture/tar.gz/26118ef0467501c33c02316e7016a2837baba10f"
+  resolved "https://codeload.github.com/PolymerElements/test-fixture/tar.gz/05caebd9ecbb464024455923bd351d2ba640932e"
 
 test-value@^2.1.0:
   version "2.1.0"
