@@ -128,7 +128,7 @@ Simpla-img has a `readonly` property that stops it from becoming editable, even 
 
 ## Contributing
 
-If you find any issues with simpla-img please report them! If you'd like to see a new feature in supported file an issue or let us know in Simpla's public [Slack group][slack-url]. We also happily accept PRs. 
+If you find any issues with simpla-img please report them! If you'd like to see a new feature in supported file an issue. We also happily accept PRs. 
 
 ***
 
