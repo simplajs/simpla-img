@@ -1,5 +1,5 @@
 # Simpla Image
-[![Build status][travis-badge]][travis-url] ![Size][size-badge] ![Version][bower-badge] [![Published][webcomponents-badge]][webcomponents-url] [![Simpla slack group][slack-badge]][slack-url]
+[![Build status][travis-badge]][travis-url] ![Size][size-badge] ![Version][bower-badge] [![Published][webcomponents-badge]][webcomponents-url]
 
 Simpla-img is an editable image that can updated seamlessly inline on your page. It extends `<img>` and is built on the [Simpla][simpla] content system.
 
@@ -135,18 +135,15 @@ If you find any issues with simpla-img please report them! If you'd like to see 
 MIT © [Simpla][simpla]
 
 [simpla]: https://www.simpla.io
-[simpla-setup]: https://www.simpla.io/docs/guides/get-started
+[simpla-setup]: https://docs.simpla.io/guides/get-started.htlm
 
-[api]: https://www.webcomponents.org/element/SimplaElements/simpla-img/page/API.md
-[demo]: https://www.webcomponents.org/element/SimplaElements/simpla-img/demo/demo/index.html
-[license]: https://github.com/SimplaElements/simpla-img/blob/master/LICENSE
+[api]: https://www.webcomponents.org/element/simplaio/simpla-img/page/API.md
+[demo]: https://www.webcomponents.org/element/simplaio/simpla-img/demo/demo/index.html
+[license]: https://github.com/simplaio/simpla-img/blob/master/LICENSE
 
 [bower-badge]: https://img.shields.io/bower/v/simpla-img.svg
-[travis-badge]: https://img.shields.io/travis/SimplaElements/simpla-img.svg
-[travis-url]: https://travis-ci.org/SimplaElements/simpla-img
-[size-badge]: http://img.badgesize.io/SimplaElements/simpla-img/master/simpla-img.html?compression=gzip&label=render_bundle_%28gzip%29
+[travis-badge]: https://img.shields.io/travis/simplaio/simpla-img.svg
+[travis-url]: https://travis-ci.org/simplaio/simpla-img
+[size-badge]: http://img.badgesize.io/simplaio/simpla-img/master/simpla-img.html?compression=gzip&label=render_bundle_%28gzip%29
 [webcomponents-badge]: https://img.shields.io/badge/webcomponents.org-published-blue.svg
-[webcomponents-url]: https://www.webcomponents.org/element/SimplaElements/simpla-img
-[slack-badge]: http://slack.simpla.io/badge.svg
-[slack-url]: https://slack.simpla.io
-
+[webcomponents-url]: https://www.webcomponents.org/element/simplaio/simpla-img
